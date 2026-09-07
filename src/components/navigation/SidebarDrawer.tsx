@@ -8,7 +8,7 @@ import {
 import {
   TrendingUp,
   Ruler,
-  Coins,
+  ArrowLeftRight,
   Landmark,
   Calendar,
   Target,
@@ -17,7 +17,6 @@ import {
 import { Sheet, SheetContent, SheetTitle } from '../ui/sheet';
 import { Badge } from '../ui/badge';
 import { siteConfig } from '../../config/site';
-import { ThemeToggle } from './ThemeToggle';
 
 interface SidebarDrawerProps {
   activeId: CalculatorId;
@@ -40,7 +39,7 @@ export const SidebarDrawer: React.FC<SidebarDrawerProps> = ({
       case 'unit':
         return <Ruler className={cls} />;
       case 'exchange':
-        return <Coins className={cls} />;
+        return <ArrowLeftRight className={cls} />;
       case 'loan':
         return <Landmark className={cls} />;
       case 'dividend':
@@ -134,15 +133,9 @@ export const SidebarDrawer: React.FC<SidebarDrawerProps> = ({
         })}
       </nav>
 
-      {/* 하단 테마 전환 및 버전/카피라이트 푸터 */}
-      <div className="p-3 border-t border-[#e5e7eb] dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/40 flex flex-col gap-2">
-        <div className="flex items-center justify-between px-1">
-          <span className="text-xs font-semibold text-[#64748b] dark:text-slate-400">
-            화면 테마 설정
-          </span>
-          <ThemeToggle />
-        </div>
-        <p className="text-[11px] text-[#94a3b8] dark:text-slate-500 font-medium text-center border-t border-slate-200/60 dark:border-slate-800/80 pt-2">
+      {/* 하단 버전 및 카피라이트 푸터 */}
+      <div className="p-3 border-t border-[#e5e7eb] dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/40 text-center">
+        <p className="text-[11px] text-[#94a3b8] dark:text-slate-500 font-medium">
           {siteConfig.copyright} • {siteConfig.shortName} v{siteConfig.version}
         </p>
       </div>

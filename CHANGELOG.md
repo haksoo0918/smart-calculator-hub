@@ -20,7 +20,7 @@
   - 글로벌 헤더 우측 상단에 정갈한 `h-9 w-9` 아이콘 버튼(`Button variant="outline" size="icon"`)으로 전면 교체
   - 라이트/다크 전환 시 Sun(태양)과 Moon(달) 아이콘이 부드럽게 회전 및 스케일 모션(`dark:-rotate-90 dark:scale-0`, `rotate-90 scale-0 dark:rotate-0 dark:scale-100`)으로 전환
   - Radix UI Tooltip을 연동하여 마우스 오버 시 "다크 모드로 전환" / "라이트 모드로 전환" 안내
-  - **모바일 드로어 사이드바 푸터 지원**: 모바일 햄버거 메뉴를 열었을 때도 하단 푸터에서 간편하게 테마를 전환할 수 있도록 테마 토글 행 추가
+  - 글로벌 헤더 우측 상단 1곳으로 단일화하여 불필요한 중복 배제
 - **전역 테마 상태 아키텍처 구축 (`ThemeContext.tsx`)**:
   - 시스템 선호도(OS 다크 모드) 자동 감지 및 `localStorage`(`theme-preference`) 영구 동기화
   - `<html>` 루트 엘리먼트의 `.dark` 클래스 및 `color-scheme` 동적 제어
