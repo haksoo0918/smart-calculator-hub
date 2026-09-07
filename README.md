@@ -98,43 +98,6 @@ src/
 
 ---
 
-## 시작하기
-
-### 사전 요구사항
-- Node.js 18.0.0 이상
-- npm 9.0.0 이상
-
-### 설치 및 로컬 개발 서버 실행
-```powershell
-# 의존성 패키지 설치
-npm install
-
-# 로컬 개발 서버 구동 (기본 포트: 5173)
-npm run dev
-```
-
-### 테스트 실행
-```powershell
-# Vitest 단위 및 통합 테스트 38종 일괄 실행
-npm test -- --run
-```
-
-### 프로덕션 빌드
-```powershell
-# TypeScript 타입 검사 및 Vite 프로덕션 빌드 (dist/ 생성)
-npm run build
-```
-
----
-
-## 문서 및 변경 이력
-
-- **제품 요구사항 정의서**: [PRD.md](PRD.md)
-- **버전별 변경 이력**: [CHANGELOG.md](CHANGELOG.md)
-- **GitHub 저장소**: [https://github.com/haksoo0918/smart-calculator-hub](https://github.com/haksoo0918/smart-calculator-hub)
-
----
-
 ## 라이선스
 
 Copyright (c) 2026 sosoFactory. All rights reserved.
