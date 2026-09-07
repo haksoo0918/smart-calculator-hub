@@ -3,9 +3,23 @@
 모든 주요 변경 사항은 본 문서에 기록됩니다.
 버전 체계는 [Semantic Versioning (SemVer)](https://semver.org/)을 준수합니다.
 
-## [1.1.0] - 2026-09-06
+## [1.2.0] - 2026-09-07
 
-### 추가 (Added)
+### 추가 및 변경 (Added & Changed)
+- **shadcn/ui 디자인 시스템 전면 도입**:
+  - Radix UI 프리미티브 + Tailwind CSS 기반 모듈형 컴포넌트 시스템 구축
+  - `Button`, `Card`, `Badge`, `Input`, `Slider`, `Table`, `Sheet` 컴포넌트 작성 (`src/components/ui/`)
+- **기존 컴포넌트 shadcn/ui 전면 마이그레이션**:
+  - `SidebarDrawer.tsx`: Radix Dialog 기반 모바일 슬라이드 드로어(`Sheet`) 및 `Badge` 적용
+  - `GlobalHeader.tsx`: shadcn `Button`, `Badge` 적용
+  - `SummaryCards.tsx`: shadcn `Card`, `Badge` 적용
+  - `DataTable.tsx`: shadcn `Table`, `Button` 적용
+  - `CalculatorForm.tsx` & `ComparisonView.tsx`: shadcn 컴포넌트 적용
+- **TDD (Test-Driven Development) 파이프라인 구축**:
+  - Vitest + Testing Library + JSDOM 기반 테스트 환경 구축
+  - Red → Green 사이클을 통해 `Button`, `Card`, `Badge`, `Input`, `Table` 컴포넌트 단위 테스트 작성 및 100% 통과 (8개 테스트)
+- **Pretendard Variable 가변 웹폰트 전면 적용**:
+  - 전역 폰트를 Pretendard Variable로 교체하여 한글/숫자 가독성 최적화
 - **마이너스(손실) 수익률 시뮬레이션 지원**:
   - 연 예상 수익률 범위를 `-30% ~ +50%`로 확장하여 시장 하락장 및 원금 손실 시나리오 분석 지원
   - 손실 발생 시 이자 소득세 0원 처리

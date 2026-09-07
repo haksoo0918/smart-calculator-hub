@@ -14,8 +14,24 @@ export default {
           600: '#0d9488',
           700: '#0f766e',
         }
-      }
+      },
+      fontFamily: {
+        sans: [
+          '"Pretendard Variable"',
+          'Pretendard',
+          '-apple-system',
+          'BlinkMacSystemFont',
+          'system-ui',
+          'Roboto',
+          '"Helvetica Neue"',
+          '"Segoe UI"',
+          '"Apple SD Gothic Neo"',
+          '"Noto Sans KR"',
+          '"Malgun Gothic"',
+          'sans-serif',
+        ],
+      },
     },
   },
-  plugins: [],
+  plugins: [require("tailwindcss-animate")],
 }

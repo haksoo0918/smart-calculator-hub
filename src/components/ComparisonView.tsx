@@ -6,6 +6,7 @@ import {
   formatPercent,
 } from '../utils/formatters';
 import { TrendingUp, Zap } from 'lucide-react';
+import { Badge } from './ui/badge';
 
 interface ComparisonViewProps {
   comparison: ScenarioComparison;
@@ -18,7 +19,7 @@ export const ComparisonView: React.FC<ComparisonViewProps> = ({ comparison }) =>
   const isBBetter = diffPostTax >= 0;
 
   return (
-    <div className="bg-gradient-to-br from-indigo-900 via-slate-900 to-slate-950 text-white rounded-2xl p-4 sm:p-6 border border-indigo-500/30 shadow-md">
+    <div className="bg-gradient-to-br from-indigo-950 via-slate-900 to-slate-900 text-white rounded-2xl p-4 sm:p-6 border border-indigo-500/30 shadow-md">
       <div className="flex items-center gap-2 mb-3">
         <div className="w-8 h-8 rounded-lg bg-indigo-500/20 text-indigo-300 flex items-center justify-center">
           <Zap className="w-4 h-4" />
@@ -60,13 +61,13 @@ export const ComparisonView: React.FC<ComparisonViewProps> = ({ comparison }) =>
 
       {/* 2열 비교 카드 그리드 */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-        {/* 시나리오 A (Teal) */}
+        {/* 시나리오 A */}
         <div className="bg-white/5 rounded-xl p-3 sm:p-4 border border-teal-500/30">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-xs font-bold px-2 py-0.5 rounded bg-teal-500/20 text-teal-300">
+            <Badge variant="teal">
               {scenarioA.name}
-            </span>
-            <span className="text-xs text-slate-400">
+            </Badge>
+            <span className="text-xs text-slate-400 font-semibold">
               연 {scenarioA.annualRate}%
             </span>
           </div>
@@ -91,13 +92,13 @@ export const ComparisonView: React.FC<ComparisonViewProps> = ({ comparison }) =>
           </div>
         </div>
 
-        {/* 시나리오 B (Indigo) */}
+        {/* 시나리오 B */}
         <div className="bg-white/5 rounded-xl p-3 sm:p-4 border border-indigo-500/30">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-xs font-bold px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-300">
+            <Badge variant="indigo">
               {scenarioB.name}
-            </span>
-            <span className="text-xs text-slate-400">
+            </Badge>
+            <span className="text-xs text-slate-400 font-semibold">
               연 {scenarioB.annualRate}%
             </span>
           </div>

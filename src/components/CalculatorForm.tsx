@@ -8,6 +8,8 @@ import {
 import { formatKoreanUnit } from '../utils/formatters';
 import { QuickAmountButtons } from './QuickAmountButtons';
 import { Sparkles, Copy } from 'lucide-react';
+import { Badge } from './ui/badge';
+import { Button } from './ui/button';
 
 interface CalculatorFormProps {
   scenario: ScenarioInput;
@@ -61,29 +63,25 @@ export const CalculatorForm: React.FC<CalculatorFormProps> = ({
       {/* 상단 뱃지 및 타이틀 */}
       <div className="flex items-center justify-between pb-3 mb-4 border-b border-slate-100">
         <div className="flex items-center gap-2">
-          <span
-            className={`text-xs font-bold px-2.5 py-1 rounded-md uppercase tracking-wider ${
-              isIndigo
-                ? 'bg-indigo-100 text-indigo-800'
-                : 'bg-teal-100 text-teal-800'
-            }`}
-          >
+          <Badge variant={isIndigo ? 'indigo' : 'teal'} className="font-bold uppercase tracking-wider">
             {badgeTitle || scenario.name}
-          </span>
+          </Badge>
           <h2 className="text-sm sm:text-base font-bold text-slate-800">
             투자 조건 설정
           </h2>
         </div>
 
         {onCopyFromOther && (
-          <button
+          <Button
             type="button"
+            variant="outline"
+            size="sm"
             onClick={onCopyFromOther}
-            className="flex items-center gap-1 text-xs text-slate-500 hover:text-slate-800 px-2 py-1 bg-slate-50 hover:bg-slate-100 rounded-md border border-slate-200 transition-colors"
+            className="h-7 text-xs gap-1 text-slate-600"
           >
             <Copy className="w-3.5 h-3.5" />
             <span>{copyButtonLabel || '복사'}</span>
-          </button>
+          </Button>
         )}
       </div>
 

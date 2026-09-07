@@ -2,6 +2,15 @@ import React, { useState } from 'react';
 import { CalculationResult } from '../types/calculator';
 import { formatCurrency, formatPercent } from '../utils/formatters';
 import { ChevronDown, ChevronUp, Download, Table as TableIcon } from 'lucide-react';
+import { Button } from './ui/button';
+import {
+  Table,
+  TableHeader,
+  TableBody,
+  TableRow,
+  TableHead,
+  TableCell,
+} from './ui/table';
 
 interface DataTableProps {
   result: CalculationResult;
@@ -14,7 +23,6 @@ export const DataTable: React.FC<DataTableProps> = ({
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  // CSV 다운로드 함수
   const downloadCSV = () => {
     const headers = [
       '연차',
@@ -39,7 +47,7 @@ export const DataTable: React.FC<DataTableProps> = ({
     ]);
 
     const csvContent =
-      '\uFEFF' + // UTF-8 BOM for Excel 한국어 깨짐 방지
+      '\uFEFF' +
       [headers.join(','), ...rows.map((r) => r.join(','))].join('\n');
 
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
@@ -71,17 +79,19 @@ export const DataTable: React.FC<DataTableProps> = ({
 
         <div className="flex items-center gap-2">
           {isOpen && (
-            <button
+            <Button
               type="button"
+              variant="outline"
+              size="sm"
               onClick={(e) => {
                 e.stopPropagation();
                 downloadCSV();
               }}
-              className="flex items-center gap-1 text-xs text-teal-700 bg-teal-50 hover:bg-teal-100 px-2.5 py-1 rounded-md font-semibold border border-teal-200 transition-colors"
+              className="h-8 gap-1 text-xs text-teal-700 bg-teal-50 hover:bg-teal-100 border-teal-200"
             >
               <Download className="w-3.5 h-3.5" />
               <span className="hidden xs:inline">CSV 다운로드</span>
-            </button>
+            </Button>
           )}
           <button
             type="button"
@@ -92,45 +102,45 @@ export const DataTable: React.FC<DataTableProps> = ({
         </div>
       </div>
 
-      {/* 테이블 본체 (펼쳐졌을 때만 표시) */}
+      {/* shadcn Table 본체 */}
       {isOpen && (
-        <div className="border-t border-slate-100 overflow-x-auto">
-          <table className="w-full text-left text-xs">
-            <thead className="bg-slate-50 text-slate-600 font-semibold border-b border-slate-200 whitespace-nowrap">
-              <tr>
-                <th className="py-2.5 px-3 text-center">연차</th>
-                <th className="py-2.5 px-3 text-right">누적 원금</th>
-                <th className="py-2.5 px-3 text-right">당해연도 이자</th>
-                <th className="py-2.5 px-3 text-right">누적 순이자</th>
-                <th className="py-2.5 px-3 text-right">세후 총 평가액</th>
-                <th className="py-2.5 px-3 text-right">수익률</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-100 text-slate-700 whitespace-nowrap">
+        <div className="border-t border-slate-100">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead className="text-center w-16">연차</TableHead>
+                <TableHead className="text-right">누적 원금</TableHead>
+                <TableHead className="text-right">당해연도 이자</TableHead>
+                <TableHead className="text-right">누적 순이자</TableHead>
+                <TableHead className="text-right">세후 총 평가액</TableHead>
+                <TableHead className="text-right">수익률</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
               {result.breakdown.map((row) => (
-                <tr key={row.year} className="hover:bg-slate-50/80 transition-colors">
-                  <td className="py-2.5 px-3 font-bold text-center text-slate-900 bg-slate-50/30">
+                <TableRow key={row.year}>
+                  <TableCell className="font-bold text-center text-slate-900 bg-slate-50/40">
                     {row.year}년
-                  </td>
-                  <td className="py-2.5 px-3 text-right font-medium text-slate-600">
+                  </TableCell>
+                  <TableCell className="text-right text-slate-600">
                     {formatCurrency(row.totalPrincipal)}
-                  </td>
-                  <td className="py-2.5 px-3 text-right text-slate-500">
+                  </TableCell>
+                  <TableCell className="text-right text-slate-500">
                     +{formatCurrency(row.grossInterestYear)}
-                  </td>
-                  <td className="py-2.5 px-3 text-right font-semibold text-emerald-600">
+                  </TableCell>
+                  <TableCell className="text-right font-semibold text-emerald-600">
                     +{formatCurrency(row.netInterestTotal)}
-                  </td>
-                  <td className="py-2.5 px-3 text-right font-bold text-slate-900">
+                  </TableCell>
+                  <TableCell className="text-right font-bold text-slate-900">
                     {formatCurrency(row.futureValuePostTax)}
-                  </td>
-                  <td className="py-2.5 px-3 text-right font-semibold text-teal-700">
+                  </TableCell>
+                  <TableCell className="text-right font-semibold text-teal-700">
                     +{formatPercent(row.returnRate)}
-                  </td>
-                </tr>
+                  </TableCell>
+                </TableRow>
               ))}
-            </tbody>
-          </table>
+            </TableBody>
+          </Table>
         </div>
       )}
     </div>
