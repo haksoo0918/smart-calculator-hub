@@ -45,43 +45,45 @@ export const App: React.FC = () => {
           onOpenMobileMenu={() => setIsOpenMobileDrawer(true)}
         />
 
-        {/* 메인 콘텐츠 라우팅 작업 공간 */}
+        {/* 메인 콘텐츠 라우팅 작업 공간 (페이지 전환 시 부드러운 페이드인 트랜지션) */}
         <main className="flex-1 max-w-7xl w-full mx-auto px-3.5 py-4 sm:px-6 sm:py-6">
-          <Routes>
-            <Route path="/" element={<Navigate to="/compound" replace />} />
-            <Route path="/compound" element={<CompoundInterestApp />} />
-            <Route path="/unit" element={<UnitConverterApp />} />
-            <Route path="/exchange" element={<ExchangeApp />} />
-            <Route
-              path="/loan"
-              element={
-                <PlaceholderView
-                  calculator={CALCULATORS_LIST[3]}
-                  onGoToCompound={() => navigate('/compound')}
-                />
-              }
-            />
-            <Route
-              path="/dividend"
-              element={
-                <PlaceholderView
-                  calculator={CALCULATORS_LIST[4]}
-                  onGoToCompound={() => navigate('/compound')}
-                />
-              }
-            />
-            <Route
-              path="/goal"
-              element={
-                <PlaceholderView
-                  calculator={CALCULATORS_LIST[5]}
-                  onGoToCompound={() => navigate('/compound')}
-                />
-              }
-            />
-            {/* 정의되지 않은 경로는 기본 연복리로 리다이렉트 */}
-            <Route path="*" element={<Navigate to="/compound" replace />} />
-          </Routes>
+          <div key={location.pathname} className="animate-page-fade">
+            <Routes location={location}>
+              <Route path="/" element={<Navigate to="/compound" replace />} />
+              <Route path="/compound" element={<CompoundInterestApp />} />
+              <Route path="/unit" element={<UnitConverterApp />} />
+              <Route path="/exchange" element={<ExchangeApp />} />
+              <Route
+                path="/loan"
+                element={
+                  <PlaceholderView
+                    calculator={CALCULATORS_LIST[3]}
+                    onGoToCompound={() => navigate('/compound')}
+                  />
+                }
+              />
+              <Route
+                path="/dividend"
+                element={
+                  <PlaceholderView
+                    calculator={CALCULATORS_LIST[4]}
+                    onGoToCompound={() => navigate('/compound')}
+                  />
+                }
+              />
+              <Route
+                path="/goal"
+                element={
+                  <PlaceholderView
+                    calculator={CALCULATORS_LIST[5]}
+                    onGoToCompound={() => navigate('/compound')}
+                  />
+                }
+              />
+              {/* 정의되지 않은 경로는 기본 연복리로 리다이렉트 */}
+              <Route path="*" element={<Navigate to="/compound" replace />} />
+            </Routes>
+          </div>
         </main>
       </div>
     </div>

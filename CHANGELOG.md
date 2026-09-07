@@ -3,6 +3,16 @@
 모든 주요 변경 사항은 본 문서에 기록됩니다.
 버전 체계는 [Semantic Versioning (SemVer)](https://semver.org/)을 준수합니다.
 
+## [1.6.5] - 2026-09-07
+
+### 전역 페이지 라우트 전환 부드러운 페이드인 애니메이션 구현 (Page Transition Fade Motion)
+- **React Router 라우트 전환 시 깜빡임 없이 부드러운 페이드 전환**:
+  - 데스크탑 좌측 사이드바 및 모바일 드로어에서 메뉴 이동 시 화면이 즉시 바뀌지 않고 부드럽게 안착되도록 전환 효과 적용
+  - `src/App.tsx`의 `<Routes>` 컨테이너를 `<div key={location.pathname} className="animate-page-fade">`로 래핑하여 경로 변경 시마다 애니메이션이 100% 확실하게 트리거되도록 구현
+  - **애니메이션 스펙**: 200ms `ease-out`, 미세한 수직 안착(`translate3d(0, 4px, 0)` -> `translate3d(0, 0, 0)`), 불투명도 점진 증가(`opacity: 0` -> `1`)
+  - `tailwind.config.js` 및 `src/index.css`에 `page-fade` / `pageFadeIn`을 명시적으로 선언하여 Tailwind 빌드 누락 방지 및 하드웨어 GPU 가속 보장
+- 단위/라우팅 테스트 33개 전체 통과 및 프로덕션 빌드 완료
+
 ## [1.6.4] - 2026-09-07
 
 ### 모바일 사이드바 드로어 하드웨어 가속 슬라이드 애니메이션 구현 (Mobile Drawer Smooth Motion)

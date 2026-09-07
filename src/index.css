@@ -119,3 +119,20 @@ input[type=number] {
 [data-radix-dialog-overlay][data-state="closed"] {
   animation: fadeOutOverlay 220ms ease-in forwards !important;
 }
+
+/* 전역 페이지 라우트 전환 페이드 애니메이션 */
+@keyframes pageFadeIn {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 4px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.animate-page-fade {
+  animation: pageFadeIn 200ms ease-out forwards;
+  will-change: opacity, transform;
+}

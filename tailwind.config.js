@@ -67,12 +67,17 @@ export default {
           '0%': { opacity: '1' },
           '100%': { opacity: '0' },
         },
+        'page-fade': {
+          '0%': { opacity: '0', transform: 'translate3d(0, 4px, 0)' },
+          '100%': { opacity: '1', transform: 'translate3d(0, 0, 0)' },
+        },
       },
       animation: {
         'drawer-in': 'drawer-in 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards',
         'drawer-out': 'drawer-out 0.22s ease-in forwards',
         'overlay-in': 'overlay-in 0.28s ease-out forwards',
         'overlay-out': 'overlay-out 0.22s ease-in forwards',
+        'page-fade': 'page-fade 0.2s ease-out forwards',
       },
     },
   },
