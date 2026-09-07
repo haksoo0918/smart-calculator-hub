@@ -7,6 +7,7 @@ import { SummaryCards } from '../../components/SummaryCards';
 import { ChartDashboard } from '../../components/ChartDashboard';
 import { ComparisonView } from '../../components/ComparisonView';
 import { DataTable } from '../../components/DataTable';
+import { CompoundInfoCard } from './components/CompoundInfoCard';
 import { GitCompare, RotateCcw } from 'lucide-react';
 import {
   Tooltip,
@@ -226,6 +227,8 @@ export const CompoundInterestApp: React.FC<CompoundInterestAppProps> = () => {
               isComparisonMode && activeMobileTab === 'B' ? scenarioB.name : scenarioA.name
             }
           />
+
+          <CompoundInfoCard />
         </div>
       </div>
     </div>

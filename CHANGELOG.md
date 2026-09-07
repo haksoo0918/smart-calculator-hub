@@ -3,6 +3,17 @@
 모든 주요 변경 사항은 본 문서에 기록됩니다.
 버전 체계는 [Semantic Versioning (SemVer)](https://semver.org/)을 준수합니다.
 
+## [1.7.6] - 2026-09-07
+
+### 연복리 계산기 투자 상식 및 유의사항 안내 카드 추가 (Compound Info Card)
+- **복리 투자 상식 및 유의사항 카드(`CompoundInfoCard.tsx`) 신설**:
+  - 단위 변환기 및 환율 계산기와의 UI/UX 일관성을 위해 연복리 계산기 하단(`DataTable` 아래)에 컴팩트 정보 카드 추가
+  - 72의 법칙, 복리 효과(스노우볼), 절세 계좌(ISA 9.9% 분리과세) 활용 팁, 금융소득 종합과세(2,000만 원 초과) 기준을 압축형 불릿으로 제공
+  - 고정 수익률 가정 및 원금 손실·물가상승률(인플레이션) 리스크에 대한 법적/시뮬레이션 유의사항 명시
+- **디자인 시스템 100% 일치**:
+  - `ghost.design.md` 라운드 카드(`rounded-2xl bg-slate-50 dark:bg-[#1e293b] border`) 및 Electric Lime 아이콘 포인트 적용
+- 단위/통합/라우팅 테스트 38개 전체 통과 및 프로덕션 빌드 완료
+
 ## [1.7.5] - 2026-09-07
 
 ### 폼 UI 요소 shadcn/ui Primitives 전면 표준화 (Form Primitives Standardization)
