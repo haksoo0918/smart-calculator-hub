@@ -12,6 +12,7 @@ interface MultiExchangeGridProps {
   amount: number;
   exchangeType: ExchangeType;
   discount: SpreadDiscount;
+  customRates?: Record<CurrencyCode, number>;
 }
 
 export const MultiExchangeGrid: React.FC<MultiExchangeGridProps> = ({
@@ -19,6 +20,7 @@ export const MultiExchangeGrid: React.FC<MultiExchangeGridProps> = ({
   amount,
   exchangeType,
   discount,
+  customRates,
 }) => {
   const [copiedCode, setCopiedCode] = useState<string | null>(null);
 
@@ -52,7 +54,7 @@ export const MultiExchangeGrid: React.FC<MultiExchangeGridProps> = ({
         {allCodes.map((code) => {
           const curr = CURRENCIES_DATA[code];
           const isBase = code === fromCode;
-          const result = calculateExchange(amount, fromCode, code, exchangeType, discount);
+          const result = calculateExchange(amount, fromCode, code, exchangeType, discount, customRates);
           const formatted = formatCurrencyAmount(result.convertedAmount, code);
           const copyText = `${formatted} ${curr.symbol}`;
 

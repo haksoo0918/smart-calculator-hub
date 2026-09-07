@@ -32,3 +32,12 @@ export interface ExchangeCalculationResult {
   spreadFeeKRW: number; // 기본 수수료(원화 환산 기준)
   discountSavedKRW: number; // 우대로 인해 절약된 수수료(원화 환산 기준)
 }
+
+export interface ExchangeRateSnapshot {
+  baseDate: string; // 예: '2026.09.07' 또는 '2026-09-07'
+  lastUpdatedTime?: string; // 예: '11:25'
+  source: string; // 예: '글로벌 공시 매매기준율 (Open Exchange Rates)'
+  ratesToKRW: Record<CurrencyCode, number>;
+  isLive: boolean; // 온라인 동기화 성공 여부
+}
+

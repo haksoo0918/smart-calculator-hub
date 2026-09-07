@@ -2,12 +2,15 @@ import React, { useState, useEffect } from 'react';
 import {
   CurrencyCode,
   ExchangePreset,
+  ExchangeRateSnapshot,
   ExchangeType,
   SpreadDiscount,
 } from '../../types/exchange';
 import {
   calculateExchange,
   CURRENCIES_DATA,
+  DEFAULT_EXCHANGE_SNAPSHOT,
+  fetchLiveExchangeRates,
 } from '../../utils/exchangeCalculator';
 import { DualExchangeCard } from './components/DualExchangeCard';
 import { ExchangePresetChips } from './components/ExchangePresetChips';
@@ -16,6 +19,7 @@ import { ExchangeInfoCard } from './components/ExchangeInfoCard';
 import { siteConfig } from '../../config/site';
 
 const STORAGE_KEY = 'smart_calculator_exchange_v1';
+const SNAPSHOT_STORAGE_KEY = 'smart_calculator_exchange_snapshot_v1';
 
 interface StoredExchangeState {
   fromCode: CurrencyCode;
@@ -93,6 +97,38 @@ export const ExchangeApp: React.FC = () => {
     return 90;
   });
 
+  // 환율 스냅샷 상태 (오프라인 캐시 및 기본값 우선)
+  const [snapshot, setSnapshot] = useState<ExchangeRateSnapshot>(() => {
+    try {
+      const saved = localStorage.getItem(SNAPSHOT_STORAGE_KEY);
+      if (saved) {
+        const parsed: ExchangeRateSnapshot = JSON.parse(saved);
+        if (parsed.baseDate && parsed.ratesToKRW) return parsed;
+      }
+    } catch {
+      // fallback
+    }
+    return DEFAULT_EXCHANGE_SNAPSHOT;
+  });
+
+  // 페이지 진입 시 백그라운드 자동 최신 환율 동기화 (Stale-While-Revalidate)
+  useEffect(() => {
+    let isMounted = true;
+    fetchLiveExchangeRates().then((liveSnapshot) => {
+      if (isMounted && liveSnapshot) {
+        setSnapshot(liveSnapshot);
+        try {
+          localStorage.setItem(SNAPSHOT_STORAGE_KEY, JSON.stringify(liveSnapshot));
+        } catch {
+          // ignore
+        }
+      }
+    });
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
   // 로컬 스토리지 상태 저장
   useEffect(() => {
     try {
@@ -131,7 +167,8 @@ export const ExchangeApp: React.FC = () => {
     fromCode,
     toCode,
     exchangeType,
-    discount
+    discount,
+    snapshot.ratesToKRW
   );
 
   return (
@@ -146,6 +183,7 @@ export const ExchangeApp: React.FC = () => {
         exchangeType={exchangeType}
         discount={discount}
         discountSavedKRW={calculationResult.discountSavedKRW}
+        snapshot={snapshot}
         onFromChange={setFromCode}
         onToChange={setToCode}
         onAmountChange={setAmount}
@@ -163,6 +201,7 @@ export const ExchangeApp: React.FC = () => {
         amount={numericAmount}
         exchangeType={exchangeType}
         discount={discount}
+        customRates={snapshot.ratesToKRW}
       />
 
       {/* 4. 환전 상식 및 면세 가이드 안내 카드 */}

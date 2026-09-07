@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import {
   CurrencyCode,
+  ExchangeRateSnapshot,
   ExchangeType,
   SpreadDiscount,
 } from '../../../types/exchange';
@@ -9,7 +10,7 @@ import {
   formatCurrencyAmount,
 } from '../../../utils/exchangeCalculator';
 import { CurrencySelect } from './CurrencySelect';
-import { ArrowLeftRight, Check, Copy, TrendingUp } from 'lucide-react';
+import { ArrowLeftRight, Check, Copy, TrendingUp, Calendar } from 'lucide-react';
 import { Button } from '../../../components/ui/button';
 import { Badge } from '../../../components/ui/badge';
 
@@ -22,6 +23,7 @@ interface DualExchangeCardProps {
   exchangeType: ExchangeType;
   discount: SpreadDiscount;
   discountSavedKRW: number;
+  snapshot: ExchangeRateSnapshot;
   onFromChange: (code: CurrencyCode) => void;
   onToChange: (code: CurrencyCode) => void;
   onAmountChange: (amount: number | '') => void;
@@ -39,6 +41,7 @@ export const DualExchangeCard: React.FC<DualExchangeCardProps> = ({
   exchangeType,
   discount,
   discountSavedKRW,
+  snapshot,
   onFromChange,
   onToChange,
   onAmountChange,
@@ -66,7 +69,7 @@ export const DualExchangeCard: React.FC<DualExchangeCardProps> = ({
 
   return (
     <div className="bg-white rounded-[24px] border border-[#e5e7eb] p-4 sm:p-6 space-y-4 shadow-2xs">
-      {/* 1. 상단 환전 방식 탭 (매매기준율 / 현찰 살 때 / 현찰 팔 때) */}
+      {/* 1. 상단 환전 방식 탭 및 기준일자 배지 */}
       <div className="flex items-center justify-between gap-2 pb-3 border-b border-[#e5e7eb] flex-wrap">
         <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-xl">
           <button
@@ -104,10 +107,19 @@ export const DualExchangeCard: React.FC<DualExchangeCardProps> = ({
           </button>
         </div>
 
-        {/* 환율 기준 안내 */}
-        <div className="flex items-center gap-1.5 text-xs text-[#64748b] font-medium pt-[0.5px]">
-          <TrendingUp className="w-3.5 h-3.5 text-[#15171a]" />
-          <span>1 {fromCode} = {formatCurrencyAmount(appliedRate, toCode)} {toCode}</span>
+        {/* 기준일 및 환율 안내 */}
+        <div className="flex items-center gap-3 text-xs text-[#64748b] font-medium pt-[0.5px] flex-wrap">
+          <div className="flex items-center gap-1 text-[11px] bg-slate-50 px-2 py-1 rounded-md border border-[#e5e7eb]">
+            <Calendar className="w-3.5 h-3.5 text-[#64748b]" />
+            <span>고시 기준: {snapshot.baseDate}</span>
+            {snapshot.isLive && (
+              <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-500 ml-0.5" title="최신 실시간 환율 연동" />
+            )}
+          </div>
+          <div className="flex items-center gap-1">
+            <TrendingUp className="w-3.5 h-3.5 text-[#15171a]" />
+            <span>1 {fromCode} = {formatCurrencyAmount(appliedRate, toCode)} {toCode}</span>
+          </div>
         </div>
       </div>
 

@@ -35,4 +35,18 @@ describe('exchangeCalculator Tests', () => {
     expect(formatCurrencyAmount(12345.67, 'KRW')).toBe('12,346');
     expect(formatCurrencyAmount(10000, 'JPY')).toBe('10,000');
   });
+
+  it('customRates가 주어지면 실시간 고시 환율을 기준으로 환산되어야 한다', () => {
+    const customRates = {
+      KRW: 1,
+      USD: 1400.0,
+      JPY: 950.0,
+      EUR: 1500.0,
+      CNY: 190.0,
+      GBP: 1800.0,
+    };
+    const res = calculateExchange(100, 'USD', 'KRW', 'base', 0, customRates);
+    expect(res.convertedAmount).toBe(140000);
+    expect(res.appliedRate).toBe(1400);
+  });
 });

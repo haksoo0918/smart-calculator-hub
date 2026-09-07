@@ -3,11 +3,26 @@ import {
   CurrencyItem,
   ExchangeCalculationResult,
   ExchangePreset,
+  ExchangeRateSnapshot,
   ExchangeType,
   SpreadDiscount,
 } from '../types/exchange';
 
 // 6대 주요 통화 기본 정보 및 기준 매매기준율 (오프라인 PWA 기본값)
+export const DEFAULT_EXCHANGE_SNAPSHOT: ExchangeRateSnapshot = {
+  baseDate: '2026.09.07',
+  lastUpdatedTime: '11:00',
+  source: '글로벌 공시 매매기준율 (Open Exchange Rates)',
+  ratesToKRW: {
+    KRW: 1,
+    USD: 1350.0,
+    JPY: 900.0, // 100엔당 900원
+    EUR: 1470.0,
+    CNY: 188.0,
+    GBP: 1730.0,
+  },
+  isLive: false,
+};
 export const CURRENCIES_DATA: Record<CurrencyCode, CurrencyItem> = {
   KRW: {
     code: 'KRW',
@@ -103,8 +118,12 @@ export const EXCHANGE_PRESETS: ExchangePreset[] = [
 /**
  * 통화 단위(JPY 등 100엔)를 감안한 1외화당 원화 단가 계산
  */
-export function getPerUnitRateToKRW(currency: CurrencyItem): number {
-  return currency.baseRateToKRW / currency.baseUnit;
+export function getPerUnitRateToKRW(
+  currency: CurrencyItem,
+  customRates?: Record<CurrencyCode, number>
+): number {
+  const baseRate = customRates?.[currency.code] ?? currency.baseRateToKRW;
+  return baseRate / currency.baseUnit;
 }
 
 /**
@@ -113,9 +132,10 @@ export function getPerUnitRateToKRW(currency: CurrencyItem): number {
 export function getAdjustedRateToKRW(
   currency: CurrencyItem,
   type: ExchangeType,
-  discount: SpreadDiscount
+  discount: SpreadDiscount,
+  customRates?: Record<CurrencyCode, number>
 ): number {
-  const baseRate = getPerUnitRateToKRW(currency);
+  const baseRate = getPerUnitRateToKRW(currency, customRates);
   if (currency.code === 'KRW' || type === 'base') {
     return baseRate;
   }
@@ -142,7 +162,8 @@ export function calculateExchange(
   fromCode: CurrencyCode,
   toCode: CurrencyCode,
   type: ExchangeType = 'base',
-  discount: SpreadDiscount = 90
+  discount: SpreadDiscount = 90,
+  customRates?: Record<CurrencyCode, number>
 ): ExchangeCalculationResult {
   const fromCurrency = CURRENCIES_DATA[fromCode] || CURRENCIES_DATA.USD;
   const toCurrency = CURRENCIES_DATA[toCode] || CURRENCIES_DATA.KRW;
@@ -161,17 +182,17 @@ export function calculateExchange(
   }
 
   // 1. 기준 원화 단가
-  const fromBasePerUnit = getPerUnitRateToKRW(fromCurrency);
-  const toBasePerUnit = getPerUnitRateToKRW(toCurrency);
+  const fromBasePerUnit = getPerUnitRateToKRW(fromCurrency, customRates);
+  const toBasePerUnit = getPerUnitRateToKRW(toCurrency, customRates);
   const baseRate = fromBasePerUnit / toBasePerUnit;
 
   // 2. 적용 원화 단가 (스프레드/우대율 반영)
-  const fromAdjPerUnit = getAdjustedRateToKRW(fromCurrency, type, discount);
-  const toAdjPerUnit = getAdjustedRateToKRW(toCurrency, type, discount);
+  const fromAdjPerUnit = getAdjustedRateToKRW(fromCurrency, type, discount, customRates);
+  const toAdjPerUnit = getAdjustedRateToKRW(toCurrency, type, discount, customRates);
   const appliedRate = fromAdjPerUnit / toAdjPerUnit;
 
   // 3. 우대율 0%일 때 원화 단가 (절약금액 산출용)
-  const fromZeroPerUnit = getAdjustedRateToKRW(fromCurrency, type, 0);
+  const fromZeroPerUnit = getAdjustedRateToKRW(fromCurrency, type, 0, customRates);
 
   const convertedAmount = amount * appliedRate;
 
@@ -207,4 +228,51 @@ export function formatCurrencyAmount(amount: number, code: CurrencyCode): string
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   });
+}
+
+/**
+ * 공개 환율 API(open.er-api.com)를 통한 최신 고시 환율 비동기 동기화
+ */
+export async function fetchLiveExchangeRates(): Promise<ExchangeRateSnapshot | null> {
+  try {
+    const res = await fetch('https://open.er-api.com/v6/latest/USD');
+    if (!res.ok) return null;
+
+    const data = await res.json();
+    if (!data || !data.rates || !data.rates.KRW) return null;
+
+    const usdToKrw = data.rates.KRW;
+    const ratesToKRW: Record<CurrencyCode, number> = {
+      KRW: 1,
+      USD: Math.round(usdToKrw * 100) / 100,
+      JPY: data.rates.JPY ? Math.round((usdToKrw / data.rates.JPY) * 100 * 100) / 100 : 900.0, // 100엔당
+      EUR: data.rates.EUR ? Math.round((usdToKrw / data.rates.EUR) * 100) / 100 : 1470.0,
+      CNY: data.rates.CNY ? Math.round((usdToKrw / data.rates.CNY) * 100) / 100 : 188.0,
+      GBP: data.rates.GBP ? Math.round((usdToKrw / data.rates.GBP) * 100) / 100 : 1730.0,
+    };
+
+    const dateStr = data.time_last_update_utc
+      ? new Date(data.time_last_update_utc).toLocaleDateString('ko-KR', {
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit',
+        }).replace(/\. /g, '.').replace(/\.$/, '')
+      : new Date().toLocaleDateString('ko-KR');
+
+    const timeStr = new Date().toLocaleTimeString('ko-KR', {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+    });
+
+    return {
+      baseDate: dateStr,
+      lastUpdatedTime: timeStr,
+      source: '글로벌 공시 매매기준율 (Open Exchange Rates)',
+      ratesToKRW,
+      isLive: true,
+    };
+  } catch {
+    return null;
+  }
 }

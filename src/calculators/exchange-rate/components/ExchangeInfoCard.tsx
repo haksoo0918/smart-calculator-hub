@@ -21,6 +21,9 @@ export const ExchangeInfoCard: React.FC = () => {
         <p>
           • <strong>해외 직구 면세 한도</strong>: 미국 발 물품(목록통관)은 <strong>미화 200달러</strong> 이하, 그 외 국가는 150달러 이하일 때 관세 및 부가세가 면제됩니다.
         </p>
+        <p className="pt-1.5 border-t border-[#e5e7eb] text-[#94a3b8] text-[11px] leading-normal">
+          ※ <strong>환율 데이터 안내 및 법적 고지</strong>: 본 계산기의 환율 정보는 글로벌 금융 시장 및 공시 매매기준율(Open Exchange Rates API)을 바탕으로 실시간 자동 동기화되는 참고용 데이터입니다. 실제 은행별 환전 시점, 거래 지점, 우대 쿠폰 및 실시간 시장 변동성에 따라 실제 체결 금액과 차이가 발생할 수 있으므로, 최종 거래 시에는 해당 금융기관의 고시 환율을 반드시 확인하시기 바랍니다.
+        </p>
       </div>
     </div>
   );
