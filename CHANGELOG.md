@@ -3,6 +3,16 @@
 모든 주요 변경 사항은 본 문서에 기록됩니다.
 버전 체계는 [Semantic Versioning (SemVer)](https://semver.org/)을 준수합니다.
 
+## [1.3.0] - 2026-09-07
+
+### 추가 및 변경 (Added & Changed)
+- **PWA (Progressive Web App) 도입 및 오프라인 지원**:
+  - `vite-plugin-pwa` 및 Workbox 서비스 워커 자동 등록 (`dist/sw.js`)
+  - Web App Manifest (`dist/manifest.webmanifest`): 192x192, 512x512 고해상도 앱 아이콘 및 maskable 규격 적용
+  - 정적 자산(JS, CSS, HTML, 폰트, SVG) 오프라인 프리캐싱으로 네트워크 단절 시에도 모든 계산기 기능 즉시 작동
+  - iOS 홈 화면 바로가기 지원 (`apple-mobile-web-app-capable`, `apple-touch-icon`)
+  - 안드로이드/데스크톱 브라우저 "앱으로 설치" 및 독립 창(`standalone`) 실행 환경 완벽 지원
+
 ## [1.2.0] - 2026-09-07
 
 ### 추가 및 변경 (Added & Changed)

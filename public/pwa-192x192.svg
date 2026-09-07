@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192" width="192" height="192">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f766e"/>
+      <stop offset="50%" stop-color="#0d9488"/>
+      <stop offset="100%" stop-color="#14b8a6"/>
+    </linearGradient>
+    <linearGradient id="screenGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#f8fafc"/>
+      <stop offset="100%" stop-color="#e2e8f0"/>
+    </linearGradient>
+  </defs>
+  <!-- Background with rounded corners -->
+  <rect width="192" height="192" rx="42" fill="url(#bgGrad)"/>
+  
+  <!-- Calculator Body -->
+  <rect x="36" y="30" width="120" height="132" rx="20" fill="#ffffff" opacity="0.95" filter="drop-shadow(0 8px 16px rgba(0,0,0,0.15))"/>
+  
+  <!-- Calculator Display / Chart Area -->
+  <rect x="48" y="44" width="96" height="34" rx="8" fill="url(#screenGrad)"/>
+  
+  <!-- Mini Trend Graph inside Display -->
+  <path d="M56 66 L74 58 L92 63 L110 52 L128 50" fill="none" stroke="#0d9488" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="128" cy="50" r="3" fill="#0d9488"/>
+
+  <!-- Keypad Grid -->
+  <!-- Row 1 -->
+  <circle cx="62" cy="98" r="9" fill="#f1f5f9"/>
+  <circle cx="96" cy="98" r="9" fill="#f1f5f9"/>
+  <circle cx="130" cy="98" r="9" fill="#0d9488"/>
+  <text x="130" y="102" font-family="sans-serif" font-size="12" font-weight="bold" fill="#ffffff" text-anchor="middle">÷</text>
+
+  <!-- Row 2 -->
+  <circle cx="62" cy="122" r="9" fill="#f1f5f9"/>
+  <circle cx="96" cy="122" r="9" fill="#f1f5f9"/>
+  <circle cx="130" cy="122" r="9" fill="#0d9488"/>
+  <text x="130" y="126" font-family="sans-serif" font-size="12" font-weight="bold" fill="#ffffff" text-anchor="middle">×</text>
+
+  <!-- Row 3 -->
+  <circle cx="62" cy="146" r="9" fill="#f1f5f9"/>
+  <circle cx="96" cy="146" r="9" fill="#f1f5f9"/>
+  <circle cx="130" cy="146" r="9" fill="#0f766e"/>
+  <text x="130" y="150" font-family="sans-serif" font-size="12" font-weight="bold" fill="#ffffff" text-anchor="middle">=</text>
+</svg>

@@ -131,6 +131,10 @@ export interface CurrencyInfo {
 ## 5. 기술 스택 및 아키텍처
 
 - **빌드 도구**: Vite
+- **PWA (Progressive Web App)**: `vite-plugin-pwa`
+  - 모바일 홈 화면 설치(Add to Home Screen / A2HS) 및 독립 실행형(`display: standalone`) 앱 지원
+  - 서비스 워커(Service Worker) 기반 정적 자산 캐싱을 통한 **오프라인 무인터넷 환경 100% 동작 보장**
+  - Web App Manifest (`manifest.webmanifest`), 테마 색상(`theme-color`), Apple 터치 아이콘 지원
 - **프론트엔드**: React 18, TypeScript
 - **라우팅**: [React Router v6](https://reactrouter.com/) (`react-router-dom`)
   - 클린 URL 구조: `/compound` (연복리), `/unit` (단위변환), `/exchange` (환율), `/loan` (대출이자)
@@ -197,4 +201,27 @@ export interface CurrencyInfo {
 ### 7.4 크롤러 수집 파일 지원
 - `public/robots.txt`: 검색 크롤러의 전체 페이지 접근 허용
 - `public/sitemap.xml`: 각 계산기 도구별 URL 맵 제공
+
+---
+
+## 8. PWA (Progressive Web App) 명세 및 설치 지원
+
+모바일 앱과 동일한 사용자 경험 및 네트워크 단절 시에도 온전한 계산 기능 수행을 위해 PWA를 지원합니다.
+
+### 8.1 핵심 요구사항
+- **홈 화면 추가(A2HS)**: 모바일(iOS 사파리 '홈 화면에 추가', 안드로이드 크롬 '설치' 배너/버튼) 및 데스크톱 PWA 설치 완벽 지원.
+- **오프라인 캐싱 (Service Worker)**:
+  - `vite-plugin-pwa` 기반 Workbox 서비스 워커 자동 등록 (`generateSW`).
+  - 정적 자산(JS, CSS, HTML, 웹폰트, 아이콘) 프리캐싱을 통해 비행기 모드나 오프라인 환경에서도 모든 계산기 즉시 작동.
+- **Web App Manifest**:
+  - `name`: `스마트 계산기 허브 | Smart Calculator Hub`
+  - `short_name`: `스마트 계산기`
+  - `theme_color`: `#0d9488` (Teal-600 브랜드 컬러)
+  - `background_color`: `#f8fafc` (Slate-50)
+  - `display`: `standalone` (브라우저 주소창 제거, 네이티브 앱 느낌)
+  - `icons`: 192x192, 512x512 고해상도 SVG/PNG 아이콘 및 마스크블(maskable) 규격 적용.
+- **iOS 최적화**:
+  - `apple-mobile-web-app-capable`: `yes`
+  - `apple-mobile-web-app-status-bar-style`: `default`
+  - `apple-touch-icon`: 192x192 홈 아이콘 지정.
 
