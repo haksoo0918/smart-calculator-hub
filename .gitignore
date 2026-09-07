@@ -30,3 +30,7 @@ Thumbs.db
 .env
 .env.production
 .env.development
+
+# Local planning & task notes
+TODO.md
+todo.md
