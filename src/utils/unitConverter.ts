@@ -85,10 +85,10 @@ export const QUICK_PRESETS: QuickPreset[] = [
   { label: '1톤', category: 'weight', unitId: 'ton', value: 1, description: '1,000kg' },
 
   // 부피
+  { label: '1갤런 (US)', category: 'volume', unitId: 'gal', value: 1, badge: '인기', description: '약 3.785리터 (해외 직구/주유)' },
   { label: '종이컵 180mL', category: 'volume', unitId: 'ml', value: 180, description: '표준 자판기 종이컵' },
   { label: '생수 500mL', category: 'volume', unitId: 'ml', value: 500, description: '소형 페트병' },
   { label: '생수 2L', category: 'volume', unitId: 'l', value: 2, description: '가정용 대용량' },
-  { label: '1갤런 (US)', category: 'volume', unitId: 'gal', value: 1, description: '약 3.785리터' },
 
   // 온도
   { label: '체온 36.5℃', category: 'temperature', unitId: 'celsius', value: 36.5, badge: '건강', description: '화씨 97.7℉' },
@@ -96,6 +96,40 @@ export const QUICK_PRESETS: QuickPreset[] = [
   { label: '물 끓는점 100℃', category: 'temperature', unitId: 'celsius', value: 100, description: '화씨 212.0℉' },
   { label: '화씨 100℉', category: 'temperature', unitId: 'fahrenheit', value: 100, description: '섭씨 37.78℃ (여름 폭염)' },
 ];
+
+export interface CategoryDefaultConfig {
+  fromUnitId: string;
+  toUnitId: string;
+  inputValue: number;
+}
+
+export const CATEGORY_DEFAULTS: Record<UnitCategory, CategoryDefaultConfig> = {
+  area: {
+    fromUnitId: 'sqm',
+    toUnitId: 'pyeong',
+    inputValue: 84, // 국민평형 84㎡ -> 25.4평
+  },
+  length: {
+    fromUnitId: 'in',
+    toUnitId: 'cm',
+    inputValue: 1, // 1인치 -> 2.54cm
+  },
+  weight: {
+    fromUnitId: 'don',
+    toUnitId: 'g',
+    inputValue: 1, // 순금 1돈 -> 3.75g
+  },
+  volume: {
+    fromUnitId: 'gal',
+    toUnitId: 'l',
+    inputValue: 1, // 1갤런 -> 3.785L
+  },
+  temperature: {
+    fromUnitId: 'celsius',
+    toUnitId: 'fahrenheit',
+    inputValue: 36.5, // 체온 36.5℃ -> 97.7℉
+  },
+};
 
 /**
  * 특정 카테고리 내에서 단위 A에서 단위 B로 값을 변환

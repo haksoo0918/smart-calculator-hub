@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { DecimalPrecision, QuickPreset, UnitCategory } from '../../types/unit';
 import {
   UNITS_DATA,
+  CATEGORY_DEFAULTS,
   convertUnitValue,
   convertToAllUnits,
   formatUnitValue,
@@ -111,24 +112,21 @@ export const UnitConverterApp: React.FC = () => {
     document.title = siteConfig.getTitle('스마트 단위 변환기');
   }, []);
 
-  // 카테고리 변경 시 기본 단위 자동 선택
+  // 카테고리 변경 시 자주 찾는 생활 프리셋 1순위 기반 기본 단위/수치 자동 선택
   const handleSelectCategory = (newCat: UnitCategory) => {
     setCategory(newCat);
-    const units = UNITS_DATA[newCat];
-    if (units.length >= 2) {
-      setFromUnitId(units[0].id);
-      setToUnitId(units[1].id);
-    } else if (units.length === 1) {
-      setFromUnitId(units[0].id);
-      setToUnitId(units[0].id);
+    const defaults = CATEGORY_DEFAULTS[newCat];
+    if (defaults) {
+      setFromUnitId(defaults.fromUnitId);
+      setToUnitId(defaults.toUnitId);
+      setInputValue(defaults.inputValue);
+    } else {
+      const units = UNITS_DATA[newCat];
+      if (units.length >= 2) {
+        setFromUnitId(units[0].id);
+        setToUnitId(units[1].id);
+      }
     }
-
-    // 카테고리별 기본값 세팅
-    if (newCat === 'area') setInputValue(84);
-    else if (newCat === 'length') setInputValue(1);
-    else if (newCat === 'weight') setInputValue(1);
-    else if (newCat === 'volume') setInputValue(1);
-    else if (newCat === 'temperature') setInputValue(36.5);
   };
 
   // 단위 맞바꾸기(Swap)
@@ -142,6 +140,18 @@ export const UnitConverterApp: React.FC = () => {
     setCategory(preset.category);
     setFromUnitId(preset.unitId);
     setInputValue(preset.value);
+
+    // 도착 단위가 선택한 프리셋 단위와 같아지면 상호 단위로 스마트하게 변경
+    if (toUnitId === preset.unitId) {
+      const defaults = CATEGORY_DEFAULTS[preset.category];
+      if (defaults && defaults.toUnitId !== preset.unitId) {
+        setToUnitId(defaults.toUnitId);
+      } else {
+        const units = UNITS_DATA[preset.category];
+        const altUnit = units.find((u) => u.id !== preset.unitId);
+        if (altUnit) setToUnitId(altUnit.id);
+      }
+    }
   };
 
   const currentUnits = UNITS_DATA[category] || [];

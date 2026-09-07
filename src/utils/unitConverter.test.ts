@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import {
+  CATEGORY_DEFAULTS,
   convertUnitValue,
   convertToAllUnits,
   formatUnitValue,
@@ -71,6 +72,21 @@ describe('Unit Converter Utility Tests', () => {
       expect(formatUnitValue(25.4128, 0)).toBe('25');
       expect(formatUnitValue(25.4128, 2)).toBe('25.41');
       expect(formatUnitValue(25.4128, 4)).toBe('25.4128');
+    });
+  });
+
+  describe('카테고리별 생활 밀착 초기 기본값 검증', () => {
+    it('각 카테고리별 1순위 프리셋 및 기본 상호 단위가 올바르게 매핑되어 있어야 한다', () => {
+      // 면적: 84㎡ -> 평
+      expect(CATEGORY_DEFAULTS.area).toEqual({ fromUnitId: 'sqm', toUnitId: 'pyeong', inputValue: 84 });
+      // 길이: 1인치 -> cm
+      expect(CATEGORY_DEFAULTS.length).toEqual({ fromUnitId: 'in', toUnitId: 'cm', inputValue: 1 });
+      // 무게: 1돈 -> g
+      expect(CATEGORY_DEFAULTS.weight).toEqual({ fromUnitId: 'don', toUnitId: 'g', inputValue: 1 });
+      // 부피: 1갤런 -> L
+      expect(CATEGORY_DEFAULTS.volume).toEqual({ fromUnitId: 'gal', toUnitId: 'l', inputValue: 1 });
+      // 온도: 36.5℃ -> ℉
+      expect(CATEGORY_DEFAULTS.temperature).toEqual({ fromUnitId: 'celsius', toUnitId: 'fahrenheit', inputValue: 36.5 });
     });
   });
 });
