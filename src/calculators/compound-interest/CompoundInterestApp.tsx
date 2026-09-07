@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { ScenarioInput } from '../../types/calculator';
 import { calculateCompoundInterest, compareScenarios } from '../../utils/calculator';
 import { useLocalStorage } from '../../hooks/useLocalStorage';
@@ -13,6 +13,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '../../components/ui/tooltip';
+import { siteConfig } from '../../config/site';
 
 const DEFAULT_SCENARIO_A: ScenarioInput = {
   name: '시나리오 A',
@@ -66,6 +67,10 @@ export const CompoundInterestApp: React.FC<CompoundInterestAppProps> = () => {
     () => compareScenarios(scenarioA, scenarioB),
     [scenarioA, scenarioB]
   );
+
+  useEffect(() => {
+    document.title = siteConfig.getTitle('연복리 & 자산성장 계산기');
+  }, []);
 
   const handleReset = () => {
     if (window.confirm('모든 입력값을 기본값으로 초기화하시겠습니까?')) {

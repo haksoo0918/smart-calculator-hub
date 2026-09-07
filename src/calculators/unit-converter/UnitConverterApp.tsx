@@ -11,6 +11,7 @@ import { DualConverterCard } from './components/DualConverterCard';
 import { QuickPresetChips } from './components/QuickPresetChips';
 import { MultiResultGrid } from './components/MultiResultGrid';
 import { Info } from 'lucide-react';
+import { siteConfig } from '../../config/site';
 
 const STORAGE_KEY = 'smart_calculator_unit_converter_v1';
 
@@ -107,7 +108,7 @@ export const UnitConverterApp: React.FC = () => {
 
   // 페이지 타이틀 및 메타 동적 업데이트
   useEffect(() => {
-    document.title = '스마트 단위 변환기 | 아파트 평수·㎡·길이·무게·온도 계산기';
+    document.title = siteConfig.getTitle('스마트 단위 변환기');
   }, []);
 
   // 카테고리 변경 시 기본 단위 자동 선택

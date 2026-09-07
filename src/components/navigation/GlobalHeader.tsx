@@ -8,6 +8,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '../ui/tooltip';
+import { siteConfig } from '../../config/site';
 
 interface GlobalHeaderProps {
   currentCalculator: CalculatorItem;
@@ -47,7 +48,7 @@ export const GlobalHeader: React.FC<GlobalHeaderProps> = ({
             {/* Ghost Signature: 12px Uppercase Eyebrow */}
             <div className="text-[11px] font-bold text-[#112220] uppercase tracking-widest leading-none mb-1 flex items-center gap-1.5">
               <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#d1ff19]" />
-              <span>Smart Calculator Hub</span>
+              <span>{siteConfig.nameEn}</span>
             </div>
 
             <div className="flex items-center gap-1.5 flex-wrap">

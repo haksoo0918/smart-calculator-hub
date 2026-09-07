@@ -23,6 +23,13 @@
 - **데스크톱 뷰포트 (1024px 이상)**:
   - 좌측 고정 사이드바(Width: 260px) + 우측 메인 콘텐츠 영역의 2열 레이아웃.
   - 사이드바 접기/펼치기(Collapse/Expand) 토글 지원으로 넓은 작업 공간 확보 가능.
+- **헤더 및 푸터 브랜딩/정렬 규격**:
+  - **사이드바 로고 영역**:
+    - 검은색 계산기 아이콘(`w-9 h-9`)과 우측 텍스트 묶음 간의 세로 중심선(Vertical Center) 정렬 보정
+    - 불필요한 'Ghost Design' 수식어를 제거하고 직관적인 영문 서브타이틀(`Smart Calculator`)로 변경
+    - 우측 글로벌 헤더 텍스트 블록과의 시각적 수직 중심 밸런스 유지
+  - **사이드바 푸터**:
+    - 'Ghost Design' 표기를 배제하고 공식 카피라이트 `© sosoFactory` 및 버전 정보 표기 (`© sosoFactory • 스마트 계산기 v1.5.0`)
 
 ### 2.2 모듈형 컴포넌트 아키텍처
 ```text
@@ -35,6 +42,8 @@ src/
 │   ├── dividend/            # 5. [추천] 배당금 및 월 배당 현금흐름 계산기
 │   └── goal-planner/        # 6. [추천] 목표 자산 역산(얼마씩 모아야 할까) 계산기
 ├── components/              # LeftSidebar, GlobalHeader, Layout
+├── config/
+│   └── site.ts              # 사이트 전역 브랜드 명칭, 타이틀, 카피라이트 SSOT
 └── ...
 ```
 
@@ -113,6 +122,26 @@ src/
 ---
 
 ## 4. 데이터 모델
+
+### 4.0 사이트 전역 설정 모델 (`src/config/site.ts`)
+사이트 전반에서 일관된 브랜딩, 타이틀, 카피라이트 및 메타데이터를 유지하기 위한 단일 진실 공급원(Single Source of Truth) 설정:
+```typescript
+export interface SiteConfig {
+  name: string;           // '스마트 계산기 허브' (공식 국문 명칭)
+  nameEn: string;         // 'Smart Calculator Hub' (공식 영문 명칭)
+  shortName: string;      // '스마트 계산기' (모바일/PWA 쇼트 명칭)
+  shortNameEn: string;    // 'Smart Calculator' (사이드바 영문 서브타이틀)
+  description: string;    // 사이트 대표 설명
+  company: string;        // 'sosoFactory'
+  copyright: string;      // '© sosoFactory'
+  version: string;        // '1.5.0'
+  url?: string;
+  links: {
+    github?: string;
+  };
+  getTitle: (pageTitle?: string) => string;
+}
+```
 
 ### 4.1 글로벌 네비게이션 타입
 ```typescript

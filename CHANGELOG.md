@@ -3,6 +3,20 @@
 모든 주요 변경 사항은 본 문서에 기록됩니다.
 버전 체계는 [Semantic Versioning (SemVer)](https://semver.org/)을 준수합니다.
 
+## [1.5.1] - 2026-09-07
+
+### 개선 및 리팩터링 (Improved & Refactored)
+- **전역 설정 파일(`src/config/site.ts`) 도입 및 사이트 브랜딩 명칭 전면 통일**:
+  - `siteConfig` 객체를 신설하여 국문 사이트명(`스마트 계산기 허브`), 영문 사이트명(`Smart Calculator Hub`), 앱/쇼트명(`스마트 계산기`), 영문 서브타이틀(`Smart Calculator`), 카피라이트(`© sosoFactory`) 등을 단일 공급원으로 표준화
+- **사이드바 로고 영역 수직 중앙 정렬(Vertical Center) 보정**:
+  - 검은색 계산기 아이콘(`w-9 h-9`)과 우측 2줄 텍스트 블록의 세로 중심선을 완벽히 수직 중앙으로 일치
+  - 불필요한 'Ghost Design Edition' 수식어를 제거하고 직관적인 영문 서브타이틀(`Smart Calculator`)로 정돈
+- **사이드바 푸터 카피라이트 반영**:
+  - Ghost 문구 배제 및 공식 카피라이트 표기 (`© sosoFactory • 스마트 계산기 v1.5.1`)
+- **전역 타이틀 헬퍼 및 메타데이터 동기화**:
+  - `GlobalHeader.tsx`, `CompoundInterestApp.tsx`, `UnitConverterApp.tsx`, `index.html`에 `siteConfig` 전면 연동
+  - `site.test.ts` 단위 테스트 작성 완료 (총 25개 테스트 통과)
+
 ## [1.5.0] - 2026-09-07
 
 ### 추가 (Added)

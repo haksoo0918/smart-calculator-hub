@@ -1,0 +1,30 @@
+export const siteConfig = {
+  // 기본 브랜딩 명칭
+  name: '스마트 계산기 허브',
+  nameEn: 'Smart Calculator Hub',
+  shortName: '스마트 계산기',
+  shortNameEn: 'Smart Calculator',
+  
+  // 사이트 설명
+  description: '연복리, 단위 변환, 환율 등 일상과 금융 생활을 위한 스마트 멀티 계산기 플랫폼',
+  
+  // 제작자 및 카피라이트
+  company: 'sosoFactory',
+  copyright: '© sosoFactory',
+  
+  // 버전 정보
+  version: '1.5.1',
+  
+  // 링크
+  links: {
+    github: 'https://github.com/sosoFactory',
+  },
+
+  // 동적 브라우저 타이틀 헬퍼
+  getTitle: (pageTitle?: string): string => {
+    if (!pageTitle) return `${siteConfig.name} | ${siteConfig.shortNameEn}`;
+    return `${pageTitle} | ${siteConfig.name}`;
+  },
+};
+
+export type SiteConfig = typeof siteConfig;
