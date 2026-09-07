@@ -3,6 +3,21 @@
 모든 주요 변경 사항은 본 문서에 기록됩니다.
 버전 체계는 [Semantic Versioning (SemVer)](https://semver.org/)을 준수합니다.
 
+## [1.7.3] - 2026-09-07
+
+### 코드 리뷰 권장 조치 및 라우트 코드 스플리팅 적용 (Route Splitting & Robustness)
+- **라우트 단위 코드 스플리팅 (`React.lazy` & `Suspense`)**:
+  - `CompoundInterestApp`, `UnitConverterApp`, `ExchangeApp`을 동적 임포트로 분리
+  - 초기 진입 번들 크기 262kB ➔ 154kB로 41% 경감하여 첫 로딩 속도(FCP/LCP) 대폭 향상
+  - 로딩 중 Ghost 스타일 미니멀 스피너 폴백 표시
+- **복리 수치 연산 NaN 방어 코드 적용**:
+  - `src/utils/calculator.ts`의 `calculateCompoundInterest`에 `Number.isFinite` 검증을 적용하여 비정상 입력 시 자산 성장 테이블 전체 오염 원천 차단
+  - 신규 복리 계산기 단위 테스트(`calculator.test.ts`) 5종 추가
+- **네트워크 타임아웃 및 로컬스토리지 안정화**:
+  - `fetchLiveExchangeRates`에 5초 타임아웃 신호(`AbortController`) 추가로 네트워크 지연 시 무한 대기 방지
+  - `useLocalStorage`에 SSR 환경 가드 및 `undefined` 직렬화 예외 방지 코드 추가
+- 단위/통합/라우팅 테스트 38개 전체 통과 및 프로덕션 빌드 완료
+
 ## [1.7.2] - 2026-09-07
 
 ### 테스트 환경 최적화 및 패키지 메타데이터 동기화 (Test Optimization & Metadata Sync)

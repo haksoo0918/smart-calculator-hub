@@ -235,7 +235,13 @@ export function formatCurrencyAmount(amount: number, code: CurrencyCode): string
  */
 export async function fetchLiveExchangeRates(): Promise<ExchangeRateSnapshot | null> {
   try {
-    const res = await fetch('https://open.er-api.com/v6/latest/USD');
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 5000);
+
+    const res = await fetch('https://open.er-api.com/v6/latest/USD', {
+      signal: controller.signal,
+    }).finally(() => clearTimeout(timeoutId));
+
     if (!res.ok) return null;
 
     const data = await res.json();

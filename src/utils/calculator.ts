@@ -57,23 +57,25 @@ export function getMonthlyEffectiveRate(annualRate: number, freq: CompoundingFre
  * 복리 계산 및 연도별 자산 성장 시뮬레이션
  */
 export function calculateCompoundInterest(input: ScenarioInput): CalculationResult {
+  const rawPrincipal = Number.isFinite(input.principal) ? (input.principal ?? 0) : 0;
+  const rawContribution = Number.isFinite(input.regularContribution) ? (input.regularContribution ?? 0) : 0;
+  const rawYears = Number.isFinite(input.years) ? (input.years ?? 10) : 10;
+  const rawAnnualRate = Number.isFinite(input.annualRate) ? (input.annualRate ?? 7) : 7;
+  const rawCustomTax = Number.isFinite(input.customTaxRate) ? (input.customTaxRate ?? 15.4) : 15.4;
+
   const {
-    principal = 0,
-    regularContribution = 0,
     contributionFrequency = 'monthly',
-    years = 10,
-    annualRate = 7,
     compoundingFrequency = 'monthly',
     taxType = 'normal',
-    customTaxRate = 15.4,
   } = input;
 
-  const validYears = Math.max(1, Math.min(50, Math.round(years)));
-  const monthlyRate = getMonthlyEffectiveRate(annualRate, compoundingFrequency);
-  const taxRate = getTaxRate(taxType, customTaxRate);
+  const validYears = Math.max(1, Math.min(50, Math.round(rawYears)));
+  const monthlyRate = getMonthlyEffectiveRate(rawAnnualRate, compoundingFrequency);
+  const taxRate = getTaxRate(taxType, rawCustomTax);
 
-  let currentBalance = Math.max(0, principal);
-  let accumulatedPrincipal = Math.max(0, principal);
+  let currentBalance = Math.max(0, rawPrincipal);
+  let accumulatedPrincipal = Math.max(0, rawPrincipal);
+  const regularContribution = Math.max(0, rawContribution);
 
   const breakdown: YearlyBreakdown[] = [];
   let previousCumulativeGrossInterest = 0;

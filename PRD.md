@@ -467,4 +467,19 @@ export interface ExchangeResult {
 - **배경**: 초기 단일 복리 계산기 프로젝트(`compound-interest-calculator`)에서 멀티 계산기 허브 플랫폼으로 확장 완료됨.
 - **해결 방안**: `package.json`의 패키지 `name`을 `smart-calculator-hub`로 변경하여 실제 제품 정체성과 패키지 메타데이터를 일원화.
 
+### 9.3 복리 수치 연산 NaN 입력 방어 규격 (Calculation Robustness)
+- **배경**: 사용자 입력 도중 공백이나 잘못된 문자 파싱으로 인해 `NaN`이 유입될 경우, JavaScript 구조 분해 기본값(`= 0`)이 작동하지 않아 전체 자산 성장 테이블이 `NaN`으로 오염되는 문제 예방.
+- **해결 방안**: `calculateCompoundInterest` 함수 진입 시 `Number.isFinite()` 검사를 통해 원금(`principal`), 정기적립금(`regularContribution`), 연이율(`annualRate`), 투자기간(`years`)의 유효성을 엄격히 검증하고, 유효하지 않은 값은 기본 안전값(`0` 또는 `10년`)으로 즉시 폴백.
+
+### 9.4 라우트 단위 코드 스플리팅 및 번들 최적화 (Route-level Code Splitting)
+- **배경**: 현재 모든 계산기 모듈이 정적으로 임포트되어 있어, 단위 변환기나 환율 계산기 사용자도 첫 로딩 시 대용량 차트 라이브러리(`Recharts` 약 528KB)를 함께 다운로드해야 함.
+- **해결 방안**: `src/App.tsx`의 3대 계산기 컴포넌트(`CompoundInterestApp`, `UnitConverterApp`, `ExchangeApp`)를 `React.lazy()` 동적 임포트 및 `<Suspense>`로 분리하여 초기 번들 크기 경감 및 첫 화면 표시 속도(FCP/LCP) 대폭 향상. 로딩 대기 시에는 Ghost 디자인 시스템에 맞춘 가벼운 스켈레톤/스피너 플레이스홀더 노출.
+
+### 9.5 외부 API 네트워크 타임아웃 및 스토리지 안전성 (Network & Storage Reliability)
+- **배경**: 환율 API(`open.er-api.com`) 호출 시 네트워크 지연이 발생하면 백그라운드 요청이 무한 대기할 수 있으며, `useLocalStorage`에서 `undefined` 직렬화 시 파싱 오류가 발생할 수 있음.
+- **해결 방안**:
+  - `fetchLiveExchangeRates`에 5초 타임아웃 신호(`AbortSignal.timeout(5000)`)를 적용하여 음영지역에서도 지연 없이 오프라인 기본값으로 안전하게 폴백.
+  - `useLocalStorage`에 `typeof window === 'undefined'` 환경 체크 및 `undefined` 직렬화 방어 로직 적용.
+
+
 
