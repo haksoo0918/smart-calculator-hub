@@ -113,9 +113,9 @@ export const CalculatorForm: React.FC<CalculatorFormProps> = ({
                 const raw = e.target.value.replace(/[^0-9]/g, '');
                 updateField('principal', raw ? parseInt(raw, 10) : 0);
               }}
-              className={`w-full text-right font-bold text-[#112220] dark:text-slate-100 pr-9 py-2 px-3 border border-[#e5e7eb] dark:border-slate-700 rounded-md text-base sm:text-lg tracking-tight bg-slate-50/50 dark:bg-slate-900/60 focus:bg-white dark:focus:bg-slate-900 transition-colors h-11 ${borderFocusClass}`}
+              className={`w-full text-right font-bold text-[#112220] dark:text-slate-100 pl-3 pr-10 py-2 border border-[#e5e7eb] dark:border-slate-700 rounded-md text-base sm:text-lg tracking-tight bg-slate-50/50 dark:bg-slate-900/60 focus:bg-white dark:focus:bg-slate-900 transition-colors h-11 ${borderFocusClass}`}
             />
-            <span className="absolute right-3.5 top-1/2 -translate-y-1/2 text-sm font-medium text-slate-400 dark:text-slate-500">
+            <span className="absolute right-3.5 top-1/2 -translate-y-1/2 text-sm font-medium text-slate-400 dark:text-slate-500 pointer-events-none select-none">
               원
             </span>
           </div>
@@ -176,9 +176,9 @@ export const CalculatorForm: React.FC<CalculatorFormProps> = ({
                     const raw = e.target.value.replace(/[^0-9]/g, '');
                     updateField('regularContribution', raw ? parseInt(raw, 10) : 0);
                   }}
-                  className={`w-full text-right font-bold text-slate-900 dark:text-slate-100 pr-9 py-2 px-3 border border-slate-300 dark:border-slate-700 rounded-xl text-base sm:text-lg tracking-tight bg-slate-50/50 dark:bg-slate-900/60 focus:bg-white dark:focus:bg-slate-900 transition-all h-11 ${borderFocusClass}`}
+                  className={`w-full text-right font-bold text-[#112220] dark:text-slate-100 pl-3 pr-10 py-2 border border-[#e5e7eb] dark:border-slate-700 rounded-md text-base sm:text-lg tracking-tight bg-slate-50/50 dark:bg-slate-900/60 focus:bg-white dark:focus:bg-slate-900 transition-colors h-11 ${borderFocusClass}`}
                 />
-                <span className="absolute right-3.5 top-1/2 -translate-y-1/2 text-sm font-medium text-slate-400 dark:text-slate-500">
+                <span className="absolute right-3.5 top-1/2 -translate-y-1/2 text-sm font-medium text-slate-400 dark:text-slate-500 pointer-events-none select-none">
                   원
                 </span>
               </div>
