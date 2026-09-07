@@ -10,6 +10,8 @@ import { QuickAmountButtons } from './QuickAmountButtons';
 import { Copy } from 'lucide-react';
 import { Badge } from './ui/badge';
 import { Button } from './ui/button';
+import { Input } from './ui/input';
+import { Slider } from './ui/slider';
 import {
   Select,
   SelectContent,
@@ -100,7 +102,7 @@ export const CalculatorForm: React.FC<CalculatorFormProps> = ({
             </span>
           </div>
           <div className="relative">
-            <input
+            <Input
               id={`${idPrefix}-principal`}
               aria-label="초기 투자 원금"
               type="text"
@@ -111,7 +113,7 @@ export const CalculatorForm: React.FC<CalculatorFormProps> = ({
                 const raw = e.target.value.replace(/[^0-9]/g, '');
                 updateField('principal', raw ? parseInt(raw, 10) : 0);
               }}
-              className={`w-full text-right font-bold text-[#112220] dark:text-slate-100 pr-9 py-2 px-3 border border-[#e5e7eb] dark:border-slate-700 rounded-md text-base sm:text-lg tracking-tight bg-slate-50/50 dark:bg-slate-900/60 focus:bg-white dark:focus:bg-slate-900 transition-colors ${borderFocusClass}`}
+              className={`w-full text-right font-bold text-[#112220] dark:text-slate-100 pr-9 py-2 px-3 border border-[#e5e7eb] dark:border-slate-700 rounded-md text-base sm:text-lg tracking-tight bg-slate-50/50 dark:bg-slate-900/60 focus:bg-white dark:focus:bg-slate-900 transition-colors h-11 ${borderFocusClass}`}
             />
             <span className="absolute right-3.5 top-1/2 -translate-y-1/2 text-sm font-medium text-slate-400 dark:text-slate-500">
               원
@@ -163,7 +165,7 @@ export const CalculatorForm: React.FC<CalculatorFormProps> = ({
           {scenario.contributionFrequency !== 'none' && (
             <>
               <div className="relative">
-                <input
+                <Input
                   id={`${idPrefix}-regular-contribution`}
                   aria-label="정기 추가 적립금"
                   type="text"
@@ -174,7 +176,7 @@ export const CalculatorForm: React.FC<CalculatorFormProps> = ({
                     const raw = e.target.value.replace(/[^0-9]/g, '');
                     updateField('regularContribution', raw ? parseInt(raw, 10) : 0);
                   }}
-                  className={`w-full text-right font-bold text-slate-900 dark:text-slate-100 pr-9 py-2 px-3 border border-slate-300 dark:border-slate-700 rounded-xl text-base sm:text-lg tracking-tight bg-slate-50/50 dark:bg-slate-900/60 focus:bg-white dark:focus:bg-slate-900 transition-all ${borderFocusClass}`}
+                  className={`w-full text-right font-bold text-slate-900 dark:text-slate-100 pr-9 py-2 px-3 border border-slate-300 dark:border-slate-700 rounded-xl text-base sm:text-lg tracking-tight bg-slate-50/50 dark:bg-slate-900/60 focus:bg-white dark:focus:bg-slate-900 transition-all h-11 ${borderFocusClass}`}
                 />
                 <span className="absolute right-3.5 top-1/2 -translate-y-1/2 text-sm font-medium text-slate-400 dark:text-slate-500">
                   원
@@ -201,16 +203,15 @@ export const CalculatorForm: React.FC<CalculatorFormProps> = ({
               <span className="text-xs text-slate-500 dark:text-slate-400 font-semibold">년</span>
             </div>
           </div>
-          <input
+          <Slider
             id={`${idPrefix}-years-slider`}
             aria-label="목표 투자 기간 슬라이더"
-            type="range"
-            min="1"
-            max="40"
-            step="1"
-            value={scenario.years}
-            onChange={(e) => updateField('years', parseInt(e.target.value, 10))}
-            className="w-full h-2 bg-slate-200 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer my-1"
+            min={1}
+            max={40}
+            step={1}
+            value={[scenario.years]}
+            onValueChange={([val]) => updateField('years', val)}
+            className="my-2"
           />
           {/* 기간 프리셋 버튼 */}
           <div className="flex items-center justify-between gap-1 mt-1">
@@ -243,7 +244,7 @@ export const CalculatorForm: React.FC<CalculatorFormProps> = ({
               )}
             </label>
             <div className="flex items-baseline gap-1">
-              <input
+              <Input
                 id={`${idPrefix}-annual-rate`}
                 aria-label="연 예상 수익률 직접 입력"
                 type="number"
@@ -255,23 +256,22 @@ export const CalculatorForm: React.FC<CalculatorFormProps> = ({
                   const val = parseFloat(e.target.value);
                   updateField('annualRate', isNaN(val) ? 0 : val);
                 }}
-                className={`w-16 text-right font-extrabold text-lg p-0.5 border-b border-[#e5e7eb] dark:border-slate-700 focus:border-[#15171a] dark:focus:border-[#d1ff19] bg-transparent outline-none ${
+                className={`w-20 h-8 text-right font-extrabold text-base p-1 border-b border-[#e5e7eb] dark:border-slate-700 focus:border-[#15171a] dark:focus:border-[#d1ff19] bg-transparent outline-none rounded-none ${
                   scenario.annualRate < 0 ? 'text-rose-600 dark:text-rose-400' : 'text-[#112220] dark:text-slate-100'
                 }`}
               />
               <span className={`text-sm font-extrabold ${scenario.annualRate < 0 ? 'text-rose-500' : 'text-slate-600 dark:text-slate-400'}`}>%</span>
             </div>
           </div>
-          <input
+          <Slider
             id={`${idPrefix}-annual-rate-slider`}
             aria-label="연 예상 수익률 슬라이더"
-            type="range"
-            min="-20"
-            max="30"
-            step="0.1"
-            value={scenario.annualRate}
-            onChange={(e) => updateField('annualRate', parseFloat(e.target.value))}
-            className="w-full h-2 bg-slate-100 dark:bg-slate-700 border border-[#e5e7eb] dark:border-slate-700 rounded-lg appearance-none cursor-pointer my-1"
+            min={-20}
+            max={30}
+            step={0.1}
+            value={[scenario.annualRate]}
+            onValueChange={([val]) => updateField('annualRate', Math.round(val * 10) / 10)}
+            className="my-2"
           />
           {/* 수익률 프리셋 칩 */}
           <div className="grid grid-cols-3 sm:grid-cols-5 gap-1.5 mt-1.5">
@@ -344,7 +344,7 @@ export const CalculatorForm: React.FC<CalculatorFormProps> = ({
             </Select>
             {scenario.taxType === 'custom' && (
               <div className="mt-1.5 flex items-center justify-end gap-1">
-                <input
+                <Input
                   type="number"
                   step="0.1"
                   min="0"
@@ -353,7 +353,7 @@ export const CalculatorForm: React.FC<CalculatorFormProps> = ({
                   onChange={(e) =>
                     updateField('customTaxRate', parseFloat(e.target.value) || 0)
                   }
-                  className="w-16 text-right text-xs font-bold py-1 px-1.5 border border-[#e5e7eb] dark:border-slate-700 rounded-md text-[#112220] dark:text-slate-100 bg-white dark:bg-slate-900 focus:border-[#15171a] dark:focus:border-[#d1ff19] outline-none"
+                  className="w-16 h-7 text-right text-xs font-bold py-1 px-1.5 border-[#e5e7eb] dark:border-slate-700 text-[#112220] dark:text-slate-100 bg-white dark:bg-slate-900 focus-visible:ring-[#15171a] dark:focus-visible:ring-[#d1ff19]"
                 />
                 <span className="text-xs text-slate-500 dark:text-slate-400 font-bold">%</span>
               </div>

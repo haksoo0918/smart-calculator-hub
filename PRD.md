@@ -504,6 +504,31 @@ export interface ExchangeResult {
 - **배경**: 사이드바 하단 카피라이트/버전 영역이 일반 `<div>`로 작성되어 문서 랜드마크 계층이 미완성됨.
 - **해결 방안**: `SidebarDrawer.tsx`의 하단 영역을 시맨틱 `<footer>` 태그로 변경하여 `<header>`, `<nav>`, `<aside>`, `<main>`, `<footer>`의 5대 랜드마크 체계를 완벽하게 수립.
 
+---
+
+## 11. 폼 UI 요소 shadcn/ui Primitives 전면 표준화 규격 (Form UI Component Standardization)
+
+### 11.1 Input 컴포넌트 전면 표준화 (`src/components/ui/input.tsx`)
+- **배경**: 인라인 `<input>` 태그를 shadcn `Input`으로 통일하여 디자인 시스템의 포커스 링, 다크 모드 토큰, 기본 상태를 단일 컴포넌트 수준에서 중앙 집중 관리.
+- **적용 대상**:
+  - `CalculatorForm.tsx`: 초기 투자 원금, 정기 추가 적립금, 연 예상 수익률 직접 입력창
+  - `DualConverterCard.tsx`: 출발(From) 단위 대형 수치 입력창
+  - `DualExchangeCard.tsx`: 출발(From) 통화 대형 금액 입력창
+- **구현 원칙**: `className` 오버라이딩을 통해 기존의 대형 폰트(`text-2xl sm:text-3xl`), 우측 정렬(`text-right`), 투명 배경 및 테두리 스타일을 100% 동일하게 유지.
+
+### 11.2 Slider 컴포넌트 전면 표준화 (`src/components/ui/slider.tsx`)
+- **배경**: 브라우저별로 상이하게 렌더링되던 네이티브 `<input type="range">`를 Radix UI 기반 shadcn `<Slider>`로 전면 교체.
+- **적용 대상**:
+  - `CalculatorForm.tsx`: 목표 투자 기간 슬라이더, 연 예상 수익률 슬라이더
+- **구현 원칙**:
+  - Ghost 디자인 시스템의 시그니처 Electric Lime(`#d1ff19`) 썸(Thumb) 및 활성 트랙(Range) 적용.
+  - 키보드 방향키(좌/우/상/하)를 통한 정밀한 증감 제어 및 부드러운 터치 드래그 지원.
+  - `value={[scenario.years]}` 및 `onValueChange={([val]) => ...}` 규격 연동.
+
+### 11.3 Button 컴포넌트 프리셋 및 보조 요소 적용 확대 (`src/components/ui/button.tsx`)
+- **배경**: 계산기 내부의 퀵 프리셋 칩, 금액 증감 퀵 버튼, 적립 주기 탭을 shadcn `Button` (`variant="outline"`, `variant="ghost"`, `size="sm"`) 기반으로 일원화하여 일관된 클릭 피드백 및 포커스 스타일 보장.
+
+
 
 
 

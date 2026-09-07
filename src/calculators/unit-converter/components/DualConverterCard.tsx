@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { DecimalPrecision, UnitDefinition } from '../../../types/unit';
 import { ArrowLeftRight, HelpCircle, Check, Copy } from 'lucide-react';
 import { Button } from '../../../components/ui/button';
+import { Input } from '../../../components/ui/input';
 import {
   Tooltip,
   TooltipContent,
@@ -125,7 +126,7 @@ export const DualConverterCard: React.FC<DualConverterCardProps> = ({
           </div>
 
           <div className="flex items-baseline gap-2">
-            <input
+            <Input
               id="unit-convert-input"
               aria-label={`${fromUnit?.name || '출발 단위'} 수치 입력`}
               type="number"
@@ -135,7 +136,7 @@ export const DualConverterCard: React.FC<DualConverterCardProps> = ({
                 onInputChange(val === '' ? '' : parseFloat(val));
               }}
               placeholder="0"
-              className="w-full bg-transparent font-extrabold text-2xl sm:text-3xl text-[#112220] dark:text-slate-100 outline-none tracking-tight placeholder-slate-300 dark:placeholder-slate-600 tabular-nums"
+              className="h-auto w-full border-0 bg-transparent p-0 shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 font-extrabold text-2xl sm:text-3xl text-[#112220] dark:text-slate-100 tracking-tight placeholder-slate-300 dark:placeholder-slate-600 tabular-nums"
             />
             <span className="text-sm sm:text-base font-bold text-slate-500 dark:text-slate-400 shrink-0">
               {fromUnit?.symbol}
