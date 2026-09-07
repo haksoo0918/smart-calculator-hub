@@ -46,6 +46,7 @@ export const CalculatorForm: React.FC<CalculatorFormProps> = ({
   copyButtonLabel,
 }) => {
   const isIndigo = accentColor === 'indigo';
+  const idPrefix = isIndigo ? 'scenario-b' : 'scenario-a';
   const borderFocusClass = 'focus:border-[#15171a] dark:focus:border-[#d1ff19] focus:ring-1 focus:ring-[#15171a] dark:focus:ring-[#d1ff19]';
   const activeTabClass = 'bg-[#15171a] dark:bg-white text-white dark:text-[#112220] font-bold border-[#15171a] dark:border-white';
 
@@ -91,7 +92,7 @@ export const CalculatorForm: React.FC<CalculatorFormProps> = ({
         {/* 1. 초기 원금 */}
         <div>
           <div className="flex justify-between items-baseline mb-1">
-            <label className="text-xs sm:text-sm font-semibold text-[#112220] dark:text-slate-200">
+            <label htmlFor={`${idPrefix}-principal`} className="text-xs sm:text-sm font-semibold text-[#112220] dark:text-slate-200 cursor-pointer">
               초기 투자 원금
             </label>
             <span className="text-xs font-semibold text-[#112220] dark:text-slate-200">
@@ -100,6 +101,8 @@ export const CalculatorForm: React.FC<CalculatorFormProps> = ({
           </div>
           <div className="relative">
             <input
+              id={`${idPrefix}-principal`}
+              aria-label="초기 투자 원금"
               type="text"
               inputMode="numeric"
               value={scenario.principal ? scenario.principal.toLocaleString('ko-KR') : ''}
@@ -123,7 +126,7 @@ export const CalculatorForm: React.FC<CalculatorFormProps> = ({
         {/* 2. 정기 적립액 및 주기 */}
         <div>
           <div className="flex justify-between items-baseline mb-1.5">
-            <label className="text-xs sm:text-sm font-semibold text-[#112220] dark:text-slate-200">
+            <label htmlFor={`${idPrefix}-regular-contribution`} className="text-xs sm:text-sm font-semibold text-[#112220] dark:text-slate-200 cursor-pointer">
               정기 추가 적립금
             </label>
             {scenario.contributionFrequency !== 'none' && (
@@ -161,6 +164,8 @@ export const CalculatorForm: React.FC<CalculatorFormProps> = ({
             <>
               <div className="relative">
                 <input
+                  id={`${idPrefix}-regular-contribution`}
+                  aria-label="정기 추가 적립금"
                   type="text"
                   inputMode="numeric"
                   value={scenario.regularContribution ? scenario.regularContribution.toLocaleString('ko-KR') : ''}
@@ -186,7 +191,7 @@ export const CalculatorForm: React.FC<CalculatorFormProps> = ({
         {/* 3. 투자 기간 */}
         <div>
           <div className="flex justify-between items-baseline mb-1">
-            <label className="text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-300">
+            <label htmlFor={`${idPrefix}-years-slider`} className="text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-300 cursor-pointer">
               목표 투자 기간
             </label>
             <div className="flex items-baseline gap-1">
@@ -197,6 +202,8 @@ export const CalculatorForm: React.FC<CalculatorFormProps> = ({
             </div>
           </div>
           <input
+            id={`${idPrefix}-years-slider`}
+            aria-label="목표 투자 기간 슬라이더"
             type="range"
             min="1"
             max="40"
@@ -227,7 +234,7 @@ export const CalculatorForm: React.FC<CalculatorFormProps> = ({
         {/* 4. 예상 연수익률 */}
         <div>
           <div className="flex justify-between items-baseline mb-1">
-            <label className="text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-300 flex items-center gap-1">
+            <label htmlFor={`${idPrefix}-annual-rate`} className="text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-300 flex items-center gap-1 cursor-pointer">
               <span>연 예상 수익률</span>
               {scenario.annualRate < 0 && (
                 <span className="text-[10px] text-rose-500 font-bold bg-rose-50 dark:bg-rose-950/40 px-1.5 py-0.5 rounded">
@@ -237,6 +244,8 @@ export const CalculatorForm: React.FC<CalculatorFormProps> = ({
             </label>
             <div className="flex items-baseline gap-1">
               <input
+                id={`${idPrefix}-annual-rate`}
+                aria-label="연 예상 수익률 직접 입력"
                 type="number"
                 step="0.1"
                 min="-30"
@@ -254,6 +263,8 @@ export const CalculatorForm: React.FC<CalculatorFormProps> = ({
             </div>
           </div>
           <input
+            id={`${idPrefix}-annual-rate-slider`}
+            aria-label="연 예상 수익률 슬라이더"
             type="range"
             min="-20"
             max="30"

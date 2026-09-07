@@ -68,30 +68,30 @@ export const DataTable: React.FC<DataTableProps> = ({
   return (
     <div className="bg-white dark:bg-[#1e293b] rounded-[24px] border border-[#e5e7eb] dark:border-slate-800 overflow-hidden transition-colors">
       {/* 아코디언 헤더 */}
-      <div
-        onClick={() => setIsOpen(!isOpen)}
-        className="px-5 py-4 flex items-center justify-between cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-colors select-none"
-      >
-        <div className="flex items-center gap-2.5">
-          <TableIcon className="w-4 h-4 text-[#112220] dark:text-slate-100" />
+      <div className="px-5 py-4 flex items-center justify-between hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-colors select-none">
+        <button
+          type="button"
+          onClick={() => setIsOpen(!isOpen)}
+          aria-expanded={isOpen}
+          aria-controls="data-table-content"
+          className="flex-1 flex items-center gap-2.5 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#15171a] dark:focus-visible:ring-[#d1ff19] rounded-md py-0.5"
+        >
+          <TableIcon className="w-4 h-4 text-[#112220] dark:text-slate-100 shrink-0" />
           <h3 className="text-sm sm:text-base font-bold text-[#112220] dark:text-slate-100">
             연도별 상세 자산 흐름표
           </h3>
           <span className="text-xs text-[#94a3b8] dark:text-slate-400 font-medium">
             ({result.breakdown.length}개년 데이터)
           </span>
-        </div>
+        </button>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 shrink-0">
           {isOpen && (
             <Button
               type="button"
               variant="outline"
               size="sm"
-              onClick={(e) => {
-                e.stopPropagation();
-                downloadCSV();
-              }}
+              onClick={downloadCSV}
               className="h-8 gap-1.5 text-xs text-[#112220] dark:text-slate-100 border-[#e5e7eb] dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800"
             >
               <Download className="w-3.5 h-3.5" />
@@ -103,6 +103,9 @@ export const DataTable: React.FC<DataTableProps> = ({
             <TooltipTrigger asChild>
               <button
                 type="button"
+                onClick={() => setIsOpen(!isOpen)}
+                aria-expanded={isOpen}
+                aria-controls="data-table-content"
                 className="p-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-md transition-colors"
                 aria-label={isOpen ? '흐름표 접기' : '흐름표 펼치기'}
               >
@@ -116,7 +119,7 @@ export const DataTable: React.FC<DataTableProps> = ({
 
       {/* shadcn Table 본체 */}
       {isOpen && (
-        <div className="border-t border-slate-100 dark:border-slate-800">
+        <div id="data-table-content" className="border-t border-slate-100 dark:border-slate-800">
           <Table>
             <TableHeader>
               <TableRow>

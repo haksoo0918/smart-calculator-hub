@@ -481,5 +481,29 @@ export interface ExchangeResult {
   - `fetchLiveExchangeRates`에 5초 타임아웃 신호(`AbortSignal.timeout(5000)`)를 적용하여 음영지역에서도 지연 없이 오프라인 기본값으로 안전하게 폴백.
   - `useLocalStorage`에 `typeof window === 'undefined'` 환경 체크 및 `undefined` 직렬화 방어 로직 적용.
 
+---
+
+## 10. 웹 표준 및 웹 접근성(A11y) 규격 (Web Standards & Accessibility)
+
+### 10.1 뷰포트 저시력자 화면 확대(Zoom) 보장 (WCAG 1.4.4: Resize text)
+- **배경**: `index.html`의 뷰포트 메타태그에 `maximum-scale=1.0, user-scalable=no`가 지정되어 있어 저시력 사용자의 핀치 줌 화면 확대가 원천 차단됨.
+- **해결 방안**: 뷰포트 메타태그를 표준 `width=device-width, initial-scale=1.0`으로 변경하여 최대 500%까지 자유로운 화면 줌을 보장함. 모바일 iOS 사파리의 인풋 포커스 시 자동 확대는 입력 필드의 기본 폰트 크기(16px 이상) 설정을 통해 자연스럽게 방지.
+
+### 10.2 모든 폼 입력 필드 Accessible Name 매핑 (WCAG 1.3.1 & 4.1.2)
+- **배경**: 연복리, 단위 변환, 환율 계산기의 대형 숫자 입력 필드에 스크린 리더가 식별할 수 있는 접근 가능한 이름이 누락되어 음성 낭독 시 "텍스트 편집창"으로만 안내됨.
+- **해결 방안**:
+  - `CalculatorForm.tsx`: 초기 투자 원금, 정기 추가 적립금, 목표 투자 기간(슬라이더), 예상 수익률 인풋에 `id` 및 `aria-label` 부여.
+  - `DualConverterCard.tsx`: 출발 단위 입력 필드에 `aria-label={`${fromUnit.name} 변환할 수치 입력`}` 연결.
+  - `DualExchangeCard.tsx`: 출발 통화 입력 필드에 `aria-label={`${fromCurr.name} 환전할 금액 입력`}` 연결.
+
+### 10.3 아코디언 트리거의 키보드 접근성 및 ARIA 상태 표기 (WCAG 2.1.1 & 4.1.2)
+- **배경**: `DataTable.tsx`의 연도별 흐름표 헤더가 일반 `<div>`에 클릭 핸들러만 달려 있어 키보드(Tab/Enter/Space) 조작이 불가능하고 확장 여부(`aria-expanded`)를 알 수 없음.
+- **해결 방안**: 아코디언 헤더를 시맨틱 `<button type="button" aria-expanded={isOpen} ...>` 구조로 전환하여 키보드 포커스 및 엔터/스페이스 인터랙션과 스크린 리더의 개폐 상태 음성 출력을 보장.
+
+### 10.4 문서 시맨틱 랜드마크 완성 (HTML5 Semantic)
+- **배경**: 사이드바 하단 카피라이트/버전 영역이 일반 `<div>`로 작성되어 문서 랜드마크 계층이 미완성됨.
+- **해결 방안**: `SidebarDrawer.tsx`의 하단 영역을 시맨틱 `<footer>` 태그로 변경하여 `<header>`, `<nav>`, `<aside>`, `<main>`, `<footer>`의 5대 랜드마크 체계를 완벽하게 수립.
+
+
 
 

@@ -3,6 +3,21 @@
 모든 주요 변경 사항은 본 문서에 기록됩니다.
 버전 체계는 [Semantic Versioning (SemVer)](https://semver.org/)을 준수합니다.
 
+## [1.7.4] - 2026-09-07
+
+### 웹 표준 및 웹 접근성(WCAG 2.1 / KWCAG) 강화 적용 (Web Standards & Accessibility)
+- **뷰포트 화면 확대(Zoom) 보장 (WCAG 1.4.4)**:
+  - `index.html`에서 저시력자 핀치 줌을 가로막던 `user-scalable=no, maximum-scale=1.0`을 제거하고 표준 뷰포트로 전환
+- **모든 폼 입력 필드 Accessible Name 매핑 (WCAG 1.3.1 & 4.1.2)**:
+  - `CalculatorForm.tsx`: 초기 원금, 정기 적립금, 투자 기간(슬라이더), 예상 연수익률 입력 필드에 `id`, `htmlFor`, 명시적 `aria-label` 완벽 연결
+  - `DualConverterCard.tsx`: 출발 단위 입력 필드에 `aria-label` 및 `<label htmlFor>` 매핑
+  - `DualExchangeCard.tsx`: 출발 통화 입력 필드에 `aria-label` 및 `<label htmlFor>` 매핑
+- **아코디언 키보드 접근성 및 상태 음성 표기 (WCAG 2.1.1 & 4.1.2)**:
+  - `DataTable.tsx`: 연도별 자산 흐름표 아코디언 헤더를 시맨틱 `<button type="button" aria-expanded={isOpen}>`으로 전환하여 Tab/Enter/Space 키보드 조작 및 개폐 상태 인식 보장
+- **시맨틱 랜드마크 완성도 제고 (HTML5 Semantic)**:
+  - `SidebarDrawer.tsx`: 하단 카피라이트/버전 영역을 시맨틱 `<footer>` 태그로 래핑하여 5대 랜드마크 체계 수립
+- 단위/통합/라우팅 테스트 38개 전체 통과 및 프로덕션 빌드 완료
+
 ## [1.7.3] - 2026-09-07
 
 ### 코드 리뷰 권장 조치 및 라우트 코드 스플리팅 적용 (Route Splitting & Robustness)

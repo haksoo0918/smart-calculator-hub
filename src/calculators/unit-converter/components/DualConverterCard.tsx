@@ -105,9 +105,9 @@ export const DualConverterCard: React.FC<DualConverterCardProps> = ({
         {/* 1. 출발(From) 단위 입력 박스 */}
         <div className="bg-slate-50/70 dark:bg-slate-900/60 border border-[#e5e7eb] dark:border-slate-700 rounded-2xl p-3.5 sm:p-4 focus-within:border-[#15171a] dark:focus-within:border-[#d1ff19] focus-within:bg-white dark:focus-within:bg-slate-900 transition-all">
           <div className="flex items-center justify-between gap-2 mb-2">
-            <span className="text-[11px] sm:text-xs font-bold text-[#64748b] dark:text-slate-400 uppercase tracking-wider whitespace-nowrap">
+            <label htmlFor="unit-convert-input" className="text-[11px] sm:text-xs font-bold text-[#64748b] dark:text-slate-400 uppercase tracking-wider whitespace-nowrap cursor-pointer">
               입력 (From)
-            </span>
+            </label>
             <div className="w-28 sm:w-36 lg:w-44 shrink-0">
               <Select value={fromUnitId} onValueChange={onFromUnitChange}>
                 <SelectTrigger className="h-8 text-xs bg-white dark:bg-slate-800 border-[#e5e7eb] dark:border-slate-700 font-bold px-2 sm:px-3 truncate">
@@ -126,6 +126,8 @@ export const DualConverterCard: React.FC<DualConverterCardProps> = ({
 
           <div className="flex items-baseline gap-2">
             <input
+              id="unit-convert-input"
+              aria-label={`${fromUnit?.name || '출발 단위'} 수치 입력`}
               type="number"
               value={inputValue}
               onChange={(e) => {
