@@ -46,13 +46,13 @@ export const GlobalHeader: React.FC<GlobalHeaderProps> = ({
 
           <div className="min-w-0">
             {/* Ghost Signature: 12px Uppercase Eyebrow */}
-            <div className="text-[11px] font-bold text-[#112220] uppercase tracking-widest leading-none mb-1 flex items-center gap-1.5">
+            <div className="text-[11px] font-bold text-[#112220] uppercase tracking-widest leading-normal mb-0.5 flex items-center gap-1.5">
               <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#d1ff19]" />
-              <span>{siteConfig.nameEn}</span>
+              <span className="pt-[0.5px]">{siteConfig.nameEn}</span>
             </div>
 
-            <div className="flex items-center gap-1.5 flex-wrap">
-              <h1 className="text-base sm:text-lg font-bold text-[#112220] truncate tracking-tight">
+            <div className="flex items-center gap-2 flex-wrap">
+              <h1 className="text-base sm:text-lg font-bold text-[#112220] truncate tracking-tight leading-tight">
                 {currentCalculator.name}
               </h1>
               {currentCalculator.badge && (

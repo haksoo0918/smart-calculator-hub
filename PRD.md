@@ -228,7 +228,10 @@ export interface CurrencyInfo {
       - 연복리 계산기(`CalculatorForm.tsx`): 복리 주기(월복리/연복리 등) 및 과세 체계(일반/비과세/ISA 등) 선택
     - Ghost 다크 테마 패널 및 라이트 테마 패널 양방향 완벽 호환 스타일링 지원
 - **스타일링**: Tailwind CSS + CSS 토큰 변수 (`src/index.css`)
-- **타이포그래피**: [Pretendard Variable](https://github.com/orioncactus/pretendard) 전면 유지 (숫자 및 한글 가독성 극대화, 모노스페이스 배제)
+- **타이포그래피 & 수직 정렬 최적화**:
+  - [Pretendard Variable](https://github.com/orioncactus/pretendard) 전면 유지 (숫자 및 한글 가독성 극대화)
+  - **한글 수직 중앙(Vertical Center) 정렬 보정**: 한글 글리프 특성상 `leading-none` 적용 시 영문 대비 상단으로 치우쳐(들떠) 보이는 문제를 해결하기 위해, 버튼/배지/탭/타이틀 요소에 균형 잡힌 라인하이트(`leading-normal`, `leading-snug`) 및 정밀 베이스라인 정렬 적용
+  - **컬러 이모지 배제 및 단색 시스템 아이콘 원칙**: 서비스 UI 전반에 유니코드 컬러 이모지(💡, ✨ 등) 사용은 전면 배제하되, 시각적 계층과 가독성을 위한 단색(Monochrome) Lucide 시스템 벡터 아이콘(예: 안내 카드 앞 `Info` 아이콘 등)은 적극 유지하여 사용함
 - **차트**: Recharts (Ghost 테마: Near-black 베이스, Slate-400 원금선, Electric Lime / Lavender 포인트 라인)
 - **아이콘**: Lucide React
 - **상태 관리**: React State + 커스텀 훅 + LocalStorage

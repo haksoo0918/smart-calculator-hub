@@ -33,7 +33,7 @@ export const QuickPresetChips: React.FC<QuickPresetChipsProps> = ({
             onClick={() => onSelectPreset(preset)}
             className="group flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-slate-50 border border-[#e5e7eb] hover:border-[#15171a] hover:bg-white text-[#112220] transition-all cursor-pointer shadow-2xs"
           >
-            <span>{preset.label}</span>
+            <span className="pt-[0.5px] leading-normal">{preset.label}</span>
             {preset.badge && (
               <Badge
                 variant={preset.badge === '인기' ? 'eyebrow' : 'outline'}

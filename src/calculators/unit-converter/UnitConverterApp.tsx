@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Info } from 'lucide-react';
 import { DecimalPrecision, QuickPreset, UnitCategory } from '../../types/unit';
 import {
   UNITS_DATA,
@@ -11,7 +12,6 @@ import { UnitCategoryTabs } from './components/UnitCategoryTabs';
 import { DualConverterCard } from './components/DualConverterCard';
 import { QuickPresetChips } from './components/QuickPresetChips';
 import { MultiResultGrid } from './components/MultiResultGrid';
-import { Info } from 'lucide-react';
 import { siteConfig } from '../../config/site';
 
 const STORAGE_KEY = 'smart_calculator_unit_converter_v1';
@@ -222,11 +222,11 @@ export const UnitConverterApp: React.FC = () => {
       />
 
       {/* 5. 생활 상식 및 안내 팁 카드 */}
-      <div className="p-4 rounded-2xl bg-slate-50 border border-[#e5e7eb] flex items-start gap-2.5 text-xs text-[#64748b]">
-        <Info className="w-4 h-4 text-[#112220] shrink-0 mt-0.5" />
-        <div className="space-y-1 leading-relaxed">
-          <p className="font-semibold text-[#112220]">
-            💡 대한민국 부동산 및 일상 단위 안내
+      <div className="p-4 rounded-2xl bg-slate-50 border border-[#e5e7eb] text-xs text-[#64748b]">
+        <div className="space-y-1.5 leading-relaxed">
+          <p className="font-bold text-[#112220] text-xs pb-1.5 border-b border-[#e5e7eb] flex items-center gap-1.5">
+            <Info className="w-3.5 h-3.5 text-[#112220] shrink-0" />
+            <span>대한민국 부동산 및 일상 단위 안내</span>
           </p>
           <p>
             • <strong>아파트 평수</strong>: 아파트 입주자 모집공고의 전용면적 84㎡는 실평수 약 25.4평이며, 주거공용면적을 합산한 공급평형은 통상 <strong>33~34평형</strong>으로 부릅니다.

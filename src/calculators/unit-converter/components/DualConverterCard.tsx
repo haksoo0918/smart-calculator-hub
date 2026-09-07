@@ -93,7 +93,7 @@ export const DualConverterCard: React.FC<DualConverterCardProps> = ({
         {/* 1. 출발(From) 단위 입력 박스 */}
         <div className="bg-slate-50/70 border border-[#e5e7eb] rounded-2xl p-4 focus-within:border-[#15171a] focus-within:bg-white transition-all">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-xs font-bold text-[#64748b] uppercase tracking-wider">
+            <span className="text-xs font-bold text-[#64748b] uppercase tracking-wider leading-normal">
               변환할 값 (From)
             </span>
             <div className="w-36 sm:w-44">
@@ -157,7 +157,7 @@ export const DualConverterCard: React.FC<DualConverterCardProps> = ({
         {/* 3. 도착(To) 단위 결과 박스 */}
         <div className="bg-[#15171a] text-white rounded-2xl p-4 border border-[#15171a] shadow-xs">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-xs font-bold text-[#d1ff19] uppercase tracking-wider flex items-center gap-1.5">
+            <span className="text-xs font-bold text-[#d1ff19] uppercase tracking-wider flex items-center gap-1.5 leading-normal">
               <span className="w-1.5 h-1.5 rounded-full bg-[#d1ff19]" />
               결과 (To)
             </span>

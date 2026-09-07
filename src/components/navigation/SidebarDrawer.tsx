@@ -62,10 +62,10 @@ export const SidebarDrawer: React.FC<SidebarDrawerProps> = ({
             <Calculator className="w-5 h-5 text-white" />
           </div>
           <div className="flex flex-col justify-center min-w-0">
-            <span className="font-bold text-[15px] tracking-tight text-[#112220] block leading-tight truncate">
+            <span className="font-bold text-[15px] tracking-tight text-[#112220] block leading-snug truncate pt-[1px]">
               {siteConfig.name}
             </span>
-            <span className="text-[11px] text-[#64748b] font-medium block leading-tight mt-0.5 tracking-tight truncate">
+            <span className="text-[11px] text-[#64748b] font-medium block leading-normal tracking-tight truncate">
               {siteConfig.shortNameEn}
             </span>
           </div>
@@ -106,7 +106,7 @@ export const SidebarDrawer: React.FC<SidebarDrawerProps> = ({
                   >
                     <div className="flex items-center gap-2.5 min-w-0">
                       {renderIcon(item.id, isActive)}
-                      <span className="text-xs sm:text-sm truncate">
+                      <span className="text-xs sm:text-sm truncate pt-[0.5px] leading-normal">
                         {item.shortName}
                       </span>
                     </div>

@@ -49,7 +49,7 @@ export const UnitCategoryTabs: React.FC<UnitCategoryTabsProps> = ({
               }`}
             >
               {getIcon(cat.id, isActive)}
-              <span>{cat.label}</span>
+              <span className="pt-[1px] leading-normal">{cat.label}</span>
               {isActive && (
                 <span className="w-1.5 h-1.5 rounded-full bg-[#d1ff19] ml-0.5" />
               )}
