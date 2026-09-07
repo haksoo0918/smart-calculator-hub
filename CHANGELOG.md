@@ -3,6 +3,16 @@
 모든 주요 변경 사항은 본 문서에 기록됩니다.
 버전 체계는 [Semantic Versioning (SemVer)](https://semver.org/)을 준수합니다.
 
+## [1.7.2] - 2026-09-07
+
+### 테스트 환경 최적화 및 패키지 메타데이터 동기화 (Test Optimization & Metadata Sync)
+- **테스트 러너 콘솔 로그 청결화**:
+  - JSDOM 환경에서 Recharts `ResponsiveContainer` 크기 계산 불가로 발생하던 `stderr` 경고 로그(`width(0) and height(0)...`) 제거
+  - `src/test/setup.ts`에 Recharts `ResponsiveContainer` 테스트 Mock 래퍼 적용으로 33개 테스트 완전 무경고 클린 패스 달성
+- **패키지 메타데이터 동기화**:
+  - `package.json`의 프로젝트명을 `smart-calculator-hub`로 동기화하여 멀티 계산기 플랫폼 정체성 일원화
+- 단위/라우팅 테스트 33개 전체 통과
+
 ## [1.7.1] - 2026-09-07
 
 ### 전역 단일 컨테이너 너비 표준화 적용 (Global Container Max-Width Standardization)

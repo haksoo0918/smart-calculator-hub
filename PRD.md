@@ -455,3 +455,16 @@ export interface ExchangeResult {
   - `apple-mobile-web-app-status-bar-style`: `default`
   - `apple-touch-icon`: 192x192 홈 아이콘 지정.
 
+---
+
+## 9. 품질 안정화 및 환경 표준화 규격 (Quality & Environment Standardization)
+
+### 9.1 테스트 환경 Recharts 경고 로그 제거 (JSDOM Layout Mock)
+- **배경**: Vitest JSDOM 환경은 실제 DOM 레이아웃(너비/높이 계산)을 지원하지 않아, Recharts의 `ResponsiveContainer`가 `width(0)` 및 `height(0)` 경고 로그를 `stderr`에 출력함.
+- **해결 방안**: `src/test/setup.ts`에서 Recharts의 `ResponsiveContainer`를 테스트 시 명시적 크기(예: 가로 800px, 세로 400px)를 가진 래퍼 컨테이너로 Mock 처리하여 불필요한 콘솔 노이즈 제거 및 테스트 로그 청결화.
+
+### 9.2 패키지 메타데이터 및 제품명 동기화
+- **배경**: 초기 단일 복리 계산기 프로젝트(`compound-interest-calculator`)에서 멀티 계산기 허브 플랫폼으로 확장 완료됨.
+- **해결 방안**: `package.json`의 패키지 `name`을 `smart-calculator-hub`로 변경하여 실제 제품 정체성과 패키지 메타데이터를 일원화.
+
+
