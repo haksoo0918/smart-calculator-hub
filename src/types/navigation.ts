@@ -45,7 +45,7 @@ export const CALCULATORS_LIST: CalculatorItem[] = [
   },
   {
     id: 'exchange',
-    name: '실시간 환율 계산기',
+    name: '환율 계산기',
     shortName: '환율 계산기',
     description: '주요 통화(USD, JPY, EUR 등) 환산 및 은행 우대율 시뮬레이션',
     category: 'global',

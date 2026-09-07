@@ -5,6 +5,7 @@ import { SidebarDrawer } from './components/navigation/SidebarDrawer';
 import { GlobalHeader } from './components/navigation/GlobalHeader';
 import { CompoundInterestApp } from './calculators/compound-interest/CompoundInterestApp';
 import { UnitConverterApp } from './calculators/unit-converter/UnitConverterApp';
+import { ExchangeApp } from './calculators/exchange-rate/ExchangeApp';
 import { PlaceholderView } from './components/common/PlaceholderView';
 import { TooltipProvider } from './components/ui/tooltip';
 
@@ -50,15 +51,7 @@ export const App: React.FC = () => {
             <Route path="/" element={<Navigate to="/compound" replace />} />
             <Route path="/compound" element={<CompoundInterestApp />} />
             <Route path="/unit" element={<UnitConverterApp />} />
-            <Route
-              path="/exchange"
-              element={
-                <PlaceholderView
-                  calculator={CALCULATORS_LIST[2]}
-                  onGoToCompound={() => navigate('/compound')}
-                />
-              }
-            />
+            <Route path="/exchange" element={<ExchangeApp />} />
             <Route
               path="/loan"
               element={

@@ -25,6 +25,17 @@ describe('Seam 2-1: React Router Navigation and Routing', () => {
     expect(screen.getAllByText('단위 변환기').length).toBeGreaterThanOrEqual(1);
   });
 
+  it('/exchange 경로에서는 환율 계산기 화면이 렌더링되어야 한다', () => {
+    render(
+      <MemoryRouter initialEntries={['/exchange']}>
+        <App />
+      </MemoryRouter>
+    );
+
+    expect(screen.getAllByText('환율 계산기').length).toBeGreaterThanOrEqual(1);
+    expect(screen.getByText('전체 주요 통화 실시간 일괄 환산')).toBeInTheDocument();
+  });
+
   it('/ 경로로 접속 시 /compound(연복리 계산기)로 자동 리다이렉트되어야 한다', () => {
     render(
       <MemoryRouter initialEntries={['/']}>
