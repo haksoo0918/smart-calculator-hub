@@ -135,7 +135,7 @@ export const SidebarDrawer: React.FC<SidebarDrawerProps> = ({
       {/* 하단 버전 푸터 */}
       <div className="p-3 border-t border-[#e5e7eb] bg-slate-50/50 text-center">
         <p className="text-[11px] text-[#94a3b8] font-medium">
-          스마트 계산기 v1.4.1 • Ghost Design
+          스마트 계산기 v1.5.0 • Ghost Design
         </p>
       </div>
     </div>
