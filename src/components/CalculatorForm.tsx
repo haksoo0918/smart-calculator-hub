@@ -39,13 +39,8 @@ export const CalculatorForm: React.FC<CalculatorFormProps> = ({
   copyButtonLabel,
 }) => {
   const isIndigo = accentColor === 'indigo';
-  const borderFocusClass = isIndigo
-    ? 'focus:border-indigo-500 focus:ring-indigo-500'
-    : 'focus:border-teal-500 focus:ring-teal-500';
-
-  const activeTabClass = isIndigo
-    ? 'bg-indigo-600 text-white shadow-xs'
-    : 'bg-teal-600 text-white shadow-xs';
+  const borderFocusClass = 'focus:border-[#15171a] focus:ring-1 focus:ring-[#15171a]';
+  const activeTabClass = 'bg-[#15171a] text-white';
 
   const updateField = <K extends keyof ScenarioInput>(field: K, value: ScenarioInput[K]) => {
     onChange({
@@ -56,8 +51,8 @@ export const CalculatorForm: React.FC<CalculatorFormProps> = ({
 
   return (
     <div
-      className={`bg-white rounded-2xl p-4 sm:p-5 border transition-all shadow-xs ${
-        isIndigo ? 'border-indigo-200' : 'border-slate-200'
+      className={`bg-white rounded-[24px] p-5 sm:p-6 border border-[#e5e7eb] transition-colors ${
+        isIndigo ? 'ring-1 ring-slate-900/5' : ''
       }`}
     >
       {/* 상단 뱃지 및 타이틀 */}
@@ -89,10 +84,10 @@ export const CalculatorForm: React.FC<CalculatorFormProps> = ({
         {/* 1. 초기 원금 */}
         <div>
           <div className="flex justify-between items-baseline mb-1">
-            <label className="text-xs sm:text-sm font-semibold text-slate-700">
+            <label className="text-xs sm:text-sm font-semibold text-[#112220]">
               초기 투자 원금
             </label>
-            <span className="text-xs font-medium text-teal-700">
+            <span className="text-xs font-semibold text-[#112220]">
               {formatKoreanUnit(scenario.principal)}
             </span>
           </div>
@@ -106,7 +101,7 @@ export const CalculatorForm: React.FC<CalculatorFormProps> = ({
                 const raw = e.target.value.replace(/[^0-9]/g, '');
                 updateField('principal', raw ? parseInt(raw, 10) : 0);
               }}
-              className={`w-full text-right font-bold text-slate-900 pr-9 py-2 px-3 border border-slate-300 rounded-xl text-base sm:text-lg tracking-tight bg-slate-50/50 focus:bg-white transition-all ${borderFocusClass}`}
+              className={`w-full text-right font-bold text-[#112220] pr-9 py-2 px-3 border border-[#e5e7eb] rounded-md text-base sm:text-lg tracking-tight bg-slate-50/50 focus:bg-white transition-colors ${borderFocusClass}`}
             />
             <span className="absolute right-3.5 top-1/2 -translate-y-1/2 text-sm font-medium text-slate-400">
               원
@@ -121,18 +116,18 @@ export const CalculatorForm: React.FC<CalculatorFormProps> = ({
         {/* 2. 정기 적립액 및 주기 */}
         <div>
           <div className="flex justify-between items-baseline mb-1.5">
-            <label className="text-xs sm:text-sm font-semibold text-slate-700">
+            <label className="text-xs sm:text-sm font-semibold text-[#112220]">
               정기 추가 적립금
             </label>
             {scenario.contributionFrequency !== 'none' && (
-              <span className="text-xs font-medium text-teal-700">
+              <span className="text-xs font-semibold text-[#112220]">
                 {formatKoreanUnit(scenario.regularContribution)}
               </span>
             )}
           </div>
 
           {/* 주기 탭 */}
-          <div className="grid grid-cols-3 gap-1 p-1 bg-slate-100 rounded-xl mb-2 text-xs font-semibold">
+          <div className="grid grid-cols-3 gap-1 p-1 bg-slate-100 rounded-md mb-2 text-xs font-semibold border border-[#e5e7eb]">
             {(
               [
                 { id: 'monthly', label: '매월 적립' },
@@ -244,8 +239,8 @@ export const CalculatorForm: React.FC<CalculatorFormProps> = ({
                   const val = parseFloat(e.target.value);
                   updateField('annualRate', isNaN(val) ? 0 : val);
                 }}
-                className={`w-16 text-right font-extrabold text-lg p-0.5 border-b border-slate-300 focus:border-teal-500 outline-none ${
-                  scenario.annualRate < 0 ? 'text-rose-600' : 'text-slate-900'
+                className={`w-16 text-right font-extrabold text-lg p-0.5 border-b border-[#e5e7eb] focus:border-[#15171a] outline-none ${
+                  scenario.annualRate < 0 ? 'text-rose-600' : 'text-[#112220]'
                 }`}
               />
               <span className={`text-sm font-extrabold ${scenario.annualRate < 0 ? 'text-rose-500' : 'text-slate-600'}`}>%</span>
@@ -258,7 +253,7 @@ export const CalculatorForm: React.FC<CalculatorFormProps> = ({
             step="0.1"
             value={scenario.annualRate}
             onChange={(e) => updateField('annualRate', parseFloat(e.target.value))}
-            className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer my-1"
+            className="w-full h-2 bg-slate-100 border border-[#e5e7eb] rounded-lg appearance-none cursor-pointer my-1"
           />
           {/* 수익률 프리셋 칩 */}
           <div className="grid grid-cols-3 sm:grid-cols-5 gap-1.5 mt-1.5">
@@ -270,15 +265,15 @@ export const CalculatorForm: React.FC<CalculatorFormProps> = ({
                   key={preset.rate}
                   type="button"
                   onClick={() => updateField('annualRate', preset.rate)}
-                  className={`px-1 py-1.5 text-[11px] font-medium rounded-lg border transition-all text-center flex items-center justify-center gap-0.5 ${
+                  className={`px-1 py-1.5 text-[11px] font-medium rounded-md border transition-colors text-center flex items-center justify-center gap-0.5 ${
                     isSelected
                       ? isNegative
-                        ? 'bg-rose-50 text-rose-800 border-rose-400 font-bold'
-                        : 'bg-teal-50 text-teal-800 border-teal-400 font-bold'
-                      : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'
+                        ? 'bg-rose-50 text-rose-800 border-rose-300 font-bold'
+                        : 'bg-[#15171a] text-white border-[#15171a] font-bold'
+                      : 'bg-white text-[#334155] border-[#e5e7eb] hover:bg-slate-50'
                   }`}
                 >
-                  <Sparkles className={`w-2.5 h-2.5 shrink-0 ${isNegative ? 'text-rose-500' : 'text-amber-500'}`} />
+                  <Sparkles className={`w-2.5 h-2.5 shrink-0 ${isSelected && !isNegative ? 'text-[#d1ff19]' : isNegative ? 'text-rose-500' : 'text-slate-400'}`} />
                   <span className="truncate">{preset.label}</span>
                 </button>
               );
@@ -287,10 +282,10 @@ export const CalculatorForm: React.FC<CalculatorFormProps> = ({
         </div>
 
         {/* 5. 복리 주기 및 과세 체계 (간결한 2분할 레이아웃) */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 border-t border-slate-100">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 border-t border-[#e5e7eb]">
           {/* 복리 주기 */}
           <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1">
+            <label className="block text-xs font-semibold text-[#112220] mb-1">
               복리 주기
             </label>
             <select
@@ -298,7 +293,7 @@ export const CalculatorForm: React.FC<CalculatorFormProps> = ({
               onChange={(e) =>
                 updateField('compoundingFrequency', e.target.value as CompoundingFrequency)
               }
-              className={`w-full py-2 px-2.5 text-xs font-semibold text-slate-800 bg-slate-50 border border-slate-300 rounded-xl ${borderFocusClass}`}
+              className={`w-full py-2 px-2.5 text-xs font-semibold text-[#112220] bg-slate-50 border border-[#e5e7eb] rounded-md ${borderFocusClass}`}
             >
               <option value="monthly">월복리 (일반적/추천)</option>
               <option value="annual">연복리</option>
@@ -309,13 +304,13 @@ export const CalculatorForm: React.FC<CalculatorFormProps> = ({
 
           {/* 과세 체계 */}
           <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1">
+            <label className="block text-xs font-semibold text-[#112220] mb-1">
               이자소득 과세
             </label>
             <select
               value={scenario.taxType}
               onChange={(e) => updateField('taxType', e.target.value as TaxType)}
-              className={`w-full py-2 px-2.5 text-xs font-semibold text-slate-800 bg-slate-50 border border-slate-300 rounded-xl ${borderFocusClass}`}
+              className={`w-full py-2 px-2.5 text-xs font-semibold text-[#112220] bg-slate-50 border border-[#e5e7eb] rounded-md ${borderFocusClass}`}
             >
               <option value="normal">일반과세 (15.4%)</option>
               <option value="exempt">비과세 (0%)</option>
@@ -333,7 +328,7 @@ export const CalculatorForm: React.FC<CalculatorFormProps> = ({
                   onChange={(e) =>
                     updateField('customTaxRate', parseFloat(e.target.value) || 0)
                   }
-                  className="w-16 text-right text-xs font-bold py-1 px-1.5 border border-slate-300 rounded-lg"
+                  className="w-16 text-right text-xs font-bold py-1 px-1.5 border border-[#e5e7eb] rounded-md text-[#112220] focus:border-[#15171a] outline-none"
                 />
                 <span className="text-xs text-slate-500 font-bold">%</span>
               </div>

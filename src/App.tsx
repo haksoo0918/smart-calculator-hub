@@ -26,7 +26,7 @@ export const App: React.FC = () => {
 
   return (
     <TooltipProvider delayDuration={150}>
-      <div className="min-h-screen bg-slate-50 text-slate-900 flex font-sans">
+      <div className="min-h-screen bg-white text-[#112220] flex font-sans">
       {/* 1. 좌측 사이드바 (데스크톱 고정 & 모바일 슬라이드 드로어) */}
       <SidebarDrawer
         activeId={currentCalculator.id}

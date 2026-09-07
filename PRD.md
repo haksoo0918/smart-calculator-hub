@@ -139,11 +139,16 @@ export interface CurrencyInfo {
 - **라우팅**: [React Router v6](https://reactrouter.com/) (`react-router-dom`)
   - 클린 URL 구조: `/compound` (연복리), `/unit` (단위변환), `/exchange` (환율), `/loan` (대출이자)
   - 브라우저 히스토리(뒤로가기/앞으로가기) 네이티브 지원 및 딥링크 공유
-- **디자인 시스템 & UI**: [shadcn/ui](https://ui.shadcn.com/) (Radix UI 프리미티브 + Tailwind CSS 기반 모듈형 컴포넌트 시스템)
-  - 버튼(Button), 카드(Card), 입력창(Input), 슬라이더(Slider), 탭(Tabs), 셀렉트(Select), 시트(Sheet/Drawer), 배지(Badge), 테이블(Table) 적용
-- **스타일링**: Tailwind CSS (Tailwindcss-animate, CSS 변수 기반 디자인 토큰)
-- **타이포그래피**: [Pretendard Variable](https://github.com/orioncactus/pretendard) 전면 적용 (숫자 및 한글 가독성 극대화, 모노스페이스 배제)
-- **차트**: Recharts (연복리 모듈에서 유지)
+- **디자인 시스템 & UI**: [shadcn/ui](https://ui.shadcn.com/) (Ghost Design System 기반 표준 토큰 구조화)
+  - `ghost.design.md` 사양 전면 채택:
+    - **Eyebrow 배지 & 포인트 컬러**: Electric Lime (`#d1ff19`) - 섹션 상단 12px uppercase 볼드 아이브로우 및 뱃지 포인트로 제한적/절제된 사용
+    - **배경 및 캔버스**: Warm White (`#ffffff`), Ink Base (`#15171a`), Slate Hairlines (`#e5e7eb`, `#1f2937`)
+    - **버튼 및 인터랙션**: Near-black Pill/Rounded CTA (`#15171a`, text `#ffffff`), 6px/8px 반경, 39px 규격
+    - **카드 및 서피스**: 24px 대형 둥근 모서리(`rounded-3xl` / `24px`), 플랫 헤어라인 테두리 (`border-[#e5e7eb]`, 그림자 배제 원칙)
+  - shadcn 컴포넌트: 버튼(Button), 카드(Card), 입력창(Input), 슬라이더(Slider), 시트(Sheet/Drawer), 배지(Badge), 테이블(Table), 툴팁(Tooltip)
+- **스타일링**: Tailwind CSS + CSS 토큰 변수 (`src/index.css`)
+- **타이포그래피**: [Pretendard Variable](https://github.com/orioncactus/pretendard) 전면 유지 (숫자 및 한글 가독성 극대화, 모노스페이스 배제)
+- **차트**: Recharts (Ghost 테마: Near-black 베이스, Slate-400 원금선, Electric Lime / Lavender 포인트 라인)
 - **아이콘**: Lucide React
 - **상태 관리**: React State + 커스텀 훅 + LocalStorage
 - **코드 스플리팅**: 각 계산기 모듈별 동적 임포트(`React.lazy`) 적용으로 초기 로딩 경량화 유지

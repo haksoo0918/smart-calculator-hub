@@ -98,13 +98,13 @@ export const ChartDashboard: React.FC<ChartDashboardProps> = ({
   };
 
   return (
-    <div className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200 shadow-xs">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4 pb-3 border-b border-slate-100">
+    <div className="bg-white rounded-[24px] p-5 sm:p-6 border border-[#e5e7eb]">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4 pb-3 border-b border-[#e5e7eb]">
         <div>
-          <h3 className="text-sm sm:text-base font-bold text-slate-900">
+          <h3 className="text-sm sm:text-base font-bold text-[#112220]">
             {isComparisonMode ? '시나리오 A / B 자산 성장 비교' : '연도별 자산 성장 시뮬레이션'}
           </h3>
-          <p className="text-xs text-slate-500 mt-0.5">
+          <p className="text-xs text-[#64748b] mt-0.5">
             {isComparisonMode
               ? '동일 기간 동안 두 전략의 자산 축적 차이를 확인하세요.'
               : '납입 원금과 복리 순이자의 누적 성장 추이입니다.'}
@@ -113,14 +113,14 @@ export const ChartDashboard: React.FC<ChartDashboardProps> = ({
 
         {/* 차트 타입 토글 버튼 */}
         {!isComparisonMode && (
-          <div className="flex items-center self-end sm:self-auto gap-1 bg-slate-100 p-1 rounded-lg">
+          <div className="flex items-center self-end sm:self-auto gap-1 bg-slate-100 p-1 rounded-md border border-[#e5e7eb]">
             <button
               type="button"
               onClick={() => setChartType('area')}
-              className={`flex items-center gap-1 px-2.5 py-1 text-xs font-semibold rounded-md transition-all ${
+              className={`flex items-center gap-1 px-2.5 py-1 text-xs font-semibold rounded-md transition-colors ${
                 chartType === 'area'
-                  ? 'bg-white text-teal-700 shadow-xs'
-                  : 'text-slate-500 hover:text-slate-800'
+                  ? 'bg-[#15171a] text-white'
+                  : 'text-[#64748b] hover:text-[#112220]'
               }`}
             >
               <AreaIcon className="w-3.5 h-3.5" />
@@ -129,10 +129,10 @@ export const ChartDashboard: React.FC<ChartDashboardProps> = ({
             <button
               type="button"
               onClick={() => setChartType('line')}
-              className={`flex items-center gap-1 px-2.5 py-1 text-xs font-semibold rounded-md transition-all ${
+              className={`flex items-center gap-1 px-2.5 py-1 text-xs font-semibold rounded-md transition-colors ${
                 chartType === 'line'
-                  ? 'bg-white text-teal-700 shadow-xs'
-                  : 'text-slate-500 hover:text-slate-800'
+                  ? 'bg-[#15171a] text-white'
+                  : 'text-[#64748b] hover:text-[#112220]'
               }`}
             >
               <LineIcon className="w-3.5 h-3.5" />
@@ -148,7 +148,7 @@ export const ChartDashboard: React.FC<ChartDashboardProps> = ({
           {isComparisonMode ? (
             /* 비교 모드: 두 시나리오의 총 자산 및 원금 비교 라인 차트 */
             <LineChart data={chartData} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
-              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
+              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
               <XAxis
                 dataKey="year"
                 tickLine={false}
@@ -166,27 +166,28 @@ export const ChartDashboard: React.FC<ChartDashboardProps> = ({
               <Legend
                 verticalAlign="top"
                 align="right"
-                wrapperStyle={{ paddingBottom: 10, fontSize: 11 }}
+                iconType="circle"
+                wrapperStyle={{ paddingBottom: '12px', fontSize: '11px' }}
               />
 
-              {/* 시나리오 A (Teal) */}
+              {/* 시나리오 A (Near-black) */}
               <Line
                 type="monotone"
                 dataKey="totalPostTaxA"
                 name={`${nameA} 최종 자산`}
-                stroke="#0d9488"
-                strokeWidth={3}
-                dot={{ r: 2, fill: '#0d9488' }}
+                stroke="#15171a"
+                strokeWidth={2.5}
+                dot={{ r: 2, fill: '#15171a' }}
                 activeDot={{ r: 5 }}
               />
-              {/* 시나리오 B (Indigo) */}
+              {/* 시나리오 B (Ghost Lavender / Olive accent) */}
               <Line
                 type="monotone"
                 dataKey="totalPostTaxB"
                 name={`${nameB} 최종 자산`}
-                stroke="#6366f1"
-                strokeWidth={3}
-                dot={{ r: 2, fill: '#6366f1' }}
+                stroke="#8b5cf6"
+                strokeWidth={2.5}
+                dot={{ r: 2, fill: '#8b5cf6' }}
                 activeDot={{ r: 5 }}
               />
 
@@ -204,7 +205,7 @@ export const ChartDashboard: React.FC<ChartDashboardProps> = ({
                 type="monotone"
                 dataKey="principalB"
                 name={`${nameB} 납입원금`}
-                stroke="#c7d2fe"
+                stroke="#cbd5e1"
                 strokeWidth={1.5}
                 strokeDasharray="4 4"
                 dot={false}
@@ -215,15 +216,15 @@ export const ChartDashboard: React.FC<ChartDashboardProps> = ({
             <AreaChart data={chartData} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
               <defs>
                 <linearGradient id="colorPrincipal" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#94a3b8" stopOpacity={0.8} />
-                  <stop offset="95%" stopColor="#94a3b8" stopOpacity={0.2} />
+                  <stop offset="5%" stopColor="#94a3b8" stopOpacity={0.4} />
+                  <stop offset="95%" stopColor="#94a3b8" stopOpacity={0.05} />
                 </linearGradient>
                 <linearGradient id="colorInterest" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#0d9488" stopOpacity={0.85} />
-                  <stop offset="95%" stopColor="#14b8a6" stopOpacity={0.25} />
+                  <stop offset="5%" stopColor="#15171a" stopOpacity={0.7} />
+                  <stop offset="95%" stopColor="#15171a" stopOpacity={0.1} />
                 </linearGradient>
               </defs>
-              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
+              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
               <XAxis
                 dataKey="year"
                 tickLine={false}
@@ -257,14 +258,14 @@ export const ChartDashboard: React.FC<ChartDashboardProps> = ({
                 dataKey="netInterestA"
                 stackId="1"
                 name="누적 세후순이자"
-                stroke="#0d9488"
+                stroke="#15171a"
                 fill="url(#colorInterest)"
               />
             </AreaChart>
           ) : (
             /* 단일 모드 라인 차트 */
             <LineChart data={chartData} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
-              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
+              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
               <XAxis
                 dataKey="year"
                 tickLine={false}
@@ -288,18 +289,18 @@ export const ChartDashboard: React.FC<ChartDashboardProps> = ({
               <Line
                 type="monotone"
                 dataKey="totalPostTaxA"
-                name="세후 총 자산"
-                stroke="#0d9488"
-                strokeWidth={3}
-                dot={{ r: 2 }}
+                name="세후 총자산"
+                stroke="#15171a"
+                strokeWidth={2.5}
+                dot={{ r: 3, fill: '#15171a' }}
                 activeDot={{ r: 5 }}
               />
               <Line
                 type="monotone"
                 dataKey="principalA"
-                name="누적 원금"
+                name="누적 납입원금"
                 stroke="#94a3b8"
-                strokeWidth={2}
+                strokeWidth={1.5}
                 strokeDasharray="4 4"
                 dot={false}
               />

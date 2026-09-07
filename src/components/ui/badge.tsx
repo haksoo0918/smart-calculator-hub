@@ -3,19 +3,21 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "../../lib/utils"
 
 const badgeVariants = cva(
-  "inline-flex items-center rounded-md border px-2 py-0.5 text-xs font-bold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
+  "inline-flex items-center rounded-sm border px-2 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-[#15171a] focus:ring-offset-2",
   {
     variants: {
       variant: {
         default:
-          "border-transparent bg-teal-600 text-white shadow-xs hover:bg-teal-700",
+          "border-transparent bg-[#15171a] text-white hover:bg-[#1f2937]",
         secondary:
-          "border-transparent bg-slate-100 text-slate-800 hover:bg-slate-200",
+          "border-transparent bg-slate-100 text-[#112220] hover:bg-slate-200",
         destructive:
-          "border-transparent bg-rose-500 text-white shadow-xs hover:bg-rose-600",
-        outline: "border-slate-200 text-slate-700",
-        teal: "border-teal-200 bg-teal-50 text-teal-800",
-        indigo: "border-indigo-200 bg-indigo-50 text-indigo-800",
+          "border-transparent bg-rose-600 text-white hover:bg-rose-700",
+        outline: "border-[#e5e7eb] text-[#334155]",
+        lime: "border-transparent bg-[#d1ff19] text-[#112220] font-bold",
+        eyebrow: "border-transparent bg-[#d1ff19] text-[#112220] font-bold text-[11px] tracking-widest uppercase px-2 py-0.5 rounded-xs",
+        teal: "border-[#e5e7eb] bg-slate-50 text-[#112220]",
+        indigo: "border-[#15171a] bg-[#15171a] text-white",
       },
     },
     defaultVariants: {

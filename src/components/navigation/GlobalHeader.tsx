@@ -21,8 +21,8 @@ export const GlobalHeader: React.FC<GlobalHeaderProps> = ({
   headerActions,
 }) => {
   return (
-    <header className="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-xs">
-      <div className="max-w-7xl mx-auto px-3.5 py-2.5 sm:px-6 flex items-center justify-between gap-2">
+    <header className="bg-white border-b border-[#e5e7eb] sticky top-0 z-30">
+      <div className="max-w-7xl mx-auto px-3.5 py-3 sm:px-6 flex items-center justify-between gap-2">
         {/* 좌측: 모바일 햄버거 메뉴 버튼 + 계산기 타이틀 */}
         <div className="flex items-center gap-2.5 min-w-0">
           <div className="lg:hidden shrink-0">
@@ -44,19 +44,22 @@ export const GlobalHeader: React.FC<GlobalHeaderProps> = ({
           </div>
 
           <div className="min-w-0">
+            {/* Ghost Signature: 12px Uppercase Eyebrow */}
+            <div className="text-[11px] font-bold text-[#112220] uppercase tracking-widest leading-none mb-1 flex items-center gap-1.5">
+              <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#d1ff19]" />
+              <span>Smart Calculator Hub</span>
+            </div>
+
             <div className="flex items-center gap-1.5 flex-wrap">
-              <h1 className="text-base sm:text-lg font-extrabold text-slate-900 truncate tracking-tight">
+              <h1 className="text-base sm:text-lg font-bold text-[#112220] truncate tracking-tight">
                 {currentCalculator.name}
               </h1>
               {currentCalculator.badge && (
-                <Badge variant="teal" className="text-[10px] px-1.5 py-0 font-bold shrink-0">
+                <Badge variant={currentCalculator.badge === 'NEW' ? 'eyebrow' : 'default'} className="text-[10px] px-1.5 py-0 shrink-0">
                   {currentCalculator.badge}
                 </Badge>
               )}
             </div>
-            <p className="text-xs text-slate-500 font-medium truncate hidden sm:block">
-              {currentCalculator.description}
-            </p>
           </div>
         </div>
 

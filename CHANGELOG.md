@@ -3,6 +3,20 @@
 모든 주요 변경 사항은 본 문서에 기록됩니다.
 버전 체계는 [Semantic Versioning (SemVer)](https://semver.org/)을 준수합니다.
 
+## [1.4.0] - 2026-09-07
+
+### 추가 및 변경 (Added & Changed)
+- **Ghost 디자인 시스템(`ghost.design.md`) 전면 도입 및 shadcn/ui 표준 토큰 개편**:
+  - 기존 Teal 디자인 시스템을 완전히 버리고 Ghost 특유의 미니멀리즘 및 에디토리얼 스타일로 전면 교체
+  - **Electric Lime (`#d1ff19`)**: 12px 대문자 트래킹 아이브로우 및 뱃지 포인트로 절제된 볼티지 적용
+  - **Near-Black CTA (`#15171a`)**: 화이트 텍스트, 6px 둥근 모서리, 39px 규격의 시그니처 버튼 적용
+  - **Deep Teal-Ink (`#112220`)**: 헤드라인 및 주요 텍스트 색상 적용
+  - **Flat Hairline (`#e5e7eb`, `#1f2937`)**: 그림자를 배제하고 플랫한 헤어라인 테두리 중심의 깊이감 구현
+  - **Shapes**: 메인 카드 표면에 Ghost 사양의 24px 대형 둥근 모서리(`rounded-[24px]`) 전면 적용
+  - **Pretendard Variable 웹폰트 전면 유지**: 한글 및 금융 숫자의 가독성을 극대화하며 Ghost 타이포그래피 비율과 결합
+  - **Recharts 시각화 테마**: Ghost 다크 대시보드 밴드 스타일과 라임/라벤더 데이터 라인 적용
+  - shadcn 컴포넌트(`Button`, `Card`, `Badge`, `Input`, `Slider`, `Table`, `Tooltip`, `Sheet`) Ghost 토큰 마이그레이션 완료
+
 ## [1.3.0] - 2026-09-07
 
 ### 추가 및 변경 (Added & Changed)

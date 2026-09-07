@@ -7,13 +7,32 @@ export default {
   theme: {
     extend: {
       colors: {
-        brand: {
-          50: '#f0fdfa',
-          100: '#ccfbf1',
-          500: '#14b8a6',
-          600: '#0d9488',
-          700: '#0f766e',
-        }
+        ghost: {
+          lime: '#d1ff19',
+          'lime-soft': '#bef264',
+          canvas: '#ffffff',
+          ink: '#112220',
+          'ink-base': '#15171a',
+          'ink-soft': '#334155',
+          'ink-mute': '#64748b',
+          'ink-stone': '#94a3b8',
+          hairline: '#e5e7eb',
+          'hairline-soft': '#cbd5e1',
+          'hairline-dark': '#1f2937',
+          'surface-deep': '#0f172a',
+          'surface-olive': '#1a2e05',
+        },
+      },
+      borderRadius: {
+        'ghost-xs': '4px',
+        'ghost-sm': '6px',
+        'ghost-md': '8px',
+        'ghost-lg': '16px',
+        'ghost-xl': '24px',
+      },
+      letterSpacing: {
+        'ghost-tight': '-0.025em',
+        'ghost-eyebrow': '0.1em',
       },
       fontFamily: {
         sans: [

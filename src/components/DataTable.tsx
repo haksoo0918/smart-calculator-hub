@@ -66,18 +66,18 @@ export const DataTable: React.FC<DataTableProps> = ({
   };
 
   return (
-    <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-xs">
+    <div className="bg-white rounded-[24px] border border-[#e5e7eb] overflow-hidden">
       {/* 아코디언 헤더 */}
       <div
         onClick={() => setIsOpen(!isOpen)}
-        className="px-4 py-3.5 sm:px-5 flex items-center justify-between cursor-pointer hover:bg-slate-50 transition-colors select-none"
+        className="px-5 py-4 flex items-center justify-between cursor-pointer hover:bg-slate-50 transition-colors select-none"
       >
-        <div className="flex items-center gap-2">
-          <TableIcon className="w-4 h-4 text-teal-600" />
-          <h3 className="text-sm sm:text-base font-bold text-slate-800">
+        <div className="flex items-center gap-2.5">
+          <TableIcon className="w-4 h-4 text-[#112220]" />
+          <h3 className="text-sm sm:text-base font-bold text-[#112220]">
             연도별 상세 자산 흐름표
           </h3>
-          <span className="text-xs text-slate-400 font-medium">
+          <span className="text-xs text-[#94a3b8] font-medium">
             ({result.breakdown.length}개년 데이터)
           </span>
         </div>
@@ -92,10 +92,10 @@ export const DataTable: React.FC<DataTableProps> = ({
                 e.stopPropagation();
                 downloadCSV();
               }}
-              className="h-8 gap-1 text-xs text-teal-700 bg-teal-50 hover:bg-teal-100 border-teal-200"
+              className="h-8 gap-1.5 text-xs text-[#112220] border-[#e5e7eb] hover:bg-slate-100"
             >
               <Download className="w-3.5 h-3.5" />
-              <span className="hidden xs:inline">CSV 다운로드</span>
+              <span className="hidden xs:inline">CSV 내보내기</span>
             </Button>
           )}
           <Tooltip>

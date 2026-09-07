@@ -86,25 +86,25 @@ export const CompoundInterestApp: React.FC<CompoundInterestAppProps> = () => {
   return (
     <div className="space-y-4 sm:space-y-6">
       {/* 상단 서브 컨트롤러 바 (비교 토글 및 리셋) */}
-      <div className="bg-white p-3 rounded-2xl border border-slate-200 flex items-center justify-between shadow-xs">
+      <div className="bg-white p-3 rounded-[16px] border border-[#e5e7eb] flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <span className="text-xs font-bold text-slate-700 hidden sm:inline">
+          <span className="text-xs font-bold text-[#112220] hidden sm:inline">
             시뮬레이션 모드:
           </span>
           <button
             type="button"
             onClick={() => setIsComparisonMode(!isComparisonMode)}
-            className={`flex items-center gap-1.5 px-3 py-1.5 text-xs sm:text-sm font-semibold rounded-xl border transition-all ${
+            className={`flex items-center gap-1.5 px-3 py-1.5 text-xs sm:text-sm font-semibold rounded-md border transition-colors ${
               isComparisonMode
-                ? 'bg-teal-50 text-teal-700 border-teal-300 ring-2 ring-teal-100'
-                : 'bg-white text-slate-600 border-slate-300 hover:bg-slate-50'
+                ? 'bg-[#15171a] text-white border-[#15171a]'
+                : 'bg-white text-[#334155] border-[#e5e7eb] hover:bg-slate-50'
             }`}
           >
             <GitCompare className="w-4 h-4" />
             <span>비교 모드 (A/B)</span>
             <span
-              className={`ml-1 text-[10px] px-1.5 py-0.5 rounded-full font-bold ${
-                isComparisonMode ? 'bg-teal-600 text-white' : 'bg-slate-200 text-slate-600'
+              className={`ml-1 text-[10px] px-1.5 py-0.5 rounded-sm font-bold ${
+                isComparisonMode ? 'bg-[#d1ff19] text-[#112220]' : 'bg-slate-100 text-[#64748b]'
               }`}
             >
               {isComparisonMode ? 'ON' : 'OFF'}
@@ -117,7 +117,7 @@ export const CompoundInterestApp: React.FC<CompoundInterestAppProps> = () => {
             <button
               type="button"
               onClick={handleReset}
-              className="flex items-center gap-1 text-xs text-slate-500 hover:text-slate-800 hover:bg-slate-100 px-2.5 py-1.5 rounded-lg transition-colors border border-transparent hover:border-slate-200"
+              className="flex items-center gap-1 text-xs text-[#64748b] hover:text-[#112220] hover:bg-slate-100 px-2.5 py-1.5 rounded-md transition-colors border border-transparent hover:border-[#e5e7eb]"
               aria-label="기본값 초기화"
             >
               <RotateCcw className="w-3.5 h-3.5" />
@@ -130,28 +130,28 @@ export const CompoundInterestApp: React.FC<CompoundInterestAppProps> = () => {
 
       {/* 모바일 비교 모드 시 탭 네비게이션 */}
       {isComparisonMode && (
-        <div className="lg:hidden flex rounded-xl bg-slate-200/80 p-1">
+        <div className="lg:hidden flex rounded-lg bg-slate-100 p-1 border border-[#e5e7eb]">
           <button
             type="button"
             onClick={() => setActiveMobileTab('A')}
-            className={`flex-1 py-2 text-xs sm:text-sm font-bold rounded-lg transition-all ${
+            className={`flex-1 py-2 text-xs sm:text-sm font-bold rounded-md transition-colors ${
               activeMobileTab === 'A'
-                ? 'bg-white text-teal-700 shadow-xs'
-                : 'text-slate-600 hover:text-slate-900'
+                ? 'bg-[#15171a] text-white'
+                : 'text-[#64748b] hover:text-[#112220]'
             }`}
           >
-            시나리오 A 설정
+            시나리오 A
           </button>
           <button
             type="button"
             onClick={() => setActiveMobileTab('B')}
-            className={`flex-1 py-2 text-xs sm:text-sm font-bold rounded-lg transition-all ${
+            className={`flex-1 py-2 text-xs sm:text-sm font-bold rounded-md transition-colors ${
               activeMobileTab === 'B'
-                ? 'bg-white text-indigo-700 shadow-xs'
-                : 'text-slate-600 hover:text-slate-900'
+                ? 'bg-[#15171a] text-white'
+                : 'text-[#64748b] hover:text-[#112220]'
             }`}
           >
-            시나리오 B 설정
+            시나리오 B
           </button>
         </div>
       )}
