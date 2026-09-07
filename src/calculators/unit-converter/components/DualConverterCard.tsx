@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { DecimalPrecision, UnitDefinition } from '../../../types/unit';
-import { ArrowLeftRight, HelpCircle } from 'lucide-react';
+import { ArrowLeftRight, HelpCircle, Check, Copy } from 'lucide-react';
 import { Button } from '../../../components/ui/button';
 import {
   Tooltip,
@@ -46,6 +46,18 @@ export const DualConverterCard: React.FC<DualConverterCardProps> = ({
 }) => {
   const fromUnit = units.find((u) => u.id === fromUnitId) || units[0];
   const toUnit = units.find((u) => u.id === toUnitId) || units[1] || units[0];
+  const [copied, setCopied] = useState(false);
+
+  const handleCopyResult = async () => {
+    const text = `${formattedConvertedValue} ${toUnit?.symbol || ''}`.trim();
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1800);
+    } catch {
+      // fallback
+    }
+  };
 
   const precisionOptions: DecimalPrecision[] = [0, 2, 4, 6];
 
@@ -161,23 +173,42 @@ export const DualConverterCard: React.FC<DualConverterCardProps> = ({
               <span className="w-1.5 h-1.5 rounded-full bg-[#d1ff19]" />
               결과 (To)
             </span>
-            <div className="w-36 sm:w-44">
-              <Select value={toUnitId} onValueChange={onToUnitChange}>
-                <SelectTrigger className="h-8 text-xs bg-[#24272c] text-white border-slate-700 font-bold hover:bg-[#2e3238] focus:ring-[#d1ff19]">
-                  <SelectValue placeholder="단위 선택" />
-                </SelectTrigger>
-                <SelectContent className="bg-[#15171a] border-slate-800 text-white">
-                  {units.map((u) => (
-                    <SelectItem
-                      key={u.id}
-                      value={u.id}
-                      className="text-white hover:bg-slate-800 focus:bg-slate-800 focus:text-[#d1ff19]"
-                    >
-                      {u.name} ({u.symbol})
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={handleCopyResult}
+                className="flex items-center gap-1 text-[11px] font-bold text-slate-300 hover:text-white transition-colors cursor-pointer"
+              >
+                {copied ? (
+                  <>
+                    <Check className="w-3.5 h-3.5 text-emerald-400" />
+                    <span className="text-emerald-400">복사완료</span>
+                  </>
+                ) : (
+                  <>
+                    <Copy className="w-3.5 h-3.5" />
+                    <span>복사</span>
+                  </>
+                )}
+              </button>
+              <div className="w-36 sm:w-44">
+                <Select value={toUnitId} onValueChange={onToUnitChange}>
+                  <SelectTrigger className="h-8 text-xs bg-[#24272c] text-white border-slate-700 font-bold hover:bg-[#2e3238] focus:ring-[#d1ff19]">
+                    <SelectValue placeholder="단위 선택" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-[#15171a] border-slate-800 text-white">
+                    {units.map((u) => (
+                      <SelectItem
+                        key={u.id}
+                        value={u.id}
+                        className="text-white hover:bg-slate-800 focus:bg-slate-800 focus:text-[#d1ff19]"
+                      >
+                        {u.name} ({u.symbol})
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
           </div>
 

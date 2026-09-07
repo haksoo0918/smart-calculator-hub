@@ -11,11 +11,15 @@ import {
 interface MultiResultGridProps {
   results: UnitConversionResult[];
   activeUnitId: string;
+  inputValue?: number | '';
+  activeUnitSymbol?: string;
 }
 
 export const MultiResultGrid: React.FC<MultiResultGridProps> = ({
   results,
   activeUnitId,
+  inputValue,
+  activeUnitSymbol,
 }) => {
   const [copiedId, setCopiedId] = useState<string | null>(null);
 
@@ -28,8 +32,8 @@ export const MultiResultGrid: React.FC<MultiResultGridProps> = ({
   };
 
   return (
-    <div className="bg-white rounded-[24px] border border-[#e5e7eb] p-4 sm:p-6 space-y-3.5">
-      <div className="flex items-center justify-between">
+    <div className="bg-white rounded-[24px] border border-[#e5e7eb] p-4 sm:p-6 space-y-3.5 shadow-2xs">
+      <div className="flex items-center justify-between gap-2">
         <div>
           <h2 className="text-sm sm:text-base font-bold text-[#112220] tracking-tight">
             전체 단위 일괄 환산표
@@ -38,6 +42,11 @@ export const MultiResultGrid: React.FC<MultiResultGridProps> = ({
             현재 입력값을 기준으로 모든 관련 단위로 즉시 동시 변환됩니다.
           </p>
         </div>
+        {inputValue !== undefined && inputValue !== '' && activeUnitSymbol && (
+          <span className="text-[11px] font-medium text-[#64748b] bg-slate-100 px-2.5 py-1 rounded-full shrink-0">
+            기준: {inputValue} {activeUnitSymbol}
+          </span>
+        )}
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">

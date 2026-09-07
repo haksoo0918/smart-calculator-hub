@@ -219,6 +219,8 @@ export const UnitConverterApp: React.FC = () => {
       <MultiResultGrid
         results={multiResults}
         activeUnitId={fromUnitId}
+        inputValue={numericInput}
+        activeUnitSymbol={fromUnitObj?.symbol}
       />
 
       {/* 5. 생활 상식 및 안내 팁 카드 */}

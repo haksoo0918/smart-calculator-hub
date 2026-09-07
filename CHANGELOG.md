@@ -3,6 +3,19 @@
 모든 주요 변경 사항은 본 문서에 기록됩니다.
 버전 체계는 [Semantic Versioning (SemVer)](https://semver.org/)을 준수합니다.
 
+## [1.6.2] - 2026-09-07
+
+### 디자인 및 UX 스타일 전면 통일 (UI/UX Alignment)
+- **듀얼 인풋/아웃풋 카드 스타일 1:1 표준화 (`DualConverterCard` ↔ `DualExchangeCard`)**:
+  - **출발(From) 카드**: 상단 라벨 및 우측 콤팩트 셀렉트(`h-8 text-xs font-bold`), 하단 무경계 대형 숫자 인풋(`text-2xl sm:text-3xl font-extrabold tabular-nums`) 레이아웃 완전 일원화
+  - **도착(To) 카드**: Near-black(`bg-[#15171a] text-white rounded-2xl`) 다크 하이라이트 카드 통일, 결과값 복사 버튼(Tooltip 안내 및 복사 완료 피드백) 및 우측 다크 셀렉트 드롭다운 배치 통일
+  - **중앙 맞바꾸기(Swap) 버튼**: 원형 버튼 디자인 및 Tooltip 안내(`단위 맞바꾸기 / 통화 맞바꾸기`) 완벽 일치
+- **전체 일괄 환산표 그리드 구조 통일 (`MultiResultGrid` ↔ `MultiExchangeGrid`)**:
+  - **헤더 규격**: 좌측 타이틀 및 보조 설명문구, 우측 기준값 안내 배지(`기준: 84 ㎡` / `기준: 100 USD`) 양 화면 공통 적용
+  - **카드 레이아웃**: 상단(라벨/기호 + 우측 Tooltip 복사 버튼)과 하단(대형 볼드 수치 + 우측 단위 기호) 2단 분할 레이아웃으로 100% 동일화
+  - 활성 카드(`bg-slate-50 border-[#15171a]`)와 일반 카드(`bg-white border-[#e5e7eb]`) 테두리 및 룩앤필 일치화
+- 단위 및 라우팅 테스트 33개 전체 통과 및 프로덕션 빌드 검증 완료
+
 ## [1.6.1] - 2026-09-07
 
 ### 개선 및 기능 추가 (Improved & Added)

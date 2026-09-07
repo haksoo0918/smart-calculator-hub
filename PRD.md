@@ -35,8 +35,23 @@
 모든 계산기 모듈은 다음의 모바일 최적화 UX 표준을 공통으로 상속받아 일관성을 유지합니다:
 - **단일 열(Single Column) 흐름 최적화**: 좁은 모바일 화면(360px ~ 430px)에서 가로 스크롤 없이 엄지손가락 터치 반경 내에서 모든 인터랙션 완결.
 - **상단 카테고리/모드 스와이프 탭**: 손쉬운 가로 스크롤/탭 전환 지원.
-- **대형 인터랙티브 듀얼 카드**: 상단 입력(From) ↔ 하단 결과(To)를 명확한 시각적 위계로 배치하고, 중앙의 원터치 맞바꿈(`⇄ Swap`) 버튼 지원.
+- **대형 인터랙티브 듀얼 카드(Dual Interactive Card) 표준 규격**:
+  - 단위 변환기(`DualConverterCard.tsx`)와 환율 계산기(`DualExchangeCard.tsx`)의 From(입력)/To(결과) 영역의 구조, 배경색, 인풋 필드, 단위 선택 드롭다운, 타이포그래피를 동일한 규격으로 통일함:
+    - **From (출발 입력 카드)**:
+      - 컨테이너: `bg-slate-50/70 border border-[#e5e7eb] rounded-2xl p-4 focus-within:border-[#15171a] focus-within:bg-white transition-all`
+      - 상단 행: 좌측 `text-xs font-bold text-[#64748b]` 라벨 + 우측 통일된 크기의 shadcn `Select` (단위/통화 선택)
+      - 하단 행: 대형 `text-2xl sm:text-3xl font-extrabold text-[#112220] tabular-nums` 입력 필드 + 우측 심볼/단위 표시
+    - **To (도착 결과 카드)**:
+      - 컨테이너: 시각적 반전 및 하이라이트를 위해 `bg-[#15171a] text-white rounded-2xl p-4 border border-[#15171a]` 통일 적용 (환율 계산기의 밋밋한 화이트 인풋 박스를 단위 변환기와 동일한 다크 하이라이트 카드로 통일하거나, 두 화면의 테마 톤앤매너를 일관되게 단일 표준으로 맞춤)
+      - 상단 행: 좌측 `text-xs font-bold text-[#d1ff19]` (Electric Lime 포인트 뱃지 + 결과 라벨) + 우측 복사 버튼 + 우측 다크 테마 shadcn `Select`
+      - 하단 행: 대형 `text-2xl sm:text-3xl font-extrabold text-white tabular-nums` 결과값 + 우측 단위/심볼
+    - **중앙 Swap 버튼**: `w-10 h-10 rounded-full border border-[#e5e7eb] bg-white hover:bg-slate-100 active:scale-95 shadow-2xs` 통일.
 - **원클릭 퀵 프리셋 칩(Quick Preset Chips)**: 한국 사용자가 자주 찾는 대표 생활/여행/투자 시나리오를 탭 한 번으로 즉시 자동 입력.
+- **전체 일괄 환산표 그리드(Multi-Result Grid) 표준 레이아웃**:
+  - 단위 변환기(`MultiResultGrid.tsx`)와 환율 계산기(`MultiExchangeGrid.tsx`) 등 동일 성격의 비교 카드는 **헤더 타이틀/설명 구조, 그리드 컬럼 비율, 개별 아이템 카드 레이아웃, 복사 버튼 인터랙션 및 복사 완료 토스트/피드백**을 완전히 동일한 스타일 규격으로 통일함.
+  - 상단 헤더: 좌측 볼드 타이틀 + 하단 서브 설명 / 우측 기준 정보 안내
+  - 카드 레이아웃: 통일된 반응형 그리드(`grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5`), 12px 둥근 모서리(`rounded-xl`), 상단 라벨/기호 배지 + 우측 복사 버튼, 하단 대형 고정폭(Tabular) 수치 + 단위 기호.
+  - 활성(기준) 카드 하이라이트: `bg-slate-50 border-[#15171a] ring-1 ring-[#15171a]/10` 및 Electric Lime(`bg-[#d1ff19]`) 기준 뱃지 통일.
 - **결과 원클릭 복사 및 피드백**: 계산된 핵심 결과를 탭 한 번으로 클립보드에 복사하고 시각적 복사 완료 피드백 제공.
 - **안내 팁 카드 및 문구 작성 원칙**: 유용한 상식 및 팁을 안내할 때 텍스트나 문구에 컬러 이모지를 절대 넣지 않음.
 
