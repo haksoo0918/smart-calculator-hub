@@ -3,6 +3,28 @@
 모든 주요 변경 사항은 본 문서에 기록됩니다.
 버전 체계는 [Semantic Versioning (SemVer)](https://semver.org/)을 준수합니다.
 
+## [1.7.0] - 2026-09-07
+
+### 전역 다크 모드 시스템 및 shadcn UI 모드 토글 버튼 구현 (Global Dark Mode System & Mode Toggle)
+- **사용자 요청 반영: shadcn UI 표준 모드 토글 버튼 (`ThemeToggle.tsx`)**:
+  - 글로벌 헤더 우측 상단에 정갈한 `h-9 w-9` 아이콘 버튼(`Button variant="outline" size="icon"`)으로 전면 교체
+  - 라이트/다크 전환 시 Sun(태양)과 Moon(달) 아이콘이 부드럽게 회전 및 스케일 모션(`dark:-rotate-90 dark:scale-0`, `rotate-90 scale-0 dark:rotate-0 dark:scale-100`)으로 전환
+  - Radix UI Tooltip을 연동하여 마우스 오버 시 "다크 모드로 전환" / "라이트 모드로 전환" 안내
+  - **모바일 드로어 사이드바 푸터 지원**: 모바일 햄버거 메뉴를 열었을 때도 하단 푸터에서 간편하게 테마를 전환할 수 있도록 테마 토글 행 추가
+- **전역 테마 상태 아키텍처 구축 (`ThemeContext.tsx`)**:
+  - 시스템 선호도(OS 다크 모드) 자동 감지 및 `localStorage`(`theme-preference`) 영구 동기화
+  - `<html>` 루트 엘리먼트의 `.dark` 클래스 및 `color-scheme` 동적 제어
+  - SSR 및 jsdom 테스트 환경 대응 방어 코드 적용
+  - 새로고침 시 화면 번쩍임 방지(FOUC 차단): `index.html` 인라인 스크립트 적용
+- **전체 컴포넌트 및 3대 계산기 다크 모드 스타일 완벽 지원**:
+  - **공통 UI Primitives**: `card`, `input`, `select`, `button`, `badge`, `sheet`, `table`, `slider` 다크 테마 토큰 적용
+  - **연복리 계산기**: 메인 폼, 퀵 버튼, 요약 카드, 데이터 테이블, 시나리오 비교 뷰 다크 모드 지원
+  - **Recharts 인터랙티브 차트 다크 모드 적응**: `ChartDashboard.tsx`에서 차트 그리드, 축, 툴팁, 면적/라인 색상이 다크 배경에 최적화되도록 구현 (Electric Lime `#d1ff19` 악센트 적용)
+  - **단위 변환기**: 듀얼 인풋 카드, 카테고리 탭, 퀵 프리셋 칩, 일괄 환산 그리드 다크 모드 지원
+  - **환율 계산기**: 듀얼 환율 카드, 환전 방식 탭, 프리셋 칩, 일괄 환산표, 환율 정보 카드 다크 모드 지원
+  - **글로벌 네비게이션**: 데스크탑 헤더, 사이드바, 모바일 드로어(Sheet), 플레이스홀더 뷰 다크 모드 지원
+- 단위/라우팅 테스트 33개 전체 통과 및 프로덕션 빌드 완료
+
 ## [1.6.5] - 2026-09-07
 
 ### 전역 페이지 라우트 전환 부드러운 페이드인 애니메이션 구현 (Page Transition Fade Motion)

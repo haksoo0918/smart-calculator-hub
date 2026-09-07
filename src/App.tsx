@@ -8,6 +8,7 @@ import { UnitConverterApp } from './calculators/unit-converter/UnitConverterApp'
 import { ExchangeApp } from './calculators/exchange-rate/ExchangeApp';
 import { PlaceholderView } from './components/common/PlaceholderView';
 import { TooltipProvider } from './components/ui/tooltip';
+import { ThemeProvider } from './context/ThemeContext';
 
 export const App: React.FC = () => {
   const location = useLocation();
@@ -27,8 +28,9 @@ export const App: React.FC = () => {
   };
 
   return (
-    <TooltipProvider delayDuration={150}>
-      <div className="min-h-screen bg-white text-[#112220] flex font-sans">
+    <ThemeProvider>
+      <TooltipProvider delayDuration={150}>
+        <div className="min-h-screen bg-white dark:bg-[#0f172a] text-[#112220] dark:text-slate-100 flex font-sans transition-colors duration-200">
       {/* 1. 좌측 사이드바 (데스크톱 고정 & 모바일 슬라이드 드로어) */}
       <SidebarDrawer
         activeId={currentCalculator.id}
@@ -87,7 +89,8 @@ export const App: React.FC = () => {
         </main>
       </div>
     </div>
-    </TooltipProvider>
+      </TooltipProvider>
+    </ThemeProvider>
   );
 };
 

@@ -11,6 +11,7 @@ import {
   CartesianGrid,
   Legend,
 } from 'recharts';
+import { useTheme } from '../context/ThemeContext';
 import { CalculationResult } from '../types/calculator';
 import { formatCurrency, formatKoreanUnit } from '../utils/formatters';
 
@@ -29,6 +30,8 @@ export const ChartDashboard: React.FC<ChartDashboardProps> = ({
   nameA = '시나리오 A',
   nameB = '시나리오 B',
 }) => {
+  const { isDark } = useTheme();
+
   // 차트 데이터 병합 (연도 기준)
   const chartData = resultA.breakdown.map((itemA, index) => {
     const itemB = resultB?.breakdown[index];
@@ -46,36 +49,39 @@ export const ChartDashboard: React.FC<ChartDashboardProps> = ({
     };
   });
 
-  // Y축 레이블 포맷터 (예: 1억, 5,000만 등)
   const formatYAxis = (val: number) => {
     if (val === 0) return '0';
-    if (val >= 100_000_000) {
-      return `${(val / 100_000_000).toFixed(val % 100_000_000 === 0 ? 0 : 1)}억`;
+    if (Math.abs(val) >= 100_000_000) {
+      return `${(val / 100_000_000).toFixed(0)}억`;
     }
-    if (val >= 10_000) {
-      return `${Math.round(val / 10_000)}만`;
+    if (Math.abs(val) >= 10_000) {
+      return `${(val / 10_000).toFixed(0)}만`;
     }
     return `${val}`;
   };
 
-  // 커스텀 툴팁 컴포넌트
+  const gridStroke = isDark ? '#334155' : '#e5e7eb';
+  const axisStroke = isDark ? '#475569' : '#cbd5e1';
+  const tickFill = isDark ? '#94a3b8' : '#64748b';
+  const primaryStroke = isDark ? '#d1ff19' : '#15171a';
+
+  // 커스텀 툴팁
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
       return (
-        <div className="bg-slate-900/95 text-white p-3 rounded-xl shadow-xl border border-slate-700 text-xs backdrop-blur-xs min-w-[160px]">
-          <div className="font-bold text-slate-200 border-b border-slate-700 pb-1.5 mb-2 flex items-center justify-between">
+        <div className="bg-[#15171a] dark:bg-slate-900 text-white rounded-lg p-3 shadow-xl border border-[#1f2937] dark:border-slate-700 text-xs space-y-2 min-w-[170px] z-50">
+          <div className="font-bold border-b border-white/10 pb-1.5 flex justify-between items-center">
             <span>{label}차 경과</span>
           </div>
-
           <div className="space-y-1.5">
-            {payload.map((entry: any, i: number) => {
-              const val = entry.value as number;
+            {payload.map((entry: any, index: number) => {
+              const val = entry.value;
               return (
-                <div key={`item-${i}`} className="flex items-center justify-between gap-3">
+                <div key={`tooltip-${index}`} className="flex justify-between items-center gap-3">
                   <div className="flex items-center gap-1.5">
-                    <span
-                      className="w-2.5 h-2.5 rounded-sm inline-block"
+                    <div
+                      className="w-2 h-2 rounded-full shrink-0"
                       style={{ backgroundColor: entry.color }}
                     />
                     <span className="text-slate-300 text-[11px]">{entry.name}</span>
@@ -95,13 +101,13 @@ export const ChartDashboard: React.FC<ChartDashboardProps> = ({
   };
 
   return (
-    <div className="bg-white rounded-[24px] p-5 sm:p-6 border border-[#e5e7eb]">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4 pb-3 border-b border-[#e5e7eb]">
+    <div className="bg-white dark:bg-[#1e293b] rounded-[24px] p-5 sm:p-6 border border-[#e5e7eb] dark:border-slate-800 transition-colors">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4 pb-3 border-b border-[#e5e7eb] dark:border-slate-800">
         <div>
-          <h3 className="text-sm sm:text-base font-bold text-[#112220]">
+          <h3 className="text-sm sm:text-base font-bold text-[#112220] dark:text-slate-100">
             {isComparisonMode ? '시나리오 A / B 자산 성장 비교' : '연도별 자산 성장 시뮬레이션'}
           </h3>
-          <p className="text-xs text-[#64748b] mt-0.5">
+          <p className="text-xs text-[#64748b] dark:text-slate-400 mt-0.5">
             {isComparisonMode
               ? '동일 기간 동안 두 전략의 자산 축적 차이를 확인하세요.'
               : '납입 원금과 복리 순이자의 누적 성장 추이입니다.'}
@@ -113,20 +119,19 @@ export const ChartDashboard: React.FC<ChartDashboardProps> = ({
       <div className="w-full h-72 sm:h-80 -ml-2 sm:ml-0">
         <ResponsiveContainer width="100%" height="100%">
           {isComparisonMode ? (
-            /* 비교 모드: 두 시나리오의 총 자산 및 원금 비교 라인 차트 */
             <LineChart data={chartData} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
-              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
+              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={gridStroke} />
               <XAxis
                 dataKey="year"
                 tickLine={false}
-                axisLine={{ stroke: '#cbd5e1' }}
-                tick={{ fontSize: 11, fill: '#64748b' }}
+                axisLine={{ stroke: axisStroke }}
+                tick={{ fontSize: 11, fill: tickFill }}
               />
               <YAxis
                 tickFormatter={formatYAxis}
                 tickLine={false}
                 axisLine={false}
-                tick={{ fontSize: 11, fill: '#64748b' }}
+                tick={{ fontSize: 11, fill: tickFill }}
                 width={50}
               />
               <Tooltip content={<CustomTooltip />} />
@@ -137,17 +142,15 @@ export const ChartDashboard: React.FC<ChartDashboardProps> = ({
                 wrapperStyle={{ paddingBottom: '12px', fontSize: '11px' }}
               />
 
-              {/* 시나리오 A (Near-black) */}
               <Line
                 type="monotone"
                 dataKey="totalPostTaxA"
                 name={`${nameA} 최종 자산`}
-                stroke="#15171a"
+                stroke={primaryStroke}
                 strokeWidth={2.5}
-                dot={{ r: 2, fill: '#15171a' }}
+                dot={{ r: 2, fill: primaryStroke }}
                 activeDot={{ r: 5 }}
               />
-              {/* 시나리오 B (Ghost Lavender / Olive accent) */}
               <Line
                 type="monotone"
                 dataKey="totalPostTaxB"
@@ -157,13 +160,11 @@ export const ChartDashboard: React.FC<ChartDashboardProps> = ({
                 dot={{ r: 2, fill: '#8b5cf6' }}
                 activeDot={{ r: 5 }}
               />
-
-              {/* 원금 기준선 (점선) */}
               <Line
                 type="monotone"
                 dataKey="principalA"
                 name={`${nameA} 납입원금`}
-                stroke="#94a3b8"
+                stroke={isDark ? '#94a3b8' : '#94a3b8'}
                 strokeWidth={1.5}
                 strokeDasharray="4 4"
                 dot={false}
@@ -172,37 +173,36 @@ export const ChartDashboard: React.FC<ChartDashboardProps> = ({
                 type="monotone"
                 dataKey="principalB"
                 name={`${nameB} 납입원금`}
-                stroke="#cbd5e1"
+                stroke={isDark ? '#64748b' : '#cbd5e1'}
                 strokeWidth={1.5}
                 strokeDasharray="4 4"
                 dot={false}
               />
             </LineChart>
           ) : (
-            /* 단일 모드: 누적 영역형 차트 (AreaChart) */
             <AreaChart data={chartData} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
               <defs>
                 <linearGradient id="colorPrincipal" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#94a3b8" stopOpacity={0.4} />
+                  <stop offset="5%" stopColor="#94a3b8" stopOpacity={isDark ? 0.3 : 0.4} />
                   <stop offset="95%" stopColor="#94a3b8" stopOpacity={0.05} />
                 </linearGradient>
                 <linearGradient id="colorInterest" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#15171a" stopOpacity={0.7} />
-                  <stop offset="95%" stopColor="#15171a" stopOpacity={0.1} />
+                  <stop offset="5%" stopColor={primaryStroke} stopOpacity={isDark ? 0.5 : 0.7} />
+                  <stop offset="95%" stopColor={primaryStroke} stopOpacity={isDark ? 0.05 : 0.1} />
                 </linearGradient>
               </defs>
-              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
+              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={gridStroke} />
               <XAxis
                 dataKey="year"
                 tickLine={false}
-                axisLine={{ stroke: '#cbd5e1' }}
-                tick={{ fontSize: 11, fill: '#64748b' }}
+                axisLine={{ stroke: axisStroke }}
+                tick={{ fontSize: 11, fill: tickFill }}
               />
               <YAxis
                 tickFormatter={formatYAxis}
                 tickLine={false}
                 axisLine={false}
-                tick={{ fontSize: 11, fill: '#64748b' }}
+                tick={{ fontSize: 11, fill: tickFill }}
                 width={50}
               />
               <Tooltip content={<CustomTooltip />} />
@@ -225,7 +225,7 @@ export const ChartDashboard: React.FC<ChartDashboardProps> = ({
                 dataKey="netInterestA"
                 stackId="1"
                 name="누적 세후순이자"
-                stroke="#15171a"
+                stroke={primaryStroke}
                 fill="url(#colorInterest)"
               />
             </AreaChart>

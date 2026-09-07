@@ -45,14 +45,14 @@ export const CurrencySelect: React.FC<CurrencySelectProps> = ({
           className={`w-full h-8 text-xs font-bold transition-all px-2 sm:px-3 truncate ${
             isDark
               ? 'bg-[#24272c] text-white border-slate-700 hover:bg-[#2e3238] focus:ring-[#d1ff19]'
-              : 'bg-white border-[#e5e7eb] text-[#112220] hover:border-[#15171a]'
+              : 'bg-white dark:bg-slate-800 border-[#e5e7eb] dark:border-slate-700 text-[#112220] dark:text-slate-100 hover:border-[#15171a] dark:hover:border-[#d1ff19]'
           }`}
         >
           <SelectValue placeholder="통화 선택" />
         </SelectTrigger>
         <SelectContent
           className={`max-h-72 ${
-            isDark ? 'bg-[#15171a] border-slate-800 text-white' : 'bg-white text-[#112220]'
+            isDark ? 'bg-[#15171a] border-slate-800 text-white' : 'bg-white dark:bg-slate-900 border-[#e5e7eb] dark:border-slate-700 text-[#112220] dark:text-slate-100'
           }`}
         >
           {currencies.map((curr) => (

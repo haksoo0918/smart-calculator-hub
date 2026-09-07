@@ -91,9 +91,9 @@ export const CompoundInterestApp: React.FC<CompoundInterestAppProps> = () => {
   return (
     <div className="space-y-4 sm:space-y-6">
       {/* 상단 서브 컨트롤러 바 (비교 토글 및 리셋) */}
-      <div className="bg-white p-3 rounded-[16px] border border-[#e5e7eb] flex items-center justify-between">
+      <div className="bg-white dark:bg-[#1e293b] p-3 rounded-[16px] border border-[#e5e7eb] dark:border-slate-800 flex items-center justify-between transition-colors">
         <div className="flex items-center gap-2">
-          <span className="text-xs font-bold text-[#112220] hidden sm:inline">
+          <span className="text-xs font-bold text-[#112220] dark:text-slate-200 hidden sm:inline">
             시뮬레이션 모드:
           </span>
           <button
@@ -101,15 +101,15 @@ export const CompoundInterestApp: React.FC<CompoundInterestAppProps> = () => {
             onClick={() => setIsComparisonMode(!isComparisonMode)}
             className={`flex items-center gap-1.5 px-3 py-1.5 text-xs sm:text-sm font-semibold rounded-md border transition-colors ${
               isComparisonMode
-                ? 'bg-[#15171a] text-white border-[#15171a]'
-                : 'bg-white text-[#334155] border-[#e5e7eb] hover:bg-slate-50'
+                ? 'bg-[#15171a] dark:bg-white text-white dark:text-[#112220] border-[#15171a] dark:border-white'
+                : 'bg-white dark:bg-slate-900 text-[#334155] dark:text-slate-300 border-[#e5e7eb] dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800'
             }`}
           >
             <GitCompare className="w-4 h-4" />
             <span>비교 모드 (A/B)</span>
             <span
               className={`ml-1 text-[10px] px-1.5 py-0.5 rounded-sm font-bold ${
-                isComparisonMode ? 'bg-[#d1ff19] text-[#112220]' : 'bg-slate-100 text-[#64748b]'
+                isComparisonMode ? 'bg-[#d1ff19] text-[#112220]' : 'bg-slate-100 dark:bg-slate-800 text-[#64748b] dark:text-slate-400'
               }`}
             >
               {isComparisonMode ? 'ON' : 'OFF'}
@@ -122,7 +122,7 @@ export const CompoundInterestApp: React.FC<CompoundInterestAppProps> = () => {
             <button
               type="button"
               onClick={handleReset}
-              className="flex items-center gap-1 text-xs text-[#64748b] hover:text-[#112220] hover:bg-slate-100 px-2.5 py-1.5 rounded-md transition-colors border border-transparent hover:border-[#e5e7eb]"
+              className="flex items-center gap-1 text-xs text-[#64748b] dark:text-slate-400 hover:text-[#112220] dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 px-2.5 py-1.5 rounded-md transition-colors border border-transparent hover:border-[#e5e7eb] dark:hover:border-slate-700"
               aria-label="기본값 초기화"
             >
               <RotateCcw className="w-3.5 h-3.5" />
@@ -135,14 +135,14 @@ export const CompoundInterestApp: React.FC<CompoundInterestAppProps> = () => {
 
       {/* 모바일 비교 모드 시 탭 네비게이션 */}
       {isComparisonMode && (
-        <div className="lg:hidden flex rounded-lg bg-slate-100 p-1 border border-[#e5e7eb]">
+        <div className="lg:hidden flex rounded-lg bg-slate-100 dark:bg-slate-900 p-1 border border-[#e5e7eb] dark:border-slate-800">
           <button
             type="button"
             onClick={() => setActiveMobileTab('A')}
             className={`flex-1 py-2 text-xs sm:text-sm font-bold rounded-md transition-colors ${
               activeMobileTab === 'A'
-                ? 'bg-[#15171a] text-white'
-                : 'text-[#64748b] hover:text-[#112220]'
+                ? 'bg-[#15171a] dark:bg-slate-800 text-white'
+                : 'text-[#64748b] dark:text-slate-400 hover:text-[#112220] dark:hover:text-white'
             }`}
           >
             시나리오 A
@@ -152,8 +152,8 @@ export const CompoundInterestApp: React.FC<CompoundInterestAppProps> = () => {
             onClick={() => setActiveMobileTab('B')}
             className={`flex-1 py-2 text-xs sm:text-sm font-bold rounded-md transition-colors ${
               activeMobileTab === 'B'
-                ? 'bg-[#15171a] text-white'
-                : 'text-[#64748b] hover:text-[#112220]'
+                ? 'bg-[#15171a] dark:bg-slate-800 text-white'
+                : 'text-[#64748b] dark:text-slate-400 hover:text-[#112220] dark:hover:text-white'
             }`}
           >
             시나리오 B

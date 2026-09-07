@@ -96,11 +96,42 @@ src/
 │   ├── loan-interest/       # 4. [추천] 대출 이자 및 상환 방식 비교 계산기
 │   ├── dividend/            # 5. [추천] 배당금 및 월 배당 현금흐름 계산기
 │   └── goal-planner/        # 6. [추천] 목표 자산 역산(얼마씩 모아야 할까) 계산기
-├── components/              # LeftSidebar, GlobalHeader, Layout
+├── components/              # LeftSidebar, GlobalHeader, Layout, ThemeToggle
+├── context/
+│   └── ThemeContext.tsx     # 전역 테마 상태 (light/dark/system) 관리 Context
 ├── config/
 │   └── site.ts              # 사이트 전역 브랜드 명칭, 타이틀, 카피라이트 SSOT
 └── ...
 ```
+
+### 2.5 전역 다크 모드 시스템 사양 (Dark Mode Architecture & UX)
+- **테마 모드 지원 및 상태 관리**:
+  - `light` (라이트 모드), `dark` (다크 모드), `system` (OS 시스템 설정 자동 동기화) 3가지 모드 지원.
+  - 최초 진입 시: 사용자 로컬 스토리지(`localStorage.getItem('theme')`) 설정을 우선하며, 저장된 값이 없을 경우 OS 환경(`window.matchMedia('(prefers-color-scheme: dark)')`)을 감지하여 자동 적용.
+  - 상태 지속성: 테마 변경 시 `localStorage`에 즉시 저장하고, 루트 `<html>` 태그에 `.dark` 클래스를 토글하여 Tailwind CSS의 `darkMode: 'class'`와 연동.
+  - 시스템 테마 실시간 반응: 사용자가 시스템 모드를 사용하는 경우, OS 테마 변경 이벤트 리스너를 통해 즉시 테마 동기화.
+- **테마 토글 인터페이스 (Theme Toggle Interface)**:
+  - **글로벌 헤더 우측 상단 배치**: 모바일 및 데스크톱 뷰포트 전반에서 항시 즉시 접근 가능한 우측 액션 영역에 위치.
+  - **모바일 사이드바 드로어 하단 추가 배치**: 모바일 메뉴 열림 상태에서도 손쉽게 현재 테마 확인 및 전환 가능.
+  - **shadcn UI 표준 모드 토글 버튼 (Icon Toggle Button) 사양**:
+    - 컴포넌트: shadcn UI `Button` (`variant="outline"`, `size="icon"`, `w-9 h-9`) 기반.
+    - 아이콘 모션 연출:
+      - 라이트 모드: `Sun` 아이콘 표시 (`rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0`).
+      - 다크 모드: `Moon` 아이콘 표시 (`rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100 absolute`).
+      - 회전 및 스케일 트랜지션으로 시각적 완성도와 경쾌한 반응성 제공.
+    - 접근성 및 터치 최적화: `aria-label={isDark ? '라이트 모드로 전환' : '다크 모드로 전환'}`, Radix Tooltip 안내.
+- **다크 모드 컬러 팔레트 및 토큰 규격 (Ghost Dark Theme)**:
+  - **메인 뷰포트 배경**: `dark:bg-[#0f172a]` (Slate 900)
+  - **카드 및 컴포넌트 서피스**: `dark:bg-[#1e293b]` (Slate 800)
+  - **사이드바 & 글로벌 헤더**: `dark:bg-[#0b1120]`, `dark:border-slate-800`
+  - **테두리 선(Hairlines)**: `border-[#e5e7eb]` ➔ `dark:border-slate-700/80`
+  - **기본 텍스트**: `#112220` ➔ `dark:text-slate-100`, 서브 텍스트: `dark:text-slate-400`
+  - **인풋/셀렉트 폼 컨트롤**: `dark:bg-slate-900/60`, `dark:border-slate-700`, `dark:text-white`
+  - **Ghost 시그니처 Lime (`#d1ff19`)**: 다크 모드에서 한층 높은 대비와 가독성을 발휘하여 배지, 아이브로우, 토글 하이라이트에 그대로 적용.
+  - **차트(Recharts) 시각화 적응**: 다크 모드 전환 시 그리드선 색상(`rgba(255,255,255,0.08)`), 축 라벨 텍스트 색상(`dark:text-slate-400`), 툴팁 배경(`dark:bg-slate-800 dark:border-slate-700`)이 자동으로 가독성 높게 조정.
+- **모바일 퍼스트 UX 고려사항**:
+  - 야간 및 저조도 환경에서 눈부심 없는 최적의 명암비(WCAG AA 기준 준수) 확보.
+  - 테마 전환 시 화면 전체가 깜빡이거나 튀지 않도록 부드러운 CSS 배경색/텍스트 트랜지션 적용.
 
 ---
 

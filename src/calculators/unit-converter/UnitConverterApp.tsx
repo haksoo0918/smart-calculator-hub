@@ -224,10 +224,10 @@ export const UnitConverterApp: React.FC = () => {
       />
 
       {/* 5. 생활 상식 및 안내 팁 카드 */}
-      <div className="p-4 rounded-2xl bg-slate-50 border border-[#e5e7eb] text-xs text-[#64748b]">
+      <div className="p-4 rounded-2xl bg-slate-50 dark:bg-[#1e293b] border border-[#e5e7eb] dark:border-slate-800 text-xs text-[#64748b] dark:text-slate-300 transition-colors">
         <div className="space-y-1.5 leading-relaxed">
-          <p className="font-bold text-[#112220] text-xs pb-1.5 border-b border-[#e5e7eb] flex items-center gap-1.5">
-            <Info className="w-3.5 h-3.5 text-[#112220] shrink-0" />
+          <p className="font-bold text-[#112220] dark:text-slate-100 text-xs pb-1.5 border-b border-[#e5e7eb] dark:border-slate-800 flex items-center gap-1.5">
+            <Info className="w-3.5 h-3.5 text-[#112220] dark:text-[#d1ff19] shrink-0" />
             <span>대한민국 부동산 및 일상 단위 안내</span>
           </p>
           <p>

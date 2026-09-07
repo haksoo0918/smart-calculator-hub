@@ -107,14 +107,14 @@ export const SummaryCards: React.FC<SummaryCardsProps> = ({
         {/* 총 투자 원금 */}
         <Card>
           <CardContent className="p-2.5 sm:p-3">
-            <div className="flex items-center gap-1 text-[11px] font-medium text-slate-500 mb-1">
-              <PiggyBank className="w-3 h-3 text-slate-400" />
+            <div className="flex items-center gap-1 text-[11px] font-medium text-slate-500 dark:text-slate-400 mb-1">
+              <PiggyBank className="w-3 h-3 text-slate-400 dark:text-slate-500" />
               <span>총 투자원금</span>
             </div>
-            <div className="text-xs sm:text-sm font-bold text-slate-800 truncate">
+            <div className="text-xs sm:text-sm font-bold text-slate-800 dark:text-slate-100 truncate">
               {formatCurrency(result.totalPrincipal)}
             </div>
-            <div className="text-[10px] text-slate-400 font-medium truncate">
+            <div className="text-[10px] text-slate-400 dark:text-slate-500 font-medium truncate">
               {formatKoreanUnit(result.totalPrincipal)}
             </div>
           </CardContent>
@@ -123,14 +123,14 @@ export const SummaryCards: React.FC<SummaryCardsProps> = ({
         {/* 세후 총 이자 / 손익 */}
         <Card>
           <CardContent className="p-2.5 sm:p-3">
-            <div className="flex items-center gap-1 text-[11px] font-medium text-slate-500 mb-1">
-              <ArrowUpRight className={`w-3 h-3 ${isLoss ? 'text-rose-500 rotate-90' : 'text-emerald-500'}`} />
+            <div className="flex items-center gap-1 text-[11px] font-medium text-slate-500 dark:text-slate-400 mb-1">
+              <ArrowUpRight className={`w-3 h-3 ${isLoss ? 'text-rose-500 rotate-90' : 'text-emerald-500 dark:text-emerald-400'}`} />
               <span>{isLoss ? '순손실액' : '세후 순이자'}</span>
             </div>
-            <div className={`text-xs sm:text-sm font-bold truncate ${isLoss ? 'text-rose-600' : 'text-emerald-600'}`}>
+            <div className={`text-xs sm:text-sm font-bold truncate ${isLoss ? 'text-rose-600 dark:text-rose-400' : 'text-emerald-600 dark:text-emerald-400'}`}>
               {formatCurrency(result.netInterest)}
             </div>
-            <div className={`text-[10px] font-medium truncate ${isLoss ? 'text-rose-700' : 'text-emerald-700'}`}>
+            <div className={`text-[10px] font-medium truncate ${isLoss ? 'text-rose-700 dark:text-rose-300' : 'text-emerald-700 dark:text-emerald-300'}`}>
               {formatPercent(result.netReturnRate, true)}
             </div>
           </CardContent>
@@ -139,14 +139,14 @@ export const SummaryCards: React.FC<SummaryCardsProps> = ({
         {/* 이자 소득세 */}
         <Card>
           <CardContent className="p-2.5 sm:p-3">
-            <div className="flex items-center gap-1 text-[11px] font-medium text-slate-500 mb-1">
+            <div className="flex items-center gap-1 text-[11px] font-medium text-slate-500 dark:text-slate-400 mb-1">
               <span className="w-2 h-2 rounded-full bg-rose-400 inline-block" />
               <span>이자 소득세</span>
             </div>
-            <div className="text-xs sm:text-sm font-bold text-rose-600 truncate">
+            <div className="text-xs sm:text-sm font-bold text-rose-600 dark:text-rose-400 truncate">
               {formatCurrency(result.taxAmount)}
             </div>
-            <div className="text-[10px] text-slate-400 font-medium truncate">
+            <div className="text-[10px] text-slate-400 dark:text-slate-500 font-medium truncate">
               세전 {formatCurrency(result.grossInterest)}
             </div>
           </CardContent>

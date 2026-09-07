@@ -14,9 +14,18 @@
     color: #112220;
   }
 
+  .dark body {
+    background-color: #0f172a;
+    color: #f8fafc;
+  }
+
   /* 모바일 터치 최적화: 핀치 줌에 의한 불필요한 레이아웃 왜곡 방지 및 Ghost ink accent */
   input[type="range"] {
     accent-color: #15171a;
+  }
+
+  .dark input[type="range"] {
+    accent-color: #d1ff19;
   }
 }
 
@@ -44,6 +53,16 @@ input[type=number] {
 }
 ::-webkit-scrollbar-thumb:hover {
   background: #94a3b8;
+}
+
+.dark ::-webkit-scrollbar-track {
+  background: #1e293b;
+}
+.dark ::-webkit-scrollbar-thumb {
+  background: #475569;
+}
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #64748b;
 }
 
 /* 모바일 사이드바 드로어 하드웨어 가속 슬라이드 애니메이션 */

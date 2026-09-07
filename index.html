@@ -13,8 +13,23 @@
     <title>스마트 계산기 허브 | Smart Calculator Hub</title>
     <!-- Pretendard Variable 웹폰트 (숫자 및 한글 전면 적용) -->
     <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
+    <script>
+      (function() {
+        try {
+          var saved = localStorage.getItem('theme-preference');
+          var isDark = saved === 'dark' || (saved !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+          if (isDark) {
+            document.documentElement.classList.add('dark');
+            document.documentElement.style.colorScheme = 'dark';
+          } else {
+            document.documentElement.classList.remove('dark');
+            document.documentElement.style.colorScheme = 'light';
+          }
+        } catch (e) {}
+      })();
+    </script>
   </head>
-  <body class="bg-white text-[#112220] antialiased font-sans selection:bg-[#d1ff19] selection:text-[#112220]">
+  <body class="bg-white dark:bg-[#0f172a] text-[#112220] dark:text-slate-100 antialiased font-sans selection:bg-[#d1ff19] selection:text-[#112220]">
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

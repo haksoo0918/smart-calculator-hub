@@ -11,12 +11,12 @@ export const ExchangePresetChips: React.FC<ExchangePresetChipsProps> = ({
   onSelectPreset,
 }) => {
   return (
-    <div className="bg-white rounded-[24px] border border-[#e5e7eb] p-4 sm:p-5 space-y-2.5 shadow-2xs">
+    <div className="bg-white dark:bg-[#1e293b] rounded-[24px] border border-[#e5e7eb] dark:border-slate-800 p-4 sm:p-5 space-y-2.5 shadow-2xs transition-colors">
       <div className="flex items-center justify-between">
-        <span className="text-xs font-bold text-[#64748b] uppercase tracking-wider">
+        <span className="text-xs font-bold text-[#64748b] dark:text-slate-400 uppercase tracking-wider">
           자주 찾는 여행 & 직구 프리셋
         </span>
-        <span className="text-[11px] text-[#94a3b8]">원클릭 자동 입력</span>
+        <span className="text-[11px] text-[#94a3b8] dark:text-slate-500">원클릭 자동 입력</span>
       </div>
 
       <div className="flex items-center gap-1.5 flex-wrap">
@@ -25,7 +25,7 @@ export const ExchangePresetChips: React.FC<ExchangePresetChipsProps> = ({
             key={preset.label}
             type="button"
             onClick={() => onSelectPreset(preset)}
-            className="group flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-slate-50 border border-[#e5e7eb] hover:border-[#15171a] hover:bg-white text-[#112220] transition-all cursor-pointer shadow-2xs"
+            className="group flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-slate-50 dark:bg-slate-900 border border-[#e5e7eb] dark:border-slate-700 hover:border-[#15171a] dark:hover:border-[#d1ff19] hover:bg-white dark:hover:bg-slate-800 text-[#112220] dark:text-slate-200 transition-all cursor-pointer shadow-2xs"
           >
             <span className="pt-[0.5px] leading-normal">{preset.label}</span>
             {preset.badge && (

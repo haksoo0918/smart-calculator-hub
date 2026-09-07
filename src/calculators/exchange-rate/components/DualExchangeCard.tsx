@@ -73,19 +73,19 @@ export const DualExchangeCard: React.FC<DualExchangeCardProps> = ({
   const discountOptions: SpreadDiscount[] = [90, 80, 50, 0];
 
   return (
-    <div className="bg-white rounded-[24px] border border-[#e5e7eb] p-4 sm:p-6 space-y-4 shadow-2xs">
+    <div className="bg-white dark:bg-[#1e293b] rounded-[24px] border border-[#e5e7eb] dark:border-slate-800 p-4 sm:p-6 space-y-4 shadow-2xs transition-colors">
       {/* 1. 상단 환전 방식 탭 및 기준일자 배지 */}
-      <div className="space-y-2.5 pb-3 border-b border-[#e5e7eb]">
+      <div className="space-y-2.5 pb-3 border-b border-[#e5e7eb] dark:border-slate-800">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
           {/* 환전 방식 탭 (모바일: 3등분 꽉 채움) */}
-          <div className="grid grid-cols-3 gap-1 bg-slate-100 p-1 rounded-xl w-full sm:w-auto">
+          <div className="grid grid-cols-3 gap-1 bg-slate-100 dark:bg-slate-900 border dark:border-slate-800 p-1 rounded-xl w-full sm:w-auto">
             <button
               type="button"
               onClick={() => onTypeChange('base')}
               className={`px-2 py-1.5 text-xs font-semibold rounded-lg transition-all text-center ${
                 exchangeType === 'base'
-                  ? 'bg-[#15171a] text-white shadow-2xs'
-                  : 'text-[#64748b] hover:text-[#112220]'
+                  ? 'bg-[#15171a] dark:bg-slate-800 text-white shadow-2xs border dark:border-slate-700'
+                  : 'text-[#64748b] dark:text-slate-400 hover:text-[#112220] dark:hover:text-white'
               }`}
             >
               매매기준율
@@ -95,8 +95,8 @@ export const DualExchangeCard: React.FC<DualExchangeCardProps> = ({
               onClick={() => onTypeChange('cash_buy')}
               className={`px-2 py-1.5 text-xs font-semibold rounded-lg transition-all text-center ${
                 exchangeType === 'cash_buy'
-                  ? 'bg-[#15171a] text-white shadow-2xs'
-                  : 'text-[#64748b] hover:text-[#112220]'
+                  ? 'bg-[#15171a] dark:bg-slate-800 text-white shadow-2xs border dark:border-slate-700'
+                  : 'text-[#64748b] dark:text-slate-400 hover:text-[#112220] dark:hover:text-white'
               }`}
             >
               현찰 살 때
@@ -106,8 +106,8 @@ export const DualExchangeCard: React.FC<DualExchangeCardProps> = ({
               onClick={() => onTypeChange('cash_sell')}
               className={`px-2 py-1.5 text-xs font-semibold rounded-lg transition-all text-center ${
                 exchangeType === 'cash_sell'
-                  ? 'bg-[#15171a] text-white shadow-2xs'
-                  : 'text-[#64748b] hover:text-[#112220]'
+                  ? 'bg-[#15171a] dark:bg-slate-800 text-white shadow-2xs border dark:border-slate-700'
+                  : 'text-[#64748b] dark:text-slate-400 hover:text-[#112220] dark:hover:text-white'
               }`}
             >
               현찰 팔 때
@@ -115,16 +115,16 @@ export const DualExchangeCard: React.FC<DualExchangeCardProps> = ({
           </div>
 
           {/* 기준일 및 환율 안내 (모바일: 1행 가로 양끝 정렬) */}
-          <div className="flex items-center justify-between sm:justify-end gap-2 text-xs text-[#64748b] font-medium pt-[0.5px]">
-            <div className="flex items-center gap-1 text-[11px] bg-slate-50 px-2 py-1 rounded-md border border-[#e5e7eb] shrink-0">
-              <Calendar className="w-3.5 h-3.5 text-[#64748b]" />
+          <div className="flex items-center justify-between sm:justify-end gap-2 text-xs text-[#64748b] dark:text-slate-300 font-medium pt-[0.5px]">
+            <div className="flex items-center gap-1 text-[11px] bg-slate-50 dark:bg-slate-800/80 px-2 py-1 rounded-md border border-[#e5e7eb] dark:border-slate-700 shrink-0">
+              <Calendar className="w-3.5 h-3.5 text-[#64748b] dark:text-slate-400" />
               <span className="whitespace-nowrap">고시: {snapshot.baseDate}</span>
               {snapshot.isLive && (
                 <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-500 ml-0.5 shrink-0" title="최신 실시간 환율 연동" />
               )}
             </div>
             <div className="flex items-center gap-1 text-[11px] sm:text-xs truncate">
-              <TrendingUp className="w-3.5 h-3.5 text-[#15171a] shrink-0" />
+              <TrendingUp className="w-3.5 h-3.5 text-[#15171a] dark:text-[#d1ff19] shrink-0" />
               <span className="truncate">1 {fromCode} = {formatCurrencyAmount(appliedRate, toCode)} {toCode}</span>
             </div>
           </div>
@@ -133,9 +133,9 @@ export const DualExchangeCard: React.FC<DualExchangeCardProps> = ({
 
       {/* 2. 은행 환전 우대율 (스프레드 할인율) - 현찰 살 때/팔 때 활성화 */}
       {exchangeType !== 'base' && (
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-3 rounded-xl bg-slate-50 border border-[#e5e7eb]">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-3 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-[#e5e7eb] dark:border-slate-800">
           <div className="flex items-center justify-between sm:justify-start gap-2">
-            <span className="text-xs font-bold text-[#112220] whitespace-nowrap">은행 우대율</span>
+            <span className="text-xs font-bold text-[#112220] dark:text-slate-200 whitespace-nowrap">은행 우대율</span>
             {discountSavedKRW > 0 && (
               <Badge variant="eyebrow" className="text-[10px] px-1.5 py-0 h-5 whitespace-nowrap">
                 약 {formatCurrencyAmount(discountSavedKRW, 'KRW')}원 절약
@@ -151,8 +151,8 @@ export const DualExchangeCard: React.FC<DualExchangeCardProps> = ({
                 onClick={() => onDiscountChange(disc)}
                 className={`py-1 sm:px-2.5 text-xs font-bold rounded-md transition-all text-center ${
                   discount === disc
-                    ? 'bg-[#15171a] text-white'
-                    : 'bg-white border border-[#e5e7eb] text-[#64748b] hover:text-[#112220]'
+                    ? 'bg-[#15171a] dark:bg-slate-800 text-white border dark:border-slate-700'
+                    : 'bg-white dark:bg-slate-900 border border-[#e5e7eb] dark:border-slate-700 text-[#64748b] dark:text-slate-400 hover:text-[#112220] dark:hover:text-white'
                 }`}
               >
                 {disc}%
@@ -165,9 +165,9 @@ export const DualExchangeCard: React.FC<DualExchangeCardProps> = ({
       {/* 3. 메인 인터랙티브 듀얼 변환 영역 (모바일: 1열 세로, 데스크톱: 3열 좌/중/우) */}
       <div className="grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] gap-3 items-center">
         {/* 1. 출발(From) 단위 입력 박스 */}
-        <div className="bg-slate-50/70 border border-[#e5e7eb] rounded-2xl p-3.5 sm:p-4 focus-within:border-[#15171a] focus-within:bg-white transition-all">
+        <div className="bg-slate-50/70 dark:bg-slate-900/60 border border-[#e5e7eb] dark:border-slate-700 rounded-2xl p-3.5 sm:p-4 focus-within:border-[#15171a] dark:focus-within:border-[#d1ff19] focus-within:bg-white dark:focus-within:bg-slate-900 transition-all">
           <div className="flex items-center justify-between gap-2 mb-2">
-            <span className="text-[11px] sm:text-xs font-bold text-[#64748b] uppercase tracking-wider whitespace-nowrap">
+            <span className="text-[11px] sm:text-xs font-bold text-[#64748b] dark:text-slate-400 uppercase tracking-wider whitespace-nowrap">
               입력 (From)
             </span>
             <div className="w-28 sm:w-36 lg:w-44 shrink-0">
@@ -192,14 +192,14 @@ export const DualExchangeCard: React.FC<DualExchangeCardProps> = ({
                 onAmountChange(val === '' ? '' : parseFloat(val));
               }}
               placeholder="0"
-              className="w-full bg-transparent font-extrabold text-2xl sm:text-3xl text-[#112220] outline-none tracking-tight placeholder-slate-300 tabular-nums"
+              className="w-full bg-transparent font-extrabold text-2xl sm:text-3xl text-[#112220] dark:text-slate-100 outline-none tracking-tight placeholder-slate-300 dark:placeholder-slate-600 tabular-nums"
             />
-            <span className="text-sm sm:text-base font-bold text-slate-500 shrink-0">
+            <span className="text-sm sm:text-base font-bold text-slate-500 dark:text-slate-400 shrink-0">
               {fromCurr.symbol}
             </span>
           </div>
 
-          <p className="text-[11px] text-slate-400 mt-2 truncate">
+          <p className="text-[11px] text-slate-400 dark:text-slate-500 mt-2 truncate">
             {fromCurr.name} ({fromCode})
           </p>
         </div>
@@ -213,7 +213,7 @@ export const DualExchangeCard: React.FC<DualExchangeCardProps> = ({
                 variant="outline"
                 size="icon"
                 onClick={onSwap}
-                className="w-10 h-10 rounded-full border border-[#e5e7eb] bg-white hover:bg-slate-100 shadow-xs hover:border-[#15171a] transition-all text-[#112220] shrink-0"
+                className="w-10 h-10 rounded-full border border-[#e5e7eb] dark:border-slate-700 bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 shadow-xs hover:border-[#15171a] dark:hover:border-[#d1ff19] transition-all text-[#112220] dark:text-white shrink-0"
                 aria-label="통화 맞바꾸기"
               >
                 <ArrowLeftRight className="w-4 h-4" />
@@ -224,7 +224,7 @@ export const DualExchangeCard: React.FC<DualExchangeCardProps> = ({
         </div>
 
         {/* 3. 도착(To) 단위 결과 박스 */}
-        <div className="bg-[#15171a] text-white rounded-2xl p-3.5 sm:p-4 border border-[#15171a] shadow-xs">
+        <div className="bg-[#15171a] dark:bg-slate-950 text-white rounded-2xl p-3.5 sm:p-4 border border-[#15171a] dark:border-slate-800 shadow-xs">
           <div className="flex items-center justify-between gap-2 mb-2">
             <span className="text-[11px] sm:text-xs font-bold text-[#d1ff19] uppercase tracking-wider flex items-center gap-1.5 whitespace-nowrap">
               <span className="w-1.5 h-1.5 rounded-full bg-[#d1ff19] shrink-0" />

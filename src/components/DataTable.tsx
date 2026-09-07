@@ -66,18 +66,18 @@ export const DataTable: React.FC<DataTableProps> = ({
   };
 
   return (
-    <div className="bg-white rounded-[24px] border border-[#e5e7eb] overflow-hidden">
+    <div className="bg-white dark:bg-[#1e293b] rounded-[24px] border border-[#e5e7eb] dark:border-slate-800 overflow-hidden transition-colors">
       {/* 아코디언 헤더 */}
       <div
         onClick={() => setIsOpen(!isOpen)}
-        className="px-5 py-4 flex items-center justify-between cursor-pointer hover:bg-slate-50 transition-colors select-none"
+        className="px-5 py-4 flex items-center justify-between cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-colors select-none"
       >
         <div className="flex items-center gap-2.5">
-          <TableIcon className="w-4 h-4 text-[#112220]" />
-          <h3 className="text-sm sm:text-base font-bold text-[#112220]">
+          <TableIcon className="w-4 h-4 text-[#112220] dark:text-slate-100" />
+          <h3 className="text-sm sm:text-base font-bold text-[#112220] dark:text-slate-100">
             연도별 상세 자산 흐름표
           </h3>
-          <span className="text-xs text-[#94a3b8] font-medium">
+          <span className="text-xs text-[#94a3b8] dark:text-slate-400 font-medium">
             ({result.breakdown.length}개년 데이터)
           </span>
         </div>
@@ -92,17 +92,18 @@ export const DataTable: React.FC<DataTableProps> = ({
                 e.stopPropagation();
                 downloadCSV();
               }}
-              className="h-8 gap-1.5 text-xs text-[#112220] border-[#e5e7eb] hover:bg-slate-100"
+              className="h-8 gap-1.5 text-xs text-[#112220] dark:text-slate-100 border-[#e5e7eb] dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800"
             >
               <Download className="w-3.5 h-3.5" />
               <span className="hidden xs:inline">CSV 내보내기</span>
             </Button>
           )}
+
           <Tooltip>
             <TooltipTrigger asChild>
               <button
                 type="button"
-                className="p-1 text-slate-400 hover:text-slate-600 rounded-md transition-colors"
+                className="p-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-md transition-colors"
                 aria-label={isOpen ? '흐름표 접기' : '흐름표 펼치기'}
               >
                 {isOpen ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
@@ -115,7 +116,7 @@ export const DataTable: React.FC<DataTableProps> = ({
 
       {/* shadcn Table 본체 */}
       {isOpen && (
-        <div className="border-t border-slate-100">
+        <div className="border-t border-slate-100 dark:border-slate-800">
           <Table>
             <TableHeader>
               <TableRow>
@@ -130,22 +131,22 @@ export const DataTable: React.FC<DataTableProps> = ({
             <TableBody>
               {result.breakdown.map((row) => (
                 <TableRow key={row.year}>
-                  <TableCell className="font-bold text-center text-slate-900 bg-slate-50/40">
+                  <TableCell className="font-bold text-center text-slate-900 dark:text-slate-100 bg-slate-50/40 dark:bg-slate-900/40">
                     {row.year}년
                   </TableCell>
-                  <TableCell className="text-right text-slate-600">
+                  <TableCell className="text-right text-slate-600 dark:text-slate-300">
                     {formatCurrency(row.totalPrincipal)}
                   </TableCell>
-                  <TableCell className="text-right text-slate-500">
+                  <TableCell className="text-right text-slate-500 dark:text-slate-400">
                     +{formatCurrency(row.grossInterestYear)}
                   </TableCell>
-                  <TableCell className="text-right font-semibold text-emerald-600">
+                  <TableCell className="text-right font-semibold text-emerald-600 dark:text-emerald-400">
                     +{formatCurrency(row.netInterestTotal)}
                   </TableCell>
-                  <TableCell className="text-right font-bold text-slate-900">
+                  <TableCell className="text-right font-bold text-slate-900 dark:text-slate-100">
                     {formatCurrency(row.futureValuePostTax)}
                   </TableCell>
-                  <TableCell className="text-right font-semibold text-teal-700">
+                  <TableCell className="text-right font-semibold text-teal-700 dark:text-teal-400">
                     +{formatPercent(row.returnRate)}
                   </TableCell>
                 </TableRow>
