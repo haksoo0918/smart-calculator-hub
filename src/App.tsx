@@ -48,7 +48,7 @@ export const App: React.FC = () => {
         />
 
         {/* 메인 콘텐츠 라우팅 작업 공간 (페이지 전환 시 부드러운 페이드인 트랜지션) */}
-        <main className="flex-1 max-w-7xl w-full mx-auto px-3.5 py-4 sm:px-6 sm:py-6">
+        <main className="flex-1 max-w-5xl w-full mx-auto px-3.5 py-4 sm:px-6 sm:py-6">
           <div key={location.pathname} className="animate-page-fade">
             <Routes location={location}>
               <Route path="/" element={<Navigate to="/compound" replace />} />

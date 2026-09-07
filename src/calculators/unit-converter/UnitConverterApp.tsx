@@ -186,7 +186,7 @@ export const UnitConverterApp: React.FC = () => {
   }
 
   return (
-    <div className="space-y-4 max-w-5xl mx-auto">
+    <div className="space-y-4 w-full">
       {/* 1. 카테고리 탭 (가로 스크롤 모바일 퍼스트) */}
       <UnitCategoryTabs
         activeCategory={category}

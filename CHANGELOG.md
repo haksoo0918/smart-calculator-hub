@@ -3,6 +3,16 @@
 모든 주요 변경 사항은 본 문서에 기록됩니다.
 버전 체계는 [Semantic Versioning (SemVer)](https://semver.org/)을 준수합니다.
 
+## [1.7.1] - 2026-09-07
+
+### 전역 단일 컨테이너 너비 표준화 적용 (Global Container Max-Width Standardization)
+- **페이지 이동 시 콘텐츠 폭 불일치 및 덜컹거림 완벽 해소**:
+  - 개별 페이지마다 달랐던 컨테이너 최대 너비(연복리 1280px ↔ 단위 변환 1024px ↔ 환율 896px)를 전역 단일 규격인 `max-w-5xl` (1024px)로 일원화
+  - `GlobalHeader.tsx`: 헤더 내부 컨테이너를 엣지-투-엣지(`w-full px-4 sm:px-6`)로 확장하여, 페이지 타이틀(좌측)과 테마 토글 버튼(우측)이 화면 양 끝에 시원하게 밀착 배치되도록 개선
+  - `App.tsx`: `<main>` 메인 뷰포트 컨테이너를 `max-w-5xl` 단일 규격으로 유지하여 본문 가독성과 밸런스 확보
+  - `UnitConverterApp.tsx` & `ExchangeApp.tsx`: 개별 컴포넌트에 하드코딩되어 있던 중복 `max-w-*`를 제거하고 부모 컨테이너 너비(`w-full`)를 자연스럽게 100% 채우도록 개선
+- 단위/라우팅 테스트 33개 전체 통과 및 프로덕션 빌드 완료
+
 ## [1.7.0] - 2026-09-07
 
 ### 전역 다크 모드 시스템 및 shadcn UI 모드 토글 버튼 구현 (Global Dark Mode System & Mode Toggle)
