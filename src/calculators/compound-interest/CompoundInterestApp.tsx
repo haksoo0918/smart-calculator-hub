@@ -8,6 +8,11 @@ import { ChartDashboard } from '../../components/ChartDashboard';
 import { ComparisonView } from '../../components/ComparisonView';
 import { DataTable } from '../../components/DataTable';
 import { GitCompare, RotateCcw } from 'lucide-react';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '../../components/ui/tooltip';
 
 const DEFAULT_SCENARIO_A: ScenarioInput = {
   name: '시나리오 A',
@@ -107,15 +112,20 @@ export const CompoundInterestApp: React.FC<CompoundInterestAppProps> = () => {
           </button>
         </div>
 
-        <button
-          type="button"
-          onClick={handleReset}
-          className="flex items-center gap-1 text-xs text-slate-500 hover:text-slate-800 hover:bg-slate-100 px-2.5 py-1.5 rounded-lg transition-colors border border-transparent hover:border-slate-200"
-          title="기본값 초기화"
-        >
-          <RotateCcw className="w-3.5 h-3.5" />
-          <span className="hidden xs:inline">초기화</span>
-        </button>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <button
+              type="button"
+              onClick={handleReset}
+              className="flex items-center gap-1 text-xs text-slate-500 hover:text-slate-800 hover:bg-slate-100 px-2.5 py-1.5 rounded-lg transition-colors border border-transparent hover:border-slate-200"
+              aria-label="기본값 초기화"
+            >
+              <RotateCcw className="w-3.5 h-3.5" />
+              <span className="hidden xs:inline">초기화</span>
+            </button>
+          </TooltipTrigger>
+          <TooltipContent>기본값 초기화</TooltipContent>
+        </Tooltip>
       </div>
 
       {/* 모바일 비교 모드 시 탭 네비게이션 */}

@@ -12,6 +12,10 @@
   - 정적 자산(JS, CSS, HTML, 폰트, SVG) 오프라인 프리캐싱으로 네트워크 단절 시에도 모든 계산기 기능 즉시 작동
   - iOS 홈 화면 바로가기 지원 (`apple-mobile-web-app-capable`, `apple-touch-icon`)
   - 안드로이드/데스크톱 브라우저 "앱으로 설치" 및 독립 창(`standalone`) 실행 환경 완벽 지원
+- **shadcn/ui 툴팁(Tooltip) 컴포넌트 전면 도입 및 네이티브 title 속성 대체**:
+  - `@radix-ui/react-tooltip` 기반 shadcn `Tooltip`, `TooltipTrigger`, `TooltipContent`, `TooltipProvider` 구축
+  - TDD 단위 테스트 작성 (`src/components/ui/tooltip.test.tsx`)
+  - 브라우저 기본 `title` 속성을 제거하고 세련된 다크 테마 플로팅 툴팁 및 접근성(`aria-label`)으로 전면 교체 (기본값 초기화 버튼, 자산 구성 비율 게이지, 모바일 햄버거 메뉴, 상세 흐름표 토글 버튼 등)
 
 ## [1.2.0] - 2026-09-07
 

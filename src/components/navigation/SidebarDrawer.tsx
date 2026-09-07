@@ -137,7 +137,7 @@ export const SidebarDrawer: React.FC<SidebarDrawerProps> = ({
       {/* 하단 버전 푸터 */}
       <div className="p-3 border-t border-slate-100 bg-slate-50/50 text-center">
         <p className="text-[11px] text-slate-400 font-medium">
-          스마트 계산기 v1.2.0 • shadcn/ui
+          스마트 계산기 v1.3.0 • shadcn/ui
         </p>
       </div>
     </div>

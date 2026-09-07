@@ -5,6 +5,7 @@ import { SidebarDrawer } from './components/navigation/SidebarDrawer';
 import { GlobalHeader } from './components/navigation/GlobalHeader';
 import { CompoundInterestApp } from './calculators/compound-interest/CompoundInterestApp';
 import { PlaceholderView } from './components/common/PlaceholderView';
+import { TooltipProvider } from './components/ui/tooltip';
 
 export const App: React.FC = () => {
   const location = useLocation();
@@ -24,7 +25,8 @@ export const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 flex font-sans">
+    <TooltipProvider delayDuration={150}>
+      <div className="min-h-screen bg-slate-50 text-slate-900 flex font-sans">
       {/* 1. 좌측 사이드바 (데스크톱 고정 & 모바일 슬라이드 드로어) */}
       <SidebarDrawer
         activeId={currentCalculator.id}
@@ -97,6 +99,7 @@ export const App: React.FC = () => {
         </main>
       </div>
     </div>
+    </TooltipProvider>
   );
 };
 

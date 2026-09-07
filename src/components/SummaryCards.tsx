@@ -9,6 +9,11 @@ import {
 import { Wallet, PiggyBank, ArrowUpRight } from 'lucide-react';
 import { Card, CardContent } from './ui/card';
 import { Badge } from './ui/badge';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from './ui/tooltip';
 
 interface SummaryCardsProps {
   result: CalculationResult;
@@ -72,16 +77,27 @@ export const SummaryCards: React.FC<SummaryCardsProps> = ({
             <span>{isLoss ? '손실률' : '순이익 비중'}: {Math.abs(100 - principalRatio).toFixed(1)}%</span>
           </div>
           <div className="w-full h-2 bg-white/15 rounded-full overflow-hidden flex">
-            <div
-              className={`h-full transition-all duration-300 ${isLoss ? 'bg-rose-500' : 'bg-slate-400'}`}
-              style={{ width: `${Math.min(100, Math.max(0, principalRatio))}%` }}
-              title="원금 비중"
-            />
-            <div
-              className={`h-full transition-all duration-300 ${isLoss ? 'bg-rose-400' : 'bg-teal-400'}`}
-              style={{ width: `${Math.min(100, Math.max(0, 100 - principalRatio))}%` }}
-              title="이자 비중"
-            />
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div
+                  className={`h-full transition-all duration-300 cursor-help ${isLoss ? 'bg-rose-500' : 'bg-slate-400'}`}
+                  style={{ width: `${Math.min(100, Math.max(0, principalRatio))}%` }}
+                  aria-label="원금 비중"
+                />
+              </TooltipTrigger>
+              <TooltipContent>원금 비중: {principalRatio.toFixed(1)}%</TooltipContent>
+            </Tooltip>
+
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div
+                  className={`h-full transition-all duration-300 cursor-help ${isLoss ? 'bg-rose-400' : 'bg-teal-400'}`}
+                  style={{ width: `${Math.min(100, Math.max(0, 100 - principalRatio))}%` }}
+                  aria-label={isLoss ? '손실률' : '이자 비중'}
+                />
+              </TooltipTrigger>
+              <TooltipContent>{isLoss ? '손실률' : '이자 비중'}: {Math.abs(100 - principalRatio).toFixed(1)}%</TooltipContent>
+            </Tooltip>
           </div>
         </div>
       </div>

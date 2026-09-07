@@ -4,6 +4,11 @@ import { formatCurrency, formatPercent } from '../utils/formatters';
 import { ChevronDown, ChevronUp, Download, Table as TableIcon } from 'lucide-react';
 import { Button } from './ui/button';
 import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from './ui/tooltip';
+import {
   Table,
   TableHeader,
   TableBody,
@@ -93,12 +98,18 @@ export const DataTable: React.FC<DataTableProps> = ({
               <span className="hidden xs:inline">CSV 다운로드</span>
             </Button>
           )}
-          <button
-            type="button"
-            className="p-1 text-slate-400 hover:text-slate-600"
-          >
-            {isOpen ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-          </button>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <button
+                type="button"
+                className="p-1 text-slate-400 hover:text-slate-600 rounded-md transition-colors"
+                aria-label={isOpen ? '흐름표 접기' : '흐름표 펼치기'}
+              >
+                {isOpen ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+              </button>
+            </TooltipTrigger>
+            <TooltipContent>{isOpen ? '흐름표 접기' : '흐름표 펼치기'}</TooltipContent>
+          </Tooltip>
         </div>
       </div>
 
