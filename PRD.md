@@ -122,7 +122,7 @@ src/
       - 라이트 모드: `Sun` 아이콘 표시 (`rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0`).
       - 다크 모드: `Moon` 아이콘 표시 (`rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100 absolute`).
       - 회전 및 스케일 트랜지션으로 시각적 완성도와 경쾌한 반응성 제공.
-    - 접근성 및 터치 최적화: `aria-label={isDark ? '라이트 모드로 전환' : '다크 모드로 전환'}`, Radix Tooltip 안내.
+    - 접근성 및 터치 최적화: `aria-label={isDark ? '라이트 모드로 전환' : '다크 모드로 전환'}`, shadcn Tooltip 안내.
 - **다크 모드 컬러 팔레트 및 토큰 규격 (Ghost Dark Theme)**:
   - **메인 뷰포트 배경**: `dark:bg-[#0f172a]` (Slate 900)
   - **카드 및 컴포넌트 서피스**: `dark:bg-[#1e293b]` (Slate 800)
@@ -506,7 +506,7 @@ export interface ExchangeResult {
 
 ---
 
-## 11. 폼 UI 요소 shadcn/ui Primitives 전면 표준화 규격 (Form UI Component Standardization)
+## 11. 폼 UI 요소 shadcn/ui 컴포넌트 전면 표준화 규격 (Form UI Component Standardization)
 
 ### 11.1 Input 컴포넌트 전면 표준화 (`src/components/ui/input.tsx`)
 - **배경**: 인라인 `<input>` 태그를 shadcn `Input`으로 통일하여 디자인 시스템의 포커스 링, 다크 모드 토큰, 기본 상태를 단일 컴포넌트 수준에서 중앙 집중 관리.
@@ -517,7 +517,7 @@ export interface ExchangeResult {
 - **구현 원칙**: `className` 오버라이딩을 통해 기존의 대형 폰트(`text-2xl sm:text-3xl`), 우측 정렬(`text-right`), 투명 배경 및 테두리 스타일을 100% 동일하게 유지.
 
 ### 11.2 Slider 컴포넌트 전면 표준화 (`src/components/ui/slider.tsx`)
-- **배경**: 브라우저별로 상이하게 렌더링되던 네이티브 `<input type="range">`를 Radix UI 기반 shadcn `<Slider>`로 전면 교체.
+- **배경**: 브라우저별로 상이하게 렌더링되던 네이티브 `<input type="range">`를 shadcn `<Slider>`로 전면 교체.
 - **적용 대상**:
   - `CalculatorForm.tsx`: 목표 투자 기간 슬라이더, 연 예상 수익률 슬라이더
 - **구현 원칙**:

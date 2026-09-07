@@ -25,10 +25,10 @@
 
 ## [1.7.5] - 2026-09-07
 
-### 폼 UI 요소 shadcn/ui Primitives 전면 표준화 (Form Primitives Standardization)
+### 폼 UI 요소 shadcn/ui 컴포넌트 전면 표준화 (Form UI Standardization)
 - **복리 계산기 입력 폼(`CalculatorForm.tsx`) shadcn 전환**:
   - 초기 투자 원금, 정기 추가 적립금, 연 예상 수익률, 커스텀 세율 입력 필드를 네이티브 `<input>`에서 shadcn `<Input>` 컴포넌트로 전면 교체
-  - 목표 투자 기간 및 연수익률 조절 슬라이더를 네이티브 `<input type="range">`에서 Radix UI 기반 shadcn `<Slider>` 컴포넌트로 전환 (키보드 화살표 1단계 정밀 제어 지원)
+  - 목표 투자 기간 및 연수익률 조절 슬라이더를 네이티브 `<input type="range">`에서 shadcn `<Slider>` 컴포넌트로 전환 (키보드 화살표 1단계 정밀 제어 지원)
 - **단위 변환기(`DualConverterCard.tsx`) shadcn 전환**:
   - 수치 입력 인풋을 shadcn `<Input>` 컴포넌트로 교체하고 기존 Ghost 미니멀 타이포그래피 스타일 보존
 - **환율 계산기(`DualExchangeCard.tsx`) shadcn 전환**:

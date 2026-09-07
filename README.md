@@ -43,7 +43,7 @@ Ghost 디자인 시스템의 모노크롬 미니멀 감성과 Electric Lime 하�
 ## 핵심 아키텍처 및 디자인 원칙
 
 - **Ghost 디자인 시스템**: 미니멀 모노크롬 팔레트(`#15171a`, `#0b0c0e`, `#f8fafc`)와 Electric Lime(`#d1ff19`) 액센트를 적용하여 높은 가독성과 정돈된 심미성 제공.
-- **shadcn/ui 기반 컴포넌트 표준화**: `Input`, `Slider`, `Button`, `Select`, `Tooltip`, `Card`, `Badge` 등 Radix UI 기반 Primitives로 전면 통일하여 키보드 웹 접근성(WCAG 2.1 AA) 보장.
+- **shadcn/ui 컴포넌트 전면 표준화**: `Button`, `Input`, `Slider`, `Select`, `Tooltip`, `Sheet`, `Card`, `Badge` 등 모든 폼과 인터랙션 요소를 shadcn/ui 컴포넌트로 일원화하여 일관된 디자인과 키보드 웹 접근성(WCAG 2.1 AA) 보장.
 - **모바일 퍼스트 UX**: 슬라이드형 사이드바 드로어 네비게이션, 가로 스크롤 칩, 터치 친화적 탭 및 버튼 인터랙션.
 - **성능 최적화 (Route Code-Splitting)**: React.lazy와 Suspense를 적용하여 초기 진입 번들 크기를 경감(154kB)하고 빠른 체감 로딩 속도 달성.
 - **PWA (Progressive Web App)**: 서비스 워커와 캐시 스토리지를 통해 네트워크 연결이 불안정하거나 오프라인 상태인 환경에서도 모든 계산 기능 정상 작동.
@@ -55,8 +55,8 @@ Ghost 디자인 시스템의 모노크롬 미니멀 감성과 Electric Lime 하�
 
 - **Core**: React 18, TypeScript, Vite
 - **Routing**: React Router DOM (v7)
+- **UI Components**: [shadcn/ui](https://ui.shadcn.com/) (`Button`, `Input`, `Slider`, `Select`, `Tooltip`, `Sheet`, `Card`, `Badge`)
 - **Styling**: Tailwind CSS, Class Variance Authority (CVA), clsx, tailwind-merge
-- **UI Primitives**: Radix UI (Slider, Select, Tooltip, Dialog, Tabs)
 - **Data Visualization**: Recharts
 - **Icons**: Lucide React
 - **PWA**: vite-plugin-pwa, Workbox
@@ -80,7 +80,7 @@ src/
 │       ├── components/              # 환율 듀얼 카드, 통화 선택, 면세 가이드 등
 │       └── ExchangeApp.tsx          # 환율 계산기 메인 컨테이너
 ├── components/                      # 공통 컴포넌트
-│   ├── ui/                          # shadcn/ui 기반 Primitives (Input, Button, Slider 등)
+│   ├── ui/                          # shadcn/ui 컴포넌트 (Button, Input, Slider, Select 등)
 │   ├── CalculatorForm.tsx           # 복리 조건 입력 폼
 │   ├── ChartDashboard.tsx           # 복리 시각화 차트
 │   ├── ComparisonView.tsx           # 복리 시나리오 A/B 비교 뷰
