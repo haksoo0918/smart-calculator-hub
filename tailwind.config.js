@@ -50,6 +50,30 @@ export default {
           'sans-serif',
         ],
       },
+      keyframes: {
+        'drawer-in': {
+          '0%': { transform: 'translate3d(-100%, 0, 0)' },
+          '100%': { transform: 'translate3d(0, 0, 0)' },
+        },
+        'drawer-out': {
+          '0%': { transform: 'translate3d(0, 0, 0)' },
+          '100%': { transform: 'translate3d(-100%, 0, 0)' },
+        },
+        'overlay-in': {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
+        },
+        'overlay-out': {
+          '0%': { opacity: '1' },
+          '100%': { opacity: '0' },
+        },
+      },
+      animation: {
+        'drawer-in': 'drawer-in 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+        'drawer-out': 'drawer-out 0.22s ease-in forwards',
+        'overlay-in': 'overlay-in 0.28s ease-out forwards',
+        'overlay-out': 'overlay-out 0.22s ease-in forwards',
+      },
     },
   },
   plugins: [require("tailwindcss-animate")],

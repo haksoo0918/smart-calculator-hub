@@ -3,6 +3,17 @@
 모든 주요 변경 사항은 본 문서에 기록됩니다.
 버전 체계는 [Semantic Versioning (SemVer)](https://semver.org/)을 준수합니다.
 
+## [1.6.4] - 2026-09-07
+
+### 모바일 사이드바 드로어 하드웨어 가속 슬라이드 애니메이션 구현 (Mobile Drawer Smooth Motion)
+- **모바일 햄버거 메뉴 슬라이드오버 드로어(Sheet) 애니메이션 복구 및 고도화**:
+  - `Sheet` 컴포넌트 내 CSS Transition과 Tailwind Animate 키프레임의 충돌로 인해 애니메이션이 생략(깜빡임)되던 문제를 근본적으로 해결
+  - 브라우저 GPU 하드웨어 가속(`translate3d`)을 사용하는 독립 키프레임(`slideInFromLeft`, `slideOutToLeft`)을 `index.css`에 직접 선언
+  - **열림(Open)**: 280ms 부드러운 감속 곡선(`cubic-bezier(0.16, 1, 0.3, 1)`)으로 좌측 화면 바깥에서 스르륵 진입
+  - **닫힘(Close)**: 220ms 가속 곡선으로 좌측 화면 바깥으로 스르륵 퇴장
+  - **배경 오버레이(Overlay)**: 드로어 전환 속도에 맞춘 280ms/220ms 딤드(Dimmed) 페이드인/아웃 애니메이션 적용
+- 단위/라우팅 테스트 33개 전체 통과 및 프로덕션 빌드 완료
+
 ## [1.6.3] - 2026-09-07
 
 ### 모바일 퍼스트 뷰포트(360px~390px) 텍스트 깨짐 및 레이아웃 전면 개선 (Mobile-First UX Refinement)

@@ -45,3 +45,77 @@ input[type=number] {
 ::-webkit-scrollbar-thumb:hover {
   background: #94a3b8;
 }
+
+/* 모바일 사이드바 드로어 하드웨어 가속 슬라이드 애니메이션 */
+@keyframes slideInFromLeft {
+  from {
+    transform: translate3d(-100%, 0, 0);
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes slideOutToLeft {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-100%, 0, 0);
+  }
+}
+
+@keyframes fadeInOverlay {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOutOverlay {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.animate-drawer-in {
+  animation: slideInFromLeft 280ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: transform;
+}
+
+.animate-drawer-out {
+  animation: slideOutToLeft 220ms ease-in forwards;
+  will-change: transform;
+}
+
+.animate-overlay-in {
+  animation: fadeInOverlay 280ms ease-out forwards;
+}
+
+.animate-overlay-out {
+  animation: fadeOutOverlay 220ms ease-in forwards;
+}
+
+/* Radix Sheet 직접 타겟팅 애니메이션 룰 (100% 동작 보장) */
+[data-radix-dialog-content][data-state="open"] {
+  animation: slideInFromLeft 280ms cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+  will-change: transform;
+}
+
+[data-radix-dialog-content][data-state="closed"] {
+  animation: slideOutToLeft 220ms ease-in forwards !important;
+  will-change: transform;
+}
+
+[data-radix-dialog-overlay][data-state="open"] {
+  animation: fadeInOverlay 280ms ease-out forwards !important;
+}
+
+[data-radix-dialog-overlay][data-state="closed"] {
+  animation: fadeOutOverlay 220ms ease-in forwards !important;
+}
