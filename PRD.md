@@ -36,7 +36,7 @@
 src/
 ├── calculators/
 │   ├── compound-interest/   # 1. 연복리 & 자산 성장 계산기
-│   ├── unit-converter/      # 2. 스마트 단위 변환기 (평수 ↔ ㎡ 등)
+│   ├── unit-converter/      # 2. 단위 변환기 (평수 ↔ ㎡ 등)
 │   ├── exchange-rate/       # 3. 실시간/기준 환율 계산기
 │   ├── loan-interest/       # 4. [추천] 대출 이자 및 상환 방식 비교 계산기
 │   ├── dividend/            # 5. [추천] 배당금 및 월 배당 현금흐름 계산기
@@ -67,7 +67,7 @@ src/
   - 레이아웃 및 헤더 정렬 규격:
     - 좌측 사이드바 로고 영역과 우측 글로벌 헤더 영역의 높이를 `h-16 (64px)`로 동일하게 고정하여 하단 구분선(border-b)의 수평선 불일치 완벽 해소.
 
-### 3.2 [생활/측정] 스마트 단위 변환 계산기 (Unit Converter - 신규)
+### 3.2 [생활/측정] 단위 변환기 (Unit Converter - 구현 완료)
 - **기능 요약**: 일상 생활, 부동산 거래, 직구 및 해외 규격에서 자주 쓰이는 단위를 실시간으로 상호 변환하고, 모든 관련 단위 결과를 한눈에 확인할 수 있는 올인원 변환기.
 - **모바일 퍼스트(Mobile-First) 인터페이스**:
   - 상단 카테고리 스크롤 탭: 가로 스와이프로 5대 카테고리(넓이/면적, 길이, 무게, 부피, 온도)를 손쉽게 전환.
@@ -232,6 +232,7 @@ export interface CurrencyInfo {
   - [Pretendard Variable](https://github.com/orioncactus/pretendard) 전면 유지 (숫자 및 한글 가독성 극대화)
   - **한글 수직 중앙(Vertical Center) 정렬 보정**: 한글 글리프 특성상 `leading-none` 적용 시 영문 대비 상단으로 치우쳐(들떠) 보이는 문제를 해결하기 위해, 버튼/배지/탭/타이틀 요소에 균형 잡힌 라인하이트(`leading-normal`, `leading-snug`) 및 정밀 베이스라인 정렬 적용
   - **컬러 이모지 배제 및 단색 시스템 아이콘 원칙**: 서비스 UI 전반에 유니코드 컬러 이모지(💡, ✨ 등) 사용은 전면 배제하되, 시각적 계층과 가독성을 위한 단색(Monochrome) Lucide 시스템 벡터 아이콘(예: 안내 카드 앞 `Info` 아이콘 등)은 적극 유지하여 사용함
+  - **페이지 타이틀 및 국문 네이밍 규칙**: 개별 계산기 및 도구의 국문 타이틀에는 불필요한 '스마트' 수식어를 배제하고 본래의 명칭(예: '단위 변환기', '연복리 & 자산성장 계산기')으로 통일함. 단, 세련된 글로벌 프로덕트 인상을 위해 영문 브랜드 표기(`Smart Calculator Hub`, `Smart Calculator`)는 유지함.
 - **차트**: Recharts (Ghost 테마: Near-black 베이스, Slate-400 원금선, Electric Lime / Lavender 포인트 라인)
 - **아이콘**: Lucide React
 - **상태 관리**: React State + 커스텀 훅 + LocalStorage

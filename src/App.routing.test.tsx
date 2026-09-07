@@ -22,7 +22,7 @@ describe('Seam 2-1: React Router Navigation and Routing', () => {
       </MemoryRouter>
     );
 
-    expect(screen.getAllByText('스마트 단위 변환기').length).toBeGreaterThanOrEqual(1);
+    expect(screen.getAllByText('단위 변환기').length).toBeGreaterThanOrEqual(1);
   });
 
   it('/ 경로로 접속 시 /compound(연복리 계산기)로 자동 리다이렉트되어야 한다', () => {
