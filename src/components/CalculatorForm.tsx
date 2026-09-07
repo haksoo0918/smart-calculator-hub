@@ -7,7 +7,7 @@ import {
 } from '../types/calculator';
 import { formatKoreanUnit } from '../utils/formatters';
 import { QuickAmountButtons } from './QuickAmountButtons';
-import { Sparkles, Copy } from 'lucide-react';
+import { Copy } from 'lucide-react';
 import { Badge } from './ui/badge';
 import { Button } from './ui/button';
 
@@ -265,7 +265,7 @@ export const CalculatorForm: React.FC<CalculatorFormProps> = ({
                   key={preset.rate}
                   type="button"
                   onClick={() => updateField('annualRate', preset.rate)}
-                  className={`px-1 py-1.5 text-[11px] font-medium rounded-md border transition-colors text-center flex items-center justify-center gap-0.5 ${
+                  className={`px-1 py-1.5 text-[11px] font-medium rounded-md border transition-colors text-center flex items-center justify-center ${
                     isSelected
                       ? isNegative
                         ? 'bg-rose-50 text-rose-800 border-rose-300 font-bold'
@@ -273,7 +273,6 @@ export const CalculatorForm: React.FC<CalculatorFormProps> = ({
                       : 'bg-white text-[#334155] border-[#e5e7eb] hover:bg-slate-50'
                   }`}
                 >
-                  <Sparkles className={`w-2.5 h-2.5 shrink-0 ${isSelected && !isNegative ? 'text-[#d1ff19]' : isNegative ? 'text-rose-500' : 'text-slate-400'}`} />
                   <span className="truncate">{preset.label}</span>
                 </button>
               );

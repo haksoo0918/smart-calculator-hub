@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   ResponsiveContainer,
   AreaChart,
@@ -13,7 +13,6 @@ import {
 } from 'recharts';
 import { CalculationResult } from '../types/calculator';
 import { formatCurrency, formatKoreanUnit } from '../utils/formatters';
-import { AreaChart as AreaIcon, LineChart as LineIcon } from 'lucide-react';
 
 interface ChartDashboardProps {
   resultA: CalculationResult;
@@ -30,8 +29,6 @@ export const ChartDashboard: React.FC<ChartDashboardProps> = ({
   nameA = '시나리오 A',
   nameB = '시나리오 B',
 }) => {
-  const [chartType, setChartType] = useState<'area' | 'line'>('area');
-
   // 차트 데이터 병합 (연도 기준)
   const chartData = resultA.breakdown.map((itemA, index) => {
     const itemB = resultB?.breakdown[index];
@@ -110,36 +107,6 @@ export const ChartDashboard: React.FC<ChartDashboardProps> = ({
               : '납입 원금과 복리 순이자의 누적 성장 추이입니다.'}
           </p>
         </div>
-
-        {/* 차트 타입 토글 버튼 */}
-        {!isComparisonMode && (
-          <div className="flex items-center self-end sm:self-auto gap-1 bg-slate-100 p-1 rounded-md border border-[#e5e7eb]">
-            <button
-              type="button"
-              onClick={() => setChartType('area')}
-              className={`flex items-center gap-1 px-2.5 py-1 text-xs font-semibold rounded-md transition-colors ${
-                chartType === 'area'
-                  ? 'bg-[#15171a] text-white'
-                  : 'text-[#64748b] hover:text-[#112220]'
-              }`}
-            >
-              <AreaIcon className="w-3.5 h-3.5" />
-              <span>영역형</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => setChartType('line')}
-              className={`flex items-center gap-1 px-2.5 py-1 text-xs font-semibold rounded-md transition-colors ${
-                chartType === 'line'
-                  ? 'bg-[#15171a] text-white'
-                  : 'text-[#64748b] hover:text-[#112220]'
-              }`}
-            >
-              <LineIcon className="w-3.5 h-3.5" />
-              <span>선형</span>
-            </button>
-          </div>
-        )}
       </div>
 
       {/* 차트 영역 */}
@@ -211,8 +178,8 @@ export const ChartDashboard: React.FC<ChartDashboardProps> = ({
                 dot={false}
               />
             </LineChart>
-          ) : chartType === 'area' ? (
-            /* 단일 모드 누적 영역형 차트 */
+          ) : (
+            /* 단일 모드: 누적 영역형 차트 (AreaChart) */
             <AreaChart data={chartData} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
               <defs>
                 <linearGradient id="colorPrincipal" x1="0" y1="0" x2="0" y2="1">
@@ -262,49 +229,6 @@ export const ChartDashboard: React.FC<ChartDashboardProps> = ({
                 fill="url(#colorInterest)"
               />
             </AreaChart>
-          ) : (
-            /* 단일 모드 라인 차트 */
-            <LineChart data={chartData} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
-              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
-              <XAxis
-                dataKey="year"
-                tickLine={false}
-                axisLine={{ stroke: '#cbd5e1' }}
-                tick={{ fontSize: 11, fill: '#64748b' }}
-              />
-              <YAxis
-                tickFormatter={formatYAxis}
-                tickLine={false}
-                axisLine={false}
-                tick={{ fontSize: 11, fill: '#64748b' }}
-                width={50}
-              />
-              <Tooltip content={<CustomTooltip />} />
-              <Legend
-                verticalAlign="top"
-                align="right"
-                wrapperStyle={{ paddingBottom: 10, fontSize: 11 }}
-              />
-
-              <Line
-                type="monotone"
-                dataKey="totalPostTaxA"
-                name="세후 총자산"
-                stroke="#15171a"
-                strokeWidth={2.5}
-                dot={{ r: 3, fill: '#15171a' }}
-                activeDot={{ r: 5 }}
-              />
-              <Line
-                type="monotone"
-                dataKey="principalA"
-                name="누적 납입원금"
-                stroke="#94a3b8"
-                strokeWidth={1.5}
-                strokeDasharray="4 4"
-                dot={false}
-              />
-            </LineChart>
           )}
         </ResponsiveContainer>
       </div>

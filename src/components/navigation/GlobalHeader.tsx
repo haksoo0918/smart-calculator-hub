@@ -21,8 +21,8 @@ export const GlobalHeader: React.FC<GlobalHeaderProps> = ({
   headerActions,
 }) => {
   return (
-    <header className="bg-white border-b border-[#e5e7eb] sticky top-0 z-30">
-      <div className="max-w-7xl mx-auto px-3.5 py-3 sm:px-6 flex items-center justify-between gap-2">
+    <header className="bg-white border-b border-[#e5e7eb] sticky top-0 z-30 h-16 flex items-center shrink-0">
+      <div className="max-w-7xl w-full mx-auto px-3.5 sm:px-6 flex items-center justify-between gap-2">
         {/* 좌측: 모바일 햄버거 메뉴 버튼 + 계산기 타이틀 */}
         <div className="flex items-center gap-2.5 min-w-0">
           <div className="lg:hidden shrink-0">

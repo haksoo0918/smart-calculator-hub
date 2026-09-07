@@ -54,8 +54,8 @@ export const SidebarDrawer: React.FC<SidebarDrawerProps> = ({
 
   const menuContent = (
     <div className="flex flex-col h-full bg-white text-[#112220]">
-      {/* 헤더 로고 영역 */}
-      <div className="p-4 border-b border-[#e5e7eb] flex items-center justify-between">
+      {/* 헤더 로고 영역 (h-16 고정으로 글로벌 헤더와 수평 보더선 일치) */}
+      <div className="h-16 px-4 border-b border-[#e5e7eb] flex items-center justify-between shrink-0">
         <div className="flex items-center gap-2.5">
           <div className="w-9 h-9 rounded-md bg-[#15171a] text-white flex items-center justify-center">
             <Calculator className="w-5 h-5 text-white" />
@@ -135,7 +135,7 @@ export const SidebarDrawer: React.FC<SidebarDrawerProps> = ({
       {/* 하단 버전 푸터 */}
       <div className="p-3 border-t border-[#e5e7eb] bg-slate-50/50 text-center">
         <p className="text-[11px] text-[#94a3b8] font-medium">
-          스마트 계산기 v1.3.0 • Ghost Design
+          스마트 계산기 v1.4.1 • Ghost Design
         </p>
       </div>
     </div>
