@@ -75,78 +75,81 @@ export const DualExchangeCard: React.FC<DualExchangeCardProps> = ({
   return (
     <div className="bg-white rounded-[24px] border border-[#e5e7eb] p-4 sm:p-6 space-y-4 shadow-2xs">
       {/* 1. 상단 환전 방식 탭 및 기준일자 배지 */}
-      <div className="flex items-center justify-between gap-2 pb-3 border-b border-[#e5e7eb] flex-wrap">
-        <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-xl">
-          <button
-            type="button"
-            onClick={() => onTypeChange('base')}
-            className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-all ${
-              exchangeType === 'base'
-                ? 'bg-[#15171a] text-white shadow-2xs'
-                : 'text-[#64748b] hover:text-[#112220]'
-            }`}
-          >
-            매매기준율
-          </button>
-          <button
-            type="button"
-            onClick={() => onTypeChange('cash_buy')}
-            className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-all ${
-              exchangeType === 'cash_buy'
-                ? 'bg-[#15171a] text-white shadow-2xs'
-                : 'text-[#64748b] hover:text-[#112220]'
-            }`}
-          >
-            현찰 살 때
-          </button>
-          <button
-            type="button"
-            onClick={() => onTypeChange('cash_sell')}
-            className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-all ${
-              exchangeType === 'cash_sell'
-                ? 'bg-[#15171a] text-white shadow-2xs'
-                : 'text-[#64748b] hover:text-[#112220]'
-            }`}
-          >
-            현찰 팔 때
-          </button>
-        </div>
-
-        {/* 기준일 및 환율 안내 */}
-        <div className="flex items-center gap-3 text-xs text-[#64748b] font-medium pt-[0.5px] flex-wrap">
-          <div className="flex items-center gap-1 text-[11px] bg-slate-50 px-2 py-1 rounded-md border border-[#e5e7eb]">
-            <Calendar className="w-3.5 h-3.5 text-[#64748b]" />
-            <span>고시 기준: {snapshot.baseDate}</span>
-            {snapshot.isLive && (
-              <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-500 ml-0.5" title="최신 실시간 환율 연동" />
-            )}
+      <div className="space-y-2.5 pb-3 border-b border-[#e5e7eb]">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+          {/* 환전 방식 탭 (모바일: 3등분 꽉 채움) */}
+          <div className="grid grid-cols-3 gap-1 bg-slate-100 p-1 rounded-xl w-full sm:w-auto">
+            <button
+              type="button"
+              onClick={() => onTypeChange('base')}
+              className={`px-2 py-1.5 text-xs font-semibold rounded-lg transition-all text-center ${
+                exchangeType === 'base'
+                  ? 'bg-[#15171a] text-white shadow-2xs'
+                  : 'text-[#64748b] hover:text-[#112220]'
+              }`}
+            >
+              매매기준율
+            </button>
+            <button
+              type="button"
+              onClick={() => onTypeChange('cash_buy')}
+              className={`px-2 py-1.5 text-xs font-semibold rounded-lg transition-all text-center ${
+                exchangeType === 'cash_buy'
+                  ? 'bg-[#15171a] text-white shadow-2xs'
+                  : 'text-[#64748b] hover:text-[#112220]'
+              }`}
+            >
+              현찰 살 때
+            </button>
+            <button
+              type="button"
+              onClick={() => onTypeChange('cash_sell')}
+              className={`px-2 py-1.5 text-xs font-semibold rounded-lg transition-all text-center ${
+                exchangeType === 'cash_sell'
+                  ? 'bg-[#15171a] text-white shadow-2xs'
+                  : 'text-[#64748b] hover:text-[#112220]'
+              }`}
+            >
+              현찰 팔 때
+            </button>
           </div>
-          <div className="flex items-center gap-1">
-            <TrendingUp className="w-3.5 h-3.5 text-[#15171a]" />
-            <span>1 {fromCode} = {formatCurrencyAmount(appliedRate, toCode)} {toCode}</span>
+
+          {/* 기준일 및 환율 안내 (모바일: 1행 가로 양끝 정렬) */}
+          <div className="flex items-center justify-between sm:justify-end gap-2 text-xs text-[#64748b] font-medium pt-[0.5px]">
+            <div className="flex items-center gap-1 text-[11px] bg-slate-50 px-2 py-1 rounded-md border border-[#e5e7eb] shrink-0">
+              <Calendar className="w-3.5 h-3.5 text-[#64748b]" />
+              <span className="whitespace-nowrap">고시: {snapshot.baseDate}</span>
+              {snapshot.isLive && (
+                <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-500 ml-0.5 shrink-0" title="최신 실시간 환율 연동" />
+              )}
+            </div>
+            <div className="flex items-center gap-1 text-[11px] sm:text-xs truncate">
+              <TrendingUp className="w-3.5 h-3.5 text-[#15171a] shrink-0" />
+              <span className="truncate">1 {fromCode} = {formatCurrencyAmount(appliedRate, toCode)} {toCode}</span>
+            </div>
           </div>
         </div>
       </div>
 
       {/* 2. 은행 환전 우대율 (스프레드 할인율) - 현찰 살 때/팔 때 활성화 */}
       {exchangeType !== 'base' && (
-        <div className="flex items-center justify-between gap-2 p-3 rounded-xl bg-slate-50 border border-[#e5e7eb] flex-wrap">
-          <div className="flex items-center gap-2">
-            <span className="text-xs font-bold text-[#112220]">은행 우대율</span>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-3 rounded-xl bg-slate-50 border border-[#e5e7eb]">
+          <div className="flex items-center justify-between sm:justify-start gap-2">
+            <span className="text-xs font-bold text-[#112220] whitespace-nowrap">은행 우대율</span>
             {discountSavedKRW > 0 && (
-              <Badge variant="eyebrow" className="text-[10px] px-1.5 py-0 h-5">
+              <Badge variant="eyebrow" className="text-[10px] px-1.5 py-0 h-5 whitespace-nowrap">
                 약 {formatCurrencyAmount(discountSavedKRW, 'KRW')}원 절약
               </Badge>
             )}
           </div>
 
-          <div className="flex items-center gap-1">
+          <div className="grid grid-cols-4 sm:flex items-center gap-1 w-full sm:w-auto">
             {discountOptions.map((disc) => (
               <button
                 key={disc}
                 type="button"
                 onClick={() => onDiscountChange(disc)}
-                className={`px-2.5 py-1 text-xs font-bold rounded-md transition-all ${
+                className={`py-1 sm:px-2.5 text-xs font-bold rounded-md transition-all text-center ${
                   discount === disc
                     ? 'bg-[#15171a] text-white'
                     : 'bg-white border border-[#e5e7eb] text-[#64748b] hover:text-[#112220]'
@@ -162,12 +165,12 @@ export const DualExchangeCard: React.FC<DualExchangeCardProps> = ({
       {/* 3. 메인 인터랙티브 듀얼 변환 영역 (모바일: 1열 세로, 데스크톱: 3열 좌/중/우) */}
       <div className="grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] gap-3 items-center">
         {/* 1. 출발(From) 단위 입력 박스 */}
-        <div className="bg-slate-50/70 border border-[#e5e7eb] rounded-2xl p-4 focus-within:border-[#15171a] focus-within:bg-white transition-all">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-xs font-bold text-[#64748b] uppercase tracking-wider leading-normal">
-              환전할 금액 (From)
+        <div className="bg-slate-50/70 border border-[#e5e7eb] rounded-2xl p-3.5 sm:p-4 focus-within:border-[#15171a] focus-within:bg-white transition-all">
+          <div className="flex items-center justify-between gap-2 mb-2">
+            <span className="text-[11px] sm:text-xs font-bold text-[#64748b] uppercase tracking-wider whitespace-nowrap">
+              입력 (From)
             </span>
-            <div className="w-36 sm:w-44">
+            <div className="w-28 sm:w-36 lg:w-44 shrink-0">
               <CurrencySelect
                 id="from-currency"
                 value={fromCode}
@@ -221,31 +224,35 @@ export const DualExchangeCard: React.FC<DualExchangeCardProps> = ({
         </div>
 
         {/* 3. 도착(To) 단위 결과 박스 */}
-        <div className="bg-[#15171a] text-white rounded-2xl p-4 border border-[#15171a] shadow-xs">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-xs font-bold text-[#d1ff19] uppercase tracking-wider flex items-center gap-1.5 leading-normal">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#d1ff19]" />
-              환산 결과 (To)
+        <div className="bg-[#15171a] text-white rounded-2xl p-3.5 sm:p-4 border border-[#15171a] shadow-xs">
+          <div className="flex items-center justify-between gap-2 mb-2">
+            <span className="text-[11px] sm:text-xs font-bold text-[#d1ff19] uppercase tracking-wider flex items-center gap-1.5 whitespace-nowrap">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#d1ff19] shrink-0" />
+              결과 (To)
             </span>
-            <div className="flex items-center gap-2">
-              <button
-                type="button"
-                onClick={handleCopyResult}
-                className="flex items-center gap-1 text-[11px] font-bold text-slate-300 hover:text-white transition-colors cursor-pointer"
-              >
-                {copied ? (
-                  <>
-                    <Check className="w-3.5 h-3.5 text-emerald-400" />
-                    <span className="text-emerald-400">복사완료</span>
-                  </>
-                ) : (
-                  <>
-                    <Copy className="w-3.5 h-3.5" />
-                    <span>복사</span>
-                  </>
-                )}
-              </button>
-              <div className="w-36 sm:w-44">
+            <div className="flex items-center gap-1 sm:gap-2 shrink-0">
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="icon"
+                    onClick={handleCopyResult}
+                    className="h-7 w-7 text-slate-300 hover:text-white hover:bg-slate-800 rounded-md shrink-0"
+                    aria-label="결과값 복사"
+                  >
+                    {copied ? (
+                      <Check className="w-3.5 h-3.5 text-emerald-400" />
+                    ) : (
+                      <Copy className="w-3.5 h-3.5" />
+                    )}
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent side="top">
+                  {copied ? '복사 완료!' : '결과값 복사'}
+                </TooltipContent>
+              </Tooltip>
+              <div className="w-28 sm:w-36 lg:w-44 shrink-0">
                 <CurrencySelect
                   id="to-currency"
                   value={toCode}

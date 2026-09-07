@@ -44,19 +44,24 @@ export const MultiExchangeGrid: React.FC<MultiExchangeGridProps> = ({
 
   return (
     <div className="bg-white rounded-[24px] border border-[#e5e7eb] p-4 sm:p-6 space-y-3.5 shadow-2xs">
-      <div className="flex items-center justify-between gap-2">
-        <div>
-          <div className="flex items-center gap-1.5">
-            <Globe className="w-4 h-4 text-[#112220]" />
-            <h2 className="text-sm sm:text-base font-bold text-[#112220] tracking-tight">
-              전체 주요 통화 실시간 일괄 환산
-            </h2>
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1.5 sm:gap-2">
+        <div className="space-y-1 min-w-0 flex-1">
+          <div className="flex items-center justify-between gap-2">
+            <div className="flex items-center gap-1.5 min-w-0">
+              <Globe className="w-4 h-4 text-[#112220] shrink-0" />
+              <h2 className="text-sm sm:text-base font-bold text-[#112220] tracking-tight">
+                전체 주요 통화 실시간 일괄 환산
+              </h2>
+            </div>
+            <span className="sm:hidden text-[11px] font-medium text-[#64748b] bg-slate-100 px-2 py-0.5 rounded-full shrink-0">
+              기준: {formatCurrencyAmount(amount, fromCode)} {fromCode}
+            </span>
           </div>
-          <p className="text-[11px] text-[#64748b]">
+          <p className="text-[11px] text-[#64748b] leading-relaxed">
             현재 입력값을 기준으로 전 세계 주요 통화로 즉시 동시 환산됩니다.
           </p>
         </div>
-        <span className="text-[11px] font-medium text-[#64748b] bg-slate-100 px-2.5 py-1 rounded-full shrink-0">
+        <span className="hidden sm:inline-flex text-[11px] font-medium text-[#64748b] bg-slate-100 px-2.5 py-1 rounded-full shrink-0">
           기준: {formatCurrencyAmount(amount, fromCode)} {fromCode}
         </span>
       </div>

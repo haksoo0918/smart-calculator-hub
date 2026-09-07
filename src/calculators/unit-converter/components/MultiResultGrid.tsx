@@ -33,17 +33,24 @@ export const MultiResultGrid: React.FC<MultiResultGridProps> = ({
 
   return (
     <div className="bg-white rounded-[24px] border border-[#e5e7eb] p-4 sm:p-6 space-y-3.5 shadow-2xs">
-      <div className="flex items-center justify-between gap-2">
-        <div>
-          <h2 className="text-sm sm:text-base font-bold text-[#112220] tracking-tight">
-            전체 단위 일괄 환산표
-          </h2>
-          <p className="text-[11px] text-[#64748b]">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1.5 sm:gap-2">
+        <div className="space-y-1 min-w-0 flex-1">
+          <div className="flex items-center justify-between gap-2">
+            <h2 className="text-sm sm:text-base font-bold text-[#112220] tracking-tight">
+              전체 단위 일괄 환산표
+            </h2>
+            {inputValue !== undefined && inputValue !== '' && activeUnitSymbol && (
+              <span className="sm:hidden text-[11px] font-medium text-[#64748b] bg-slate-100 px-2 py-0.5 rounded-full shrink-0">
+                기준: {inputValue} {activeUnitSymbol}
+              </span>
+            )}
+          </div>
+          <p className="text-[11px] text-[#64748b] leading-relaxed">
             현재 입력값을 기준으로 모든 관련 단위로 즉시 동시 변환됩니다.
           </p>
         </div>
         {inputValue !== undefined && inputValue !== '' && activeUnitSymbol && (
-          <span className="text-[11px] font-medium text-[#64748b] bg-slate-100 px-2.5 py-1 rounded-full shrink-0">
+          <span className="hidden sm:inline-flex text-[11px] font-medium text-[#64748b] bg-slate-100 px-2.5 py-1 rounded-full shrink-0">
             기준: {inputValue} {activeUnitSymbol}
           </span>
         )}

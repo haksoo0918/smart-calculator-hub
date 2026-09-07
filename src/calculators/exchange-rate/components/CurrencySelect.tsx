@@ -42,7 +42,7 @@ export const CurrencySelect: React.FC<CurrencySelectProps> = ({
       <Select value={value} onValueChange={(val) => onChange(val as CurrencyCode)}>
         <SelectTrigger
           id={id}
-          className={`w-full h-8 text-xs font-bold transition-all ${
+          className={`w-full h-8 text-xs font-bold transition-all px-2 sm:px-3 truncate ${
             isDark
               ? 'bg-[#24272c] text-white border-slate-700 hover:bg-[#2e3238] focus:ring-[#d1ff19]'
               : 'bg-white border-[#e5e7eb] text-[#112220] hover:border-[#15171a]'
