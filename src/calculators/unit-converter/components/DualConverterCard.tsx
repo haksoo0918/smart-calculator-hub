@@ -7,6 +7,13 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '../../../components/ui/tooltip';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '../../../components/ui/select';
 
 interface DualConverterCardProps {
   units: UnitDefinition[];
@@ -89,17 +96,20 @@ export const DualConverterCard: React.FC<DualConverterCardProps> = ({
             <span className="text-xs font-bold text-[#64748b] uppercase tracking-wider">
               변환할 값 (From)
             </span>
-            <select
-              value={fromUnitId}
-              onChange={(e) => onFromUnitChange(e.target.value)}
-              className="bg-white text-xs font-bold text-[#112220] border border-[#e5e7eb] rounded-lg px-2 py-1 outline-none focus:border-[#15171a] cursor-pointer"
-            >
-              {units.map((u) => (
-                <option key={u.id} value={u.id}>
-                  {u.name} ({u.symbol})
-                </option>
-              ))}
-            </select>
+            <div className="w-36 sm:w-44">
+              <Select value={fromUnitId} onValueChange={onFromUnitChange}>
+                <SelectTrigger className="h-8 text-xs bg-white border-[#e5e7eb] font-bold">
+                  <SelectValue placeholder="단위 선택" />
+                </SelectTrigger>
+                <SelectContent>
+                  {units.map((u) => (
+                    <SelectItem key={u.id} value={u.id}>
+                      {u.name} ({u.symbol})
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
           </div>
 
           <div className="flex items-baseline gap-2">
@@ -151,17 +161,24 @@ export const DualConverterCard: React.FC<DualConverterCardProps> = ({
               <span className="w-1.5 h-1.5 rounded-full bg-[#d1ff19]" />
               결과 (To)
             </span>
-            <select
-              value={toUnitId}
-              onChange={(e) => onToUnitChange(e.target.value)}
-              className="bg-[#24272c] text-xs font-bold text-white border border-slate-700 rounded-lg px-2 py-1 outline-none focus:border-[#d1ff19] cursor-pointer"
-            >
-              {units.map((u) => (
-                <option key={u.id} value={u.id}>
-                  {u.name} ({u.symbol})
-                </option>
-              ))}
-            </select>
+            <div className="w-36 sm:w-44">
+              <Select value={toUnitId} onValueChange={onToUnitChange}>
+                <SelectTrigger className="h-8 text-xs bg-[#24272c] text-white border-slate-700 font-bold hover:bg-[#2e3238] focus:ring-[#d1ff19]">
+                  <SelectValue placeholder="단위 선택" />
+                </SelectTrigger>
+                <SelectContent className="bg-[#15171a] border-slate-800 text-white">
+                  {units.map((u) => (
+                    <SelectItem
+                      key={u.id}
+                      value={u.id}
+                      className="text-white hover:bg-slate-800 focus:bg-slate-800 focus:text-[#d1ff19]"
+                    >
+                      {u.name} ({u.symbol})
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
           </div>
 
           <div className="flex items-baseline justify-between gap-2 overflow-x-auto">

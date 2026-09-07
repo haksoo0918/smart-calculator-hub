@@ -215,7 +215,12 @@ export interface CurrencyInfo {
     - **배경 및 캔버스**: Warm White (`#ffffff`), Ink Base (`#15171a`), Slate Hairlines (`#e5e7eb`, `#1f2937`)
     - **버튼 및 인터랙션**: Near-black Pill/Rounded CTA (`#15171a`, text `#ffffff`), 6px/8px 반경, 39px 규격
     - **카드 및 서피스**: 24px 대형 둥근 모서리(`rounded-3xl` / `24px`), 플랫 헤어라인 테두리 (`border-[#e5e7eb]`, 그림자 배제 원칙)
-  - shadcn 컴포넌트: 버튼(Button), 카드(Card), 입력창(Input), 슬라이더(Slider), 시트(Sheet/Drawer), 배지(Badge), 테이블(Table), 툴팁(Tooltip)
+  - shadcn 컴포넌트: 버튼(Button), 카드(Card), 입력창(Input), 슬라이더(Slider), 시트(Sheet/Drawer), 배지(Badge), 테이블(Table), 툴팁(Tooltip), **셀렉트(Select)**
+    - `@radix-ui/react-select` 기반 모듈형 드롭다운 컴포넌트 구축 (`src/components/ui/select.tsx`)
+    - 기존 브라우저 기본 `<select>` 태그를 shadcn `Select`로 전면 교체:
+      - 단위 변환기(`DualConverterCard.tsx`): 출발 단위(From) 및 도착 단위(To) 선택
+      - 연복리 계산기(`CalculatorForm.tsx`): 복리 주기(월복리/연복리 등) 및 과세 체계(일반/비과세/ISA 등) 선택
+    - Ghost 다크 테마 패널 및 라이트 테마 패널 양방향 완벽 호환 스타일링 지원
 - **스타일링**: Tailwind CSS + CSS 토큰 변수 (`src/index.css`)
 - **타이포그래피**: [Pretendard Variable](https://github.com/orioncactus/pretendard) 전면 유지 (숫자 및 한글 가독성 극대화, 모노스페이스 배제)
 - **차트**: Recharts (Ghost 테마: Near-black 베이스, Slate-400 원금선, Electric Lime / Lavender 포인트 라인)

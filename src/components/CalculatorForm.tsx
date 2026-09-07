@@ -10,6 +10,13 @@ import { QuickAmountButtons } from './QuickAmountButtons';
 import { Copy } from 'lucide-react';
 import { Badge } from './ui/badge';
 import { Button } from './ui/button';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from './ui/select';
 
 interface CalculatorFormProps {
   scenario: ScenarioInput;
@@ -287,18 +294,22 @@ export const CalculatorForm: React.FC<CalculatorFormProps> = ({
             <label className="block text-xs font-semibold text-[#112220] mb-1">
               복리 주기
             </label>
-            <select
+            <Select
               value={scenario.compoundingFrequency}
-              onChange={(e) =>
-                updateField('compoundingFrequency', e.target.value as CompoundingFrequency)
+              onValueChange={(val) =>
+                updateField('compoundingFrequency', val as CompoundingFrequency)
               }
-              className={`w-full py-2 px-2.5 text-xs font-semibold text-[#112220] bg-slate-50 border border-[#e5e7eb] rounded-md ${borderFocusClass}`}
             >
-              <option value="monthly">월복리 (일반적/추천)</option>
-              <option value="annual">연복리</option>
-              <option value="quarterly">분기복리</option>
-              <option value="daily">일복리</option>
-            </select>
+              <SelectTrigger className="h-[39px] text-xs font-semibold bg-slate-50 border-[#e5e7eb]">
+                <SelectValue placeholder="복리 주기 선택" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="monthly">월복리 (일반적/추천)</SelectItem>
+                <SelectItem value="annual">연복리</SelectItem>
+                <SelectItem value="quarterly">분기복리</SelectItem>
+                <SelectItem value="daily">일복리</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
 
           {/* 과세 체계 */}
@@ -306,16 +317,20 @@ export const CalculatorForm: React.FC<CalculatorFormProps> = ({
             <label className="block text-xs font-semibold text-[#112220] mb-1">
               이자소득 과세
             </label>
-            <select
+            <Select
               value={scenario.taxType}
-              onChange={(e) => updateField('taxType', e.target.value as TaxType)}
-              className={`w-full py-2 px-2.5 text-xs font-semibold text-[#112220] bg-slate-50 border border-[#e5e7eb] rounded-md ${borderFocusClass}`}
+              onValueChange={(val) => updateField('taxType', val as TaxType)}
             >
-              <option value="normal">일반과세 (15.4%)</option>
-              <option value="exempt">비과세 (0%)</option>
-              <option value="isa">세금우대/ISA (9.9%)</option>
-              <option value="custom">직접 입력</option>
-            </select>
+              <SelectTrigger className="h-[39px] text-xs font-semibold bg-slate-50 border-[#e5e7eb]">
+                <SelectValue placeholder="과세 체계 선택" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="normal">일반과세 (15.4%)</SelectItem>
+                <SelectItem value="exempt">비과세 (0%)</SelectItem>
+                <SelectItem value="isa">세금우대/ISA (9.9%)</SelectItem>
+                <SelectItem value="custom">직접 입력</SelectItem>
+              </SelectContent>
+            </Select>
             {scenario.taxType === 'custom' && (
               <div className="mt-1.5 flex items-center justify-end gap-1">
                 <input

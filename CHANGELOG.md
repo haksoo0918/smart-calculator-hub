@@ -3,6 +3,16 @@
 모든 주요 변경 사항은 본 문서에 기록됩니다.
 버전 체계는 [Semantic Versioning (SemVer)](https://semver.org/)을 준수합니다.
 
+## [1.5.2] - 2026-09-07
+
+### 개선 및 리팩터링 (Improved & Refactored)
+- **shadcn/ui `Select` 컴포넌트 전면 도입 및 네이티브 select 태그 대체**:
+  - `@radix-ui/react-select` 기반 모듈형 컴포넌트 구축 (`src/components/ui/select.tsx`)
+  - Ghost 디자인 시스템의 Hairline 테두리, 둥근 모서리, 다크/라이트 양방향 테마 스타일링 적용
+  - **스마트 단위 변환기 (`DualConverterCard.tsx`)**: 출발 단위(From) 및 도착 단위(To) 드롭다운을 shadcn Select로 마이그레이션
+  - **연복리 계산기 (`CalculatorForm.tsx`)**: 복리 주기 및 이자소득 과세 체계 드롭다운을 shadcn Select로 마이그레이션
+  - `select.test.tsx` 단위 테스트 작성 및 통과 (총 26개 테스트 전체 통과)
+
 ## [1.5.1] - 2026-09-07
 
 ### 개선 및 리팩터링 (Improved & Refactored)
