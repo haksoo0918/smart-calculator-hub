@@ -3,6 +3,22 @@
 모든 주요 변경 사항은 본 문서에 기록됩니다.
 버전 체계는 [Semantic Versioning (SemVer)](https://semver.org/)을 준수합니다.
 
+## [1.8.9] - 2026-09-10
+
+### 연복리 요약 카드 디자인 복원 및 전 페이지 반응형 안정화 (UI Polish & Bug Fix)
+- **연복리 3단 서브 지표 카드(`총 투자원금`, `세후 순이자`, `이자 소득세`) 알약 왜곡 해소 (`src/components/SummaryCards.tsx`)**:
+  - `Card` 컴포넌트의 과도한 라운딩(`rounded-[24px]`)으로 인해 60~70px 높이의 작은 서브 카드가 캡슐 형태로 왜곡되던 현상을 `rounded-xl sm:rounded-2xl`로 정상 복원.
+  - 비교 모드(A/B) 시 좌우 2분할 공간에서 텍스트가 세로로 찌그러지지 않도록 1열 세로 레이아웃(`grid-cols-1`)으로 최적화.
+- **다크 서피스 카드 내 라벨 텍스트 가독성 복원 (`src/components/ui/badge.tsx`)**:
+  - `Badge`의 `variant="outline"`을 투명 배경(`bg-transparent`)으로 원복하여 다크 서피스(`ComparisonView.tsx`) 안에서 텍스트가 사라지던 결함 해결.
+  - 대출 헤더 전용 은은한 배경(`bg-slate-50/70`)은 신설된 `variant="meta"`로 완전 분리 격리.
+- **1024px 반응형 차트 너비 계산 오류 방지 (`CompoundInterestApp.tsx`, `ChartDashboard.tsx`)**:
+  - Grid 자식 컬럼에 `min-w-0`을 보강하여 Recharts `ResponsiveContainer`가 너비를 잘못 계산하고 Y축 눈금이 뭉개지던 현상 방지.
+- **정기 추가 적립금 금액 포맷팅 누락 수정 (`CalculatorForm.tsx`)**:
+  - 초기 투자 원금과 동일하게 천 단위 콤마 포맷팅(`toLocaleString('ko-KR')`) 및 `inputMode="numeric"`으로 일원화.
+- **단위 테스트 및 빌드 검증 완료**:
+  - 14개 테스트 파일(55개 테스트) 100% 통과 및 프로덕션 빌드 완료.
+
 ## [1.8.8] - 2026-09-10
 
 ### 카드 헤더 서브 뱃지(Header Meta Badge) 디자인 일원화 및 공통 표준화 (UI Polish)

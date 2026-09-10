@@ -34,9 +34,9 @@ describe('Seam 1-2: shadcn Card and Badge Components', () => {
     expect(screen.getByText('아웃라인 뱃지')).toBeInTheDocument();
   });
 
-  it('Badge가 size="sm" 옵션을 적용하여 컴팩트 규격으로 렌더링되어야 한다', () => {
+  it('Badge가 variant="meta" 및 size="sm" 옵션을 적용하여 컴팩트 규격으로 렌더링되어야 한다', () => {
     render(
-      <Badge variant="outline" size="sm" data-testid="meta-badge">
+      <Badge variant="meta" size="sm" data-testid="meta-badge">
         스마트 비교
       </Badge>
     );
@@ -46,5 +46,6 @@ describe('Seam 1-2: shadcn Card and Badge Components', () => {
     expect(badge.className).toContain('text-[10px]');
     expect(badge.className).toContain('px-1.5');
     expect(badge.className).toContain('h-5');
+    expect(badge.className).toContain('bg-slate-50/70');
   });
 });

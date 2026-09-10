@@ -116,10 +116,10 @@ export const ChartDashboard: React.FC<ChartDashboardProps> = ({
       </div>
 
       {/* 차트 영역 */}
-      <div className="w-full h-72 sm:h-80 -ml-2 sm:ml-0">
-        <ResponsiveContainer width="100%" height="100%">
+      <div className="w-full h-72 sm:h-80 min-w-0">
+        <ResponsiveContainer width="100%" height="100%" minWidth={0}>
           {isComparisonMode ? (
-            <LineChart data={chartData} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
+            <LineChart data={chartData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
               <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={gridStroke} />
               <XAxis
                 dataKey="year"
@@ -132,7 +132,8 @@ export const ChartDashboard: React.FC<ChartDashboardProps> = ({
                 tickLine={false}
                 axisLine={false}
                 tick={{ fontSize: 11, fill: tickFill }}
-                width={50}
+                width={45}
+                tickMargin={4}
               />
               <Tooltip content={<CustomTooltip />} />
               <Legend
@@ -180,7 +181,7 @@ export const ChartDashboard: React.FC<ChartDashboardProps> = ({
               />
             </LineChart>
           ) : (
-            <AreaChart data={chartData} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
+            <AreaChart data={chartData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
               <defs>
                 <linearGradient id="colorPrincipal" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="5%" stopColor="#94a3b8" stopOpacity={isDark ? 0.3 : 0.4} />
@@ -203,7 +204,8 @@ export const ChartDashboard: React.FC<ChartDashboardProps> = ({
                 tickLine={false}
                 axisLine={false}
                 tick={{ fontSize: 11, fill: tickFill }}
-                width={50}
+                width={45}
+                tickMargin={4}
               />
               <Tooltip content={<CustomTooltip />} />
               <Legend

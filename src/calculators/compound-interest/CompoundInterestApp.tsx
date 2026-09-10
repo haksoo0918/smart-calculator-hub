@@ -161,7 +161,7 @@ export const CompoundInterestApp: React.FC<CompoundInterestAppProps> = () => {
       {/* 2열 반응형 그리드 */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
         {/* 좌측: 입력 폼 영역 (lg: 5컬럼) */}
-        <div className="lg:col-span-5 space-y-4">
+        <div className="lg:col-span-5 space-y-4 min-w-0">
           {!isComparisonMode && (
             <CalculatorForm
               scenario={scenarioA}
@@ -197,7 +197,7 @@ export const CompoundInterestApp: React.FC<CompoundInterestAppProps> = () => {
         </div>
 
         {/* 우측: 시각화 대시보드 & 결과 영역 (lg: 7컬럼) */}
-        <div className="lg:col-span-7 space-y-4 sm:space-y-5">
+        <div className="lg:col-span-7 space-y-4 sm:space-y-5 min-w-0">
           {isComparisonMode && <ComparisonView comparison={comparison} />}
 
           {!isComparisonMode ? (

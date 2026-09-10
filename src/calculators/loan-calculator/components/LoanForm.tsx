@@ -84,7 +84,7 @@ export const LoanForm: React.FC<LoanFormProps> = ({ input, onChange, onReset }) 
         <div className="space-y-0.5">
           <h2 className="text-base sm:text-lg font-black text-[#112220] dark:text-slate-100 flex items-center gap-2 whitespace-nowrap">
             대출 조건 입력
-            <Badge variant="outline" size="sm">
+            <Badge variant="meta" size="sm">
               스마트 비교
             </Badge>
           </h2>
