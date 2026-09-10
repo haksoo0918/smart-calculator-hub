@@ -295,8 +295,10 @@ export const LoanForm: React.FC<LoanFormProps> = ({ input, onChange, onReset }) 
                 enabled: !prev.enabled,
               }))
             }
-            className={`rounded-full transition-colors cursor-pointer shrink-0 hover:bg-transparent dark:hover:bg-transparent ${
-              isEarlyEnabled ? 'bg-[#15171a] dark:bg-[#d1ff19]' : 'bg-slate-200 dark:bg-slate-700'
+            className={`rounded-full transition-colors cursor-pointer shrink-0 ${
+              isEarlyEnabled
+                ? 'bg-[#15171a] hover:bg-[#25282c] dark:bg-[#d1ff19] dark:hover:bg-[#b8e610]'
+                : 'bg-slate-200 hover:bg-slate-300 dark:bg-slate-700 dark:hover:bg-slate-600'
             }`}
           >
             <span

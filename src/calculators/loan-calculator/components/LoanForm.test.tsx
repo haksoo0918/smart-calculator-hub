@@ -1,4 +1,4 @@
-﻿import { render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 import { LoanForm } from './LoanForm';
 import { LoanInput } from '../../../types/loan';
@@ -43,6 +43,9 @@ describe('Seam: LoanForm Early Repayment Switch Toggle Position', () => {
     
     // 버튼 기본의 justify-center를 덮어쓰고 justify-start로 정렬되어야 썸이 왼쪽 끝에 위치함
     expect(switchBtn.className).toContain('justify-start');
+
+    // 마우스 오버 시 트랙 배경이 투명하게 사라지지 않아야 함 (오류 1 방지)
+    expect(switchBtn.className).not.toContain('hover:bg-transparent');
   });
 
   it('OFF 상태일 때 썸은 translate-x-0이어야 하고, ON 상태일 때 translate-x-5로 이동해야 한다', () => {

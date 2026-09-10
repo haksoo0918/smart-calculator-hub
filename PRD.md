@@ -45,10 +45,10 @@
 
 ### 2.2 공통 모바일 퍼스트(Mobile-First) 및 반응형 컨테이너 표준 규격
 모든 계산기 모듈과 글로벌 네비게이션은 다음의 표준 규격을 공통으로 상속받아 일관성을 유지합니다:
-- **헤더 엣지-투-엣지(Edge-to-Edge) 풀 와이드 및 본문 단일 컨테이너(`max-w-5xl`) 표준화**:
+- **헤더 엣지-투-엣지(Edge-to-Edge) 풀 와이드 및 본문 컨테이너 확장(`max-w-7xl`) 표준화**:
   - **글로벌 상단 헤더 (`GlobalHeader.tsx`)**: 뷰포트 좌우 끝까지 100% 확장되는 풀 와이드(`w-full px-4 sm:px-6`) 구조를 적용하여, 좌측 타이틀 영역과 우측 테마 토글 버튼이 화면 양 끝에 넉넉하고 시원하게 붙도록 배치.
-  - **메인 본문 콘텐츠 (`App.tsx`의 `<main>`)**: 가독성과 안정감을 위해 일관된 `max-w-5xl w-full mx-auto` 단일 규격을 유지하여, 페이지 전환 시 본문 너비가 덜컹거리지 않음.
-  - 개별 페이지 컴포넌트(`CompoundInterestApp.tsx`, `UnitConverterApp.tsx`, `ExchangeApp.tsx`) 내부의 불필요한 `max-w-4xl`, `max-w-5xl` 등 중복 제한을 제거하여, 페이지 이동 시 레이아웃 좌우 정렬선이 1px의 떨림도 없이 완벽하게 정렬되도록 일원화.
+  - **메인 본문 콘텐츠 (`App.tsx`의 `<main>`)**: 2열 레이아웃(좌측 폼 5, 우측 결과 7)의 우측 패널 가용 폭을 대폭 넓혀 3열 비교 카드 및 시각화 차트가 비좁게 구겨지지 않도록 단일 컨테이너 규격을 기존 `max-w-5xl`(1024px)에서 **`max-w-7xl`(1280px)**로 전격 확장.
+  - 개별 페이지 컴포넌트(`CompoundInterestApp.tsx`, `UnitConverterApp.tsx`, `ExchangeApp.tsx`, `LoanApp.tsx`) 내부의 불필요한 인라인 너비 제한을 배제하여, 페이지 이동 시 레이아웃 좌우 정렬선이 완벽하게 일원화되도록 보장.
 - **단일 열(Single Column) 흐름 최적화**: 좁은 모바일 화면(360px ~ 430px)에서 가로 스크롤 없이 엄지손가락 터치 반경 내에서 모든 인터랙션 완결.
 - **상단 카테고리/모드 스와이프 탭**: 손쉬운 가로 스크롤/탭 전환 지원.
 - **대형 인터랙티브 듀얼 카드(Dual Interactive Card) 표준 규격**:
@@ -712,15 +712,17 @@ export interface LoanComparisonSummary {
    - **거치 기간 선택 칩**: 모바일(`360px ~ 480px`)에서는 4분할 시 텍스트("거치 없음 (즉시 원금 상환)")가 찌그러지므로 `grid-cols-2 sm:grid-cols-4`로 분기하여 모바일에서 2열 2행으로 넉넉하고 시원한 터치 영역 확보.
    - **중도상환 시점 칩**: `grid-cols-2 sm:grid-cols-4` 분기 적용.
    - **대출 금리 칩 (`RATE_PRESETS`)**: `flex-wrap gap-1.5`에서 모바일에서도 균형 잡히도록 `grid grid-cols-2 sm:flex` 형태로 가변 분기하거나 축약 라벨/적응형 패딩 적용.
+   - **중도상환 시뮬레이터 스위치 마우스 호버 가시성 보장**: 기존 `hover:bg-transparent`로 인해 마우스 오버 시 스위치 트랙 배경이 사라지던 결함을 완전히 제거하고, ON/OFF 각 상태별 적절한 호버 색상(ON: `hover:bg-[#25282c] dark:hover:bg-[#b8e610]`, OFF: `hover:bg-slate-300 dark:hover:bg-slate-600`)을 명시하여 인터랙션 시각적 안정성 확보.
 
 2. **대출 요약 카드 및 3대 상환 비교 (`LoanSummaryCards.tsx`, `LoanComparisonCard.tsx`)**:
    - **3대 핵심 요약 카드**:
      - 억 단위 큰 금액 표시 시 "원" 단위가 아래 줄로 튕겨 떨어지지 않도록 `whitespace-nowrap flex items-baseline gap-0.5` 및 적응형 폰트 크기(`text-base xl:text-xl font-black`) 적용.
      - 한글 축약 금액(예: `5억 4,722만 원`)도 카드의 한 줄 내에서 안정적으로 렌더링되도록 보장.
    - **3대 상환방식 동시 비교 카드**:
-     - 데스크톱 2열 레이아웃(`lg:col-span-7`, 약 550px)에서 3열 그리드 강제 시 "원리금균/등", "가장 대중/적", "총 대출이/자"처럼 텍스트가 글자 단위로 쪼개지는 현상 원천 차단.
-     - 뷰포트 분기: `grid-cols-1 md:grid-cols-3 xl:grid-cols-3`를 우측 패널의 실제 너비에 맞춰 `grid-cols-1 xl:grid-cols-3`로 완화하거나, 가로 1열 수직 스택 형태/컴팩트 그리드로 설계하고 모든 타이틀 및 라벨에 `break-keep whitespace-nowrap`을 적용.
-     - 라벨 및 수치 영역: "총 대출이자"와 금액, "첫 달 상환액"과 금액이 좌우 양끝(`flex items-center justify-between`)으로 한 줄에 안정적으로 안착하도록 구성.
+     - **선택 체크 아이콘 제거**: 선택된 카드에 붙던 `CheckCircle2` 아이콘을 완전히 제거하여 가로 폭 낭비를 없애고 세 카드의 타이틀 구조와 여백 대칭성을 완벽히 일치.
+     - **상단 1행 뱃지 위치 일원화**: 세 카드 모두 `[1행: 상환 방식 명칭 + 우측 뱃지]`(`flex items-center justify-between mb-1`)의 단일 1행 구조로 통일.
+     - **설명 문구 2줄 높이 통일 및 단어 보존**: `break-keep min-h-[32px] line-clamp-2`를 적용하여 한글 단어가 임의의 글자 단위로 끊기지 않도록 하고, 세 카드의 설명 영역 높이를 동일하게 유지.
+     - **시맨틱 `<dl>`, `<dt>`, `<dd>` 마크업 및 한 줄 수평 정렬**: 하단 수치 영역을 웹 표준 시맨틱 태그인 `<dl>`, `<dt>`, `<dd>`로 구성하고, 하단 구분선(`border-t border-[#e5e7eb]`) 아래에서 "총 대출이자" 및 "첫 달 상환액" 라벨과 금액이 1줄(`flex items-center justify-between`)로 나란히 안착되도록 정렬.
 
 3. **연복리 계산기 요약 지표 (`SummaryCards.tsx`)**:
    - **하단 3단 서브 카드 (투자원금 / 순이자 / 소득세)**:

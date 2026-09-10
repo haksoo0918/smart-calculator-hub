@@ -1,7 +1,6 @@
 import React from 'react';
 import { LoanComparisonSummary, RepaymentMethod } from '../../../types/loan';
 import { formatKoreanLoanAmount } from '../../../utils/loanCalculator';
-import { CheckCircle2 } from 'lucide-react';
 import { Button } from '../../../components/ui/button';
 
 interface LoanComparisonCardProps {
@@ -81,10 +80,10 @@ export const LoanComparisonCard: React.FC<LoanComparisonCardProps> = ({
               }`}
             >
               <div className="w-full">
-                <div className="flex items-center justify-between gap-1 mb-1.5 flex-wrap">
-                  <span className="font-bold text-sm text-[#112220] dark:text-slate-100 flex items-center gap-1 whitespace-nowrap">
+                {/* 1행: 상환 방식 명칭 및 뱃지 */}
+                <div className="flex items-center justify-between mb-1">
+                  <span className="font-bold text-sm text-[#112220] dark:text-slate-100 whitespace-nowrap">
                     {item.name}
-                    {isSelected && <CheckCircle2 className="w-4 h-4 text-[#112220] dark:text-[#d1ff19] shrink-0" />}
                   </span>
                   <span
                     className={`text-[10px] font-bold px-1.5 py-0.5 rounded shrink-0 whitespace-nowrap ${
@@ -96,25 +95,28 @@ export const LoanComparisonCard: React.FC<LoanComparisonCardProps> = ({
                     {item.badge}
                   </span>
                 </div>
-                <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed mb-3 whitespace-normal break-words line-clamp-2">
+
+                {/* 2행: 핵심 요약 설명 문구 (3개 카드 동일한 2줄 높이 유지, 한글 단어 끊김 방지) */}
+                <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed mb-3 whitespace-normal break-keep line-clamp-2 min-h-[32px]">
                   {item.desc}
                 </p>
               </div>
 
-              <div className="space-y-1.5 pt-2.5 border-t border-slate-100 dark:border-slate-800/80 w-full text-xs">
-                <div className="flex items-center justify-between gap-1 flex-wrap">
-                  <span className="text-slate-500 dark:text-slate-400 text-[11px] shrink-0 whitespace-nowrap">총 대출이자</span>
-                  <span className={`font-black text-xs whitespace-nowrap ${isLowest ? 'text-emerald-600 dark:text-emerald-400' : 'text-[#112220] dark:text-slate-100'}`}>
+              {/* 하단 금액 정보 (시맨틱 dl dt dd 1줄 구성) */}
+              <dl className="space-y-1.5 pt-2.5 border-t border-[#e5e7eb] dark:border-slate-800/80 w-full text-xs">
+                <div className="flex items-center justify-between gap-1">
+                  <dt className="text-slate-500 dark:text-slate-400 text-[11px] shrink-0 whitespace-nowrap">총 대출이자</dt>
+                  <dd className={`font-black text-xs whitespace-nowrap ${isLowest ? 'text-emerald-600 dark:text-emerald-400' : 'text-[#112220] dark:text-slate-100'}`}>
                     {item.result.totalInterest.toLocaleString('ko-KR')}원
-                  </span>
+                  </dd>
                 </div>
-                <div className="flex items-center justify-between gap-1 flex-wrap">
-                  <span className="text-slate-500 dark:text-slate-400 text-[11px] shrink-0 whitespace-nowrap">첫 달 상환액</span>
-                  <span className="font-bold text-xs text-[#112220] dark:text-slate-200 whitespace-nowrap">
+                <div className="flex items-center justify-between gap-1">
+                  <dt className="text-slate-500 dark:text-slate-400 text-[11px] shrink-0 whitespace-nowrap">첫 달 상환액</dt>
+                  <dd className="font-bold text-xs text-[#112220] dark:text-slate-200 whitespace-nowrap">
                     {item.result.firstMonthPayment.toLocaleString('ko-KR')}원
-                  </span>
+                  </dd>
                 </div>
-              </div>
+              </dl>
             </Button>
           );
         })}
