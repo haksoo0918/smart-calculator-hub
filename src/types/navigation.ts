@@ -58,8 +58,8 @@ export const CALCULATORS_LIST: CalculatorItem[] = [
     shortName: '대출이자 계산기',
     description: '원리금균등 vs 원금균등 vs 만기일시 3대 상환방식 한눈에 비교',
     category: 'finance',
-    badge: '추천',
-    status: 'coming-soon',
+    badge: 'NEW',
+    status: 'active',
   },
   {
     id: 'dividend',

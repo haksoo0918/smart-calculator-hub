@@ -548,6 +548,123 @@ export interface ExchangeResult {
 - **스타일 톤앤매너**: `p-4 rounded-2xl bg-slate-50 dark:bg-[#1e293b] border border-[#e5e7eb] dark:border-slate-800 text-xs text-[#64748b] dark:text-slate-300 shadow-2xs`
 - **시각 요소**: 상단 `Info` 아이콘(Electric Lime 포인트) + 볼드 헤더 + 구분선
 
+---
+
+## 13. 대출 이자 및 상환방식 비교 계산기 규격 (`LoanApp`)
+
+### 13.1 개발 배경 및 목표
+- 대한민국 금융 소비자들이 주택담보대출, 전세대출, 신용대출 이용 시 가장 크게 고민하는 **3대 상환방식(원리금균등, 원금균등, 만기일시)** 간의 총 이자비용 격차와 월별 현금흐름 부담을 한눈에 명확하게 비교하고 시뮬레이션할 수 있도록 지원함.
+
+### 13.2 데이터 모델 (`src/types/loan.ts`)
+```typescript
+export type RepaymentMethod = 'equal_payment' | 'equal_principal' | 'bullet';
+
+export interface LoanInput {
+  loanAmount: number;         // 대출 원금 (원 단위, 예: 300,000,000)
+  annualRate: number;         // 연이율 (%, 예: 4.2)
+  loanTermYears: number;      // 대출 기간 (연 단위, 예: 30)
+  gracePeriodMonths: number;  // 거치 기간 (개월 단위, 0 = 거치 없음)
+  repaymentMethod: RepaymentMethod; // 기본 선택 상환방식
+}
+
+export interface MonthlyRepayment {
+  month: number;              // 회차 (1 ~ 총 개월수)
+  year: number;               // 연차 (1 ~ 기간)
+  monthInYear: number;        // 연차 내 월 (1 ~ 12)
+  isGracePeriod: boolean;     // 거치 기간 여부
+  principalPayment: number;   // 납입 원금 (원)
+  interestPayment: number;    // 납입 이자 (원)
+  totalPayment: number;       // 월 상환액 (원금 + 이자)
+  remainingBalance: number;   // 대출 잔액 (원)
+}
+
+export interface RepaymentCalculationResult {
+  method: RepaymentMethod;
+  totalRepayment: number;     // 총 상환금액 (원금 + 총이자)
+  totalInterest: number;      // 총 대출이자
+  firstMonthPayment: number;  // 1회차 상환액
+  lastMonthPayment: number;   // 최종 회차 상환액
+  monthlyAveragePayment: number; // 월평균 상환액
+  maxMonthlyPayment: number;  // 최대 월 상환액
+  minMonthlyPayment: number;  // 최소 월 상환액
+export interface EarlyRepaymentOption {
+  enabled: boolean;
+  afterMonths: number;        // 대출 실행 N개월 후 상환 (예: 12, 24, 36)
+  amount: number;             // 중도상환 원금
+  feeRate: number;            // 중도상환 수수료율 (%, 기본 1.2)
+}
+
+export interface EarlyRepaymentResult {
+  feeAmount: number;          // 납부할 중도상환 수수료 (3년 슬라이딩 감면 반영)
+  savedInterest: number;      // 중도상환으로 절약된 총이자
+  netBenefit: number;         // 순 절감 혜택 (절약이자 - 수수료)
+}
+
+export interface RepaymentCalculationResult {
+  method: RepaymentMethod;
+  totalRepayment: number;     // 총 상환금액 (원금 + 총이자)
+  totalInterest: number;      // 총 대출이자
+  firstMonthPayment: number;  // 1회차 상환액
+  lastMonthPayment: number;   // 최종 회차 상환액
+  monthlyAveragePayment: number; // 월평균 상환액
+  maxMonthlyPayment: number;  // 최대 월 상환액
+  minMonthlyPayment: number;  // 최소 월 상환액
+  schedule: MonthlyRepayment[]; // 월별 상세 스케줄표
+  earlyRepayment?: EarlyRepaymentResult; // 중도상환 적용 시 결과
+}
+
+export interface LoanComparisonSummary {
+  equalPayment: RepaymentCalculationResult;
+  equalPrincipal: RepaymentCalculationResult;
+  bullet: RepaymentCalculationResult;
+  lowestInterestMethod: RepaymentMethod;
+  interestSavingsVsEqualPayment: number; // 원금균등 선택 시 원리금균등 대비 절약되는 이자액
+}
+```
+
+### 13.3 금융 수학 연산 규칙 (`src/utils/loanCalculator.ts`)
+1. **월이율 산출**: $i = \frac{r}{100 \times 12}$ (연이율 $r\%$ 기준)
+2. **거치 기간 처리**: 거치 기간 $G$개월 동안은 원금 상환 $0$원, 월이자 $P \times i$만 납입. 대출 잔액 유지.
+3. **원리금균등상환 (Equal Payment)**:
+   - 상환 개월수 $M = N - G$ 동안 균등 분할 상환액 $PMT = P \times \frac{i(1+i)^M}{(1+i)^M - 1}$
+   - 매월 이자 = $\text{직전 잔액} \times i$, 매월 원금 = $PMT - \text{이자}$
+   - 마지막 $N$회차 잔액을 정확히 $0$원으로 보정 (소수점 단수 오차 제거).
+4. **원금균등상환 (Equal Principal)**:
+   - 매월 균등 원금 = $\frac{P}{M}$
+   - 매월 이자 = $\text{직전 잔액} \times i$, 매월 상환액 = 매월 균등 원금 + 매월 이자
+5. **만기일시상환 (Bullet)**:
+   - $1 \dots N-1$회차: 매월 원금 $0$원, 월이자 $P \times i$ 납입
+   - 마지막 $N$회차: 원금 전액 $P$ + 최종월 이자 일괄 상환
+6. **중도상환 수수료 및 조기상환 효과**:
+   - 수수료 감면율: 대출 실행 후 경과월수 $m$ 기준, $\text{수수료} = \text{상환금액} \times \frac{\text{수수료율}}{100} \times \frac{\max(0, 36 - m)}{36}$ (3년/36개월 경과 시 $0$원 전액 면제)
+   - 조기상환 시점 이후 대출 잔액이 즉각 차감되어 이후 잔여 개월 동안의 누적 이자 절감액 및 순 편익(절감이자 - 수수료) 자동 산출
+
+### 13.4 UI 및 사용자 경험 (Mobile-First & Ghost Design)
+- **대출 조건 입력 폼 (`LoanForm.tsx`)**:
+  - 대출 금액: 한글 단위 실시간 환산(`3억 5,000만 원`), 빠른 증감 칩(`+1,000만`, `+5,000만`, `+1억`, `정정`), shadcn `Input`
+  - 대출 금리: 0.1% 단위 증감 인풋 + 시장 대표 금리 칩(`3.2% 특판`, `3.8% 주담대`, `4.5% 전세`, `5.5% 신용`)
+  - 대출 기간: 1년 ~ 40년 슬라이더 + 빠른 칩(`1년`, `3년`, `5년`, `10년`, `20년`, `30년`, `40년`)
+  - 거치 기간: 0개월 ~ 대출기간 미만 선택 칩 및 셀렉트
+  - 상환 방식 탭: 원리금균등, 원금균등, 만기일시 3대 탭
+  - **중도상환 시뮬레이터 (선택 토글)**: 스위치 활성화 시 상환 시점(1년/2년/3년), 상환 금액, 수수료율(기본 1.2%) 입력창 노출
+- **요약 카드 (`LoanSummaryCards.tsx`)**: 총 대출원금, 총 대출이자, 총 상환금액, 1회차/마지막회차 월상환액, 월평균 상환액 및 중도상환 시 순 절약 혜택 표시
+- **3대 상환방식 동시 비교 뷰 (`LoanComparisonCard.tsx`)**:
+  - 원리금균등 vs 원금균등 vs 만기일시 총이자, 첫달/마지막달 상환액 나란히 카드 비교
+  - "원금균등 방식 선택 시 원리금균등 대비 000만 원 이자 절감" 하이라이트 안내
+- **시각화 대시보드 (`LoanChartDashboard.tsx`)**:
+  - Recharts 기반 연도별/월별 상환 누적 추이 (납입원금 vs 대출이자 영역 차트) 및 남은 대출잔액 감소 곡선
+- **월별 상환 상세 스케줄표 (`LoanScheduleTable.tsx`)**:
+  - 회차, 납입원금, 대출이자, 월상환금, 대출잔액 표 (중도상환 회차 뱃지 하이라이트)
+  - 엑셀 호환 UTF-8 BOM CSV 다운로드 기능
+- **대출 상식 및 유의사항 안내 카드 (`LoanInfoCard.tsx`)**:
+  - DSR / DTI / LTV 한 줄 핵심 요약
+  - 상환방식 선택 가이드 (소득 안정성 vs 총이자 절감)
+  - 중도상환수수료(통상 3년 경과 후 면제) 및 금리인하요구권 팁
+  - 변동금리 및 금융기관별 실제 청구액 차이 안내 고지
+- **상태 영속화**: `useLocalStorage`를 통해 마지막 입력값 자동 보관 및 헤더 초기화 연동
+
+
+
 
 
 
