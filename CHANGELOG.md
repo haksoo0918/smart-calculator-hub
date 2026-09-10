@@ -3,6 +3,15 @@
 모든 주요 변경 사항은 본 문서에 기록됩니다.
 버전 체계는 [Semantic Versioning (SemVer)](https://semver.org/)을 준수합니다.
 
+## [1.8.3] - 2026-09-10
+
+### 폼 스위치 토글 규격 표준화 및 버그 수정 (TDD Red-Green)
+- **중도상환 시뮬레이터 스위치 토글 (`LoanForm.tsx`, `Button.tsx`) 렌더링 정상화**:
+  - shadcn `Button`의 기본 크기(`h-[39px] px-4 py-2`)가 인라인 클래스 `h-6`과 충돌하여 스위치가 기형적으로 뚱뚱해지고 원형 썸이 어색하게 떠 있던 문제 해결.
+  - `buttonVariants`에 `size="switch"` (`h-6 w-11 p-0.5`) 정식 변형을 추가하고, `LoanForm.tsx` 스위치에 적용하여 표준 컴팩트 알약 형태와 부드러운 썸 슬라이드 모션 연출.
+  - Seam 단위 테스트([`LoanForm.test.tsx`](file:///c:/Users/hakso/_work/test/src/calculators/loan-calculator/components/LoanForm.test.tsx)) 선작성(Red) 후 구현(Green) 검증 완료.
+- **전체 단위/통합 테스트 50종 100% 통과 및 프로덕션 빌드 완료**.
+
 ## [1.8.2] - 2026-09-10
 
 ### 모바일 퍼스트 및 전 화면 반응형 최적화 (Mobile-First & Responsive Robustness)

@@ -286,6 +286,7 @@ export const LoanForm: React.FC<LoanFormProps> = ({ input, onChange, onReset }) 
             type="button"
             role="switch"
             variant="ghost"
+            size="switch"
             aria-checked={isEarlyEnabled}
             aria-label="중도상환 시뮬레이션 토글"
             onClick={() =>
@@ -294,12 +295,12 @@ export const LoanForm: React.FC<LoanFormProps> = ({ input, onChange, onReset }) 
                 enabled: !prev.enabled,
               }))
             }
-            className={`w-11 h-6 p-1 rounded-full hover:bg-transparent dark:hover:bg-transparent ${
+            className={`rounded-full transition-colors cursor-pointer shrink-0 hover:bg-transparent dark:hover:bg-transparent ${
               isEarlyEnabled ? 'bg-[#15171a] dark:bg-[#d1ff19]' : 'bg-slate-200 dark:bg-slate-700'
             }`}
           >
             <span
-              className={`bg-white dark:bg-[#112220] w-4 h-4 rounded-full shadow-md transform transition-transform block ${
+              className={`bg-white dark:bg-[#112220] w-5 h-5 rounded-full shadow-sm transform transition-transform block ${
                 isEarlyEnabled ? 'translate-x-5' : 'translate-x-0'
               }`}
             />
