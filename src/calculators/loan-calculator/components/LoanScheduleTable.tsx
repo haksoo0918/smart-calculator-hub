@@ -140,23 +140,23 @@ export const LoanScheduleTable: React.FC<LoanScheduleTableProps> = ({ schedule }
 
       {/* 페이지네이션 (1년 단위) */}
       {totalPages > 1 && (
-        <div className="flex items-center justify-between pt-2 border-t border-[#e5e7eb] dark:border-slate-800 text-xs">
+        <div className="flex flex-col xs:flex-row items-center justify-between gap-2 pt-2.5 border-t border-[#e5e7eb] dark:border-slate-800 text-xs">
           <span className="text-slate-500 dark:text-slate-400">
             {currentPage}년차 / 총 {totalPages}년차
           </span>
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-1.5">
             <Button
               type="button"
               variant="outline"
               size="sm"
               disabled={currentPage <= 1}
               onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
-              className="h-7 w-7 p-0"
+              className="h-8 w-8 p-0"
               aria-label="이전 연차 보기"
             >
-              <ChevronLeft className="w-3.5 h-3.5" />
+              <ChevronLeft className="w-4 h-4" />
             </Button>
-            <span className="px-2 font-bold text-slate-700 dark:text-slate-300">
+            <span className="px-2 text-xs font-bold text-slate-700 dark:text-slate-300">
               {currentPage}년차 ({((currentPage - 1) * pageSize) + 1}~{Math.min(currentPage * pageSize, schedule.length)}회)
             </span>
             <Button
@@ -165,10 +165,10 @@ export const LoanScheduleTable: React.FC<LoanScheduleTableProps> = ({ schedule }
               size="sm"
               disabled={currentPage >= totalPages}
               onClick={() => setCurrentPage((prev) => Math.min(totalPages, prev + 1))}
-              className="h-7 w-7 p-0"
+              className="h-8 w-8 p-0"
               aria-label="다음 연차 보기"
             >
-              <ChevronRight className="w-3.5 h-3.5" />
+              <ChevronRight className="w-4 h-4" />
             </Button>
           </div>
         </div>

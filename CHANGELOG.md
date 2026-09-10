@@ -3,6 +3,22 @@
 모든 주요 변경 사항은 본 문서에 기록됩니다.
 버전 체계는 [Semantic Versioning (SemVer)](https://semver.org/)을 준수합니다.
 
+## [1.8.2] - 2026-09-10
+
+### 모바일 퍼스트 및 전 화면 반응형 최적화 (Mobile-First & Responsive Robustness)
+- **대출 요약 카드 (`LoanSummaryCards.tsx`) 금액 단위 줄바꿈 튕김 원천 차단**:
+  - 억 단위 큰 금액 표시 시 "원" 단위가 아래 줄로 튕겨 떨어지던 문제를 `whitespace-nowrap flex items-baseline gap-0.5` 및 적응형 폰트 크기(`text-base sm:text-lg xl:text-xl`)로 바로잡아 어떤 화면 폭에서도 숫자에 밀려 떨어지지 않도록 완벽 보정.
+- **3대 상환방식 동시 비교 (`LoanComparisonCard.tsx`) 텍스트 쪼개짐 방지**:
+  - 우측 패널(약 550px)에서 카드가 좁아져 "원리금균/등", "가장 대중/적", "총 대출이/자"로 글자 단위로 쪼개지던 문제를 해결.
+  - `break-keep`, `whitespace-nowrap`, `flex-wrap`을 적용하고 텍스트와 금액이 좌우 양끝에 안정적으로 안착하도록 레이아웃 재구성.
+- **대출 조건 입력 폼 (`LoanForm.tsx`) 반응형 그리드 분기**:
+  - 거치 기간 및 중도상환 시점 프리셋 칩: 모바일(360px ~ 480px) 4분할 시 텍스트("거치 없음 (즉시 원금 상환)") 찌그러짐을 방지하기 위해 `grid-cols-2 sm:grid-cols-4`로 분기하여 모바일 2열 2행의 안정적인 터치 영역 확보.
+- **대출 상환 스케줄표 (`LoanScheduleTable.tsx`) 모바일 페이지네이션 개선**:
+  - 모바일(360px)에서 연차/회차 텍스트와 화살표 버튼이 겹치지 않도록 `flex-col xs:flex-row` 분기 및 터치 타깃(`h-8 w-8`) 확보.
+- **연복리 계산기 요약 지표 (`SummaryCards.tsx`) 수치 잘림 해결**:
+  - 하단 3단 서브 카드(투자원금 / 순이자 / 소득세)를 모바일 1열, sm 이상 3열(`grid-cols-1 sm:grid-cols-3`)로 가변 전환하여 360px 초협소 화면에서 큰 한글 금액이 `truncate`되어 보이지 않던 문제 해결.
+- **단위/통합/라우팅 테스트 49종 전체 통과 및 프로덕션 빌드 완료**.
+
 ## [1.8.1] - 2026-09-10
 
 ### 인터랙션 요소 전면 표준화 및 공통 컴포넌트 추상화 (Component Refactoring & DRY)

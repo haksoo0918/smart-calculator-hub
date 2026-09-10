@@ -257,13 +257,13 @@ export const LoanForm: React.FC<LoanFormProps> = ({ input, onChange, onReset }) 
               : `${Math.floor(input.gracePeriodMonths / 12)}년 (${input.gracePeriodMonths}개월)`}
           </span>
         </div>
-        <div className="grid grid-cols-4 gap-1.5">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5">
           {GRACE_PRESETS.map((preset) => (
             <SelectableChip
               key={preset.label}
               isSelected={input.gracePeriodMonths === preset.months}
               onClick={() => updateField('gracePeriodMonths', preset.months)}
-              className="h-auto py-2"
+              className="h-auto py-2 text-center justify-center"
             >
               {preset.label}
             </SelectableChip>
@@ -316,7 +316,7 @@ export const LoanForm: React.FC<LoanFormProps> = ({ input, onChange, onReset }) 
                   대출 실행 후 {input.earlyRepayment?.afterMonths}개월 뒤
                 </span>
               </div>
-              <div className="grid grid-cols-4 gap-1 mt-1">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5 mt-1">
                 {EARLY_MONTH_PRESETS.map((preset) => (
                   <SelectableChip
                     key={preset.label}
@@ -327,6 +327,7 @@ export const LoanForm: React.FC<LoanFormProps> = ({ input, onChange, onReset }) 
                         afterMonths: preset.months,
                       }))
                     }
+                    className="h-auto py-1.5 text-center justify-center"
                   >
                     {preset.label}
                   </SelectableChip>

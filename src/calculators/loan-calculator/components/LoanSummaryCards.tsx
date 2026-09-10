@@ -54,48 +54,48 @@ export const LoanSummaryCards: React.FC<LoanSummaryCardsProps> = ({ result, loan
       {/* 3대 핵심 요약 카드 그리드 */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
         {/* 1. 총 상환금액 */}
-        <div className="p-4 rounded-2xl bg-white dark:bg-[#1e293b] border border-[#e5e7eb] dark:border-slate-800 shadow-2xs">
-          <span className="text-[11px] font-bold text-[#64748b] dark:text-slate-400 uppercase tracking-wider block mb-1">
+        <div className="p-3.5 sm:p-4 rounded-2xl bg-white dark:bg-[#1e293b] border border-[#e5e7eb] dark:border-slate-800 shadow-2xs min-w-0">
+          <span className="text-[11px] font-bold text-[#64748b] dark:text-slate-400 uppercase tracking-wider block mb-1 truncate">
             총 상환금액 (원금 + 이자)
           </span>
-          <div className="text-xl sm:text-2xl font-black text-[#112220] dark:text-slate-100 tracking-tight">
-            {result.totalRepayment.toLocaleString('ko-KR')}
-            <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 ml-0.5">원</span>
+          <div className="text-base sm:text-lg xl:text-xl font-black text-[#112220] dark:text-slate-100 tracking-tight flex items-baseline gap-0.5 whitespace-nowrap">
+            <span>{result.totalRepayment.toLocaleString('ko-KR')}</span>
+            <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 shrink-0">원</span>
           </div>
-          <p className="text-[11px] font-bold text-[#64748b] dark:text-slate-400 mt-1">
+          <p className="text-[11px] font-bold text-[#64748b] dark:text-slate-400 mt-1 truncate">
             {formatKoreanLoanAmount(result.totalRepayment)}
           </p>
         </div>
 
         {/* 2. 총 대출이자 */}
-        <div className="p-4 rounded-2xl bg-white dark:bg-[#1e293b] border border-[#e5e7eb] dark:border-slate-800 shadow-2xs">
-          <div className="flex items-center justify-between mb-1">
-            <span className="text-[11px] font-bold text-[#64748b] dark:text-slate-400 uppercase tracking-wider">
+        <div className="p-3.5 sm:p-4 rounded-2xl bg-white dark:bg-[#1e293b] border border-[#e5e7eb] dark:border-slate-800 shadow-2xs min-w-0">
+          <div className="flex items-center justify-between mb-1 gap-1">
+            <span className="text-[11px] font-bold text-[#64748b] dark:text-slate-400 uppercase tracking-wider truncate">
               총 대출이자
             </span>
-            <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-rose-50 dark:bg-rose-950/40 text-rose-600 dark:text-rose-400">
+            <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-rose-50 dark:bg-rose-950/40 text-rose-600 dark:text-rose-400 shrink-0">
               원금의 {interestRatio.toFixed(1)}%
             </span>
           </div>
-          <div className="text-xl sm:text-2xl font-black text-rose-600 dark:text-rose-400 tracking-tight">
-            {result.totalInterest.toLocaleString('ko-KR')}
-            <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 ml-0.5">원</span>
+          <div className="text-base sm:text-lg xl:text-xl font-black text-rose-600 dark:text-rose-400 tracking-tight flex items-baseline gap-0.5 whitespace-nowrap">
+            <span>{result.totalInterest.toLocaleString('ko-KR')}</span>
+            <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 shrink-0">원</span>
           </div>
-          <p className="text-[11px] font-bold text-rose-500/80 dark:text-rose-400/80 mt-1">
+          <p className="text-[11px] font-bold text-rose-500/80 dark:text-rose-400/80 mt-1 truncate">
             {formatKoreanLoanAmount(result.totalInterest)}
           </p>
         </div>
 
         {/* 3. 월 상환액 (1회차 & 평균) */}
-        <div className="p-4 rounded-2xl bg-white dark:bg-[#1e293b] border border-[#e5e7eb] dark:border-slate-800 shadow-2xs">
-          <span className="text-[11px] font-bold text-[#64748b] dark:text-slate-400 uppercase tracking-wider block mb-1">
+        <div className="p-3.5 sm:p-4 rounded-2xl bg-white dark:bg-[#1e293b] border border-[#e5e7eb] dark:border-slate-800 shadow-2xs min-w-0">
+          <span className="text-[11px] font-bold text-[#64748b] dark:text-slate-400 uppercase tracking-wider block mb-1 truncate">
             첫 달 상환액 (1회차)
           </span>
-          <div className="text-xl sm:text-2xl font-black text-[#112220] dark:text-slate-100 tracking-tight">
-            {result.firstMonthPayment.toLocaleString('ko-KR')}
-            <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 ml-0.5">원</span>
+          <div className="text-base sm:text-lg xl:text-xl font-black text-[#112220] dark:text-slate-100 tracking-tight flex items-baseline gap-0.5 whitespace-nowrap">
+            <span>{result.firstMonthPayment.toLocaleString('ko-KR')}</span>
+            <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 shrink-0">원</span>
           </div>
-          <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1 flex items-center justify-between">
+          <div className="text-[11px] text-slate-500 dark:text-slate-400 mt-1 flex items-center justify-between flex-wrap gap-1">
             <span>월평균 {result.monthlyAveragePayment.toLocaleString('ko-KR')}원</span>
             {result.firstMonthPayment !== result.lastMonthPayment && (
               <span className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 flex items-center">
@@ -103,7 +103,7 @@ export const LoanSummaryCards: React.FC<LoanSummaryCardsProps> = ({ result, loan
                 막달 {result.lastMonthPayment.toLocaleString('ko-KR')}원
               </span>
             )}
-          </p>
+          </div>
         </div>
       </div>
     </div>

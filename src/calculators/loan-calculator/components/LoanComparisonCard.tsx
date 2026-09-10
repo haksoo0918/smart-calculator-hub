@@ -46,24 +46,24 @@ export const LoanComparisonCard: React.FC<LoanComparisonCardProps> = ({
       {/* 상단 비교 배너 */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-[#e5e7eb] dark:border-slate-800">
         <div>
-          <div className="flex items-center gap-1.5">
-            <span className="text-xs sm:text-sm font-extrabold text-[#112220] dark:text-slate-100">
+          <div className="flex flex-wrap items-center gap-1.5">
+            <span className="text-xs sm:text-sm font-extrabold text-[#112220] dark:text-slate-100 whitespace-nowrap">
               3대 상환방식 동시 비교
             </span>
             {interestSavingsVsEqualPayment > 0 && (
-              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#15171a] dark:bg-[#d1ff19] text-[#d1ff19] dark:text-[#112220]">
+              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#15171a] dark:bg-[#d1ff19] text-[#d1ff19] dark:text-[#112220] whitespace-nowrap">
                 원금균등 선택 시 약 {formatKoreanLoanAmount(interestSavingsVsEqualPayment)} 절약!
               </span>
             )}
           </div>
-          <p className="text-[11px] text-[#64748b] dark:text-slate-400 mt-0.5">
+          <p className="text-[11px] text-[#64748b] dark:text-slate-400 mt-0.5 leading-relaxed">
             방식을 클릭하면 해당 상환 방식으로 즉시 전환됩니다
           </p>
         </div>
       </div>
 
-      {/* 3개 카드 그리드 */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+      {/* 3개 카드 그리드 (우측 패널 너비에 맞춰 1열 기본, md/xl 이상 가변 정렬 & 텍스트 쪼개짐 원천 방지) */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
         {methods.map((item) => {
           const isSelected = activeMethod === item.id;
           const isLowest = item.id === 'equal_principal';
@@ -74,20 +74,20 @@ export const LoanComparisonCard: React.FC<LoanComparisonCardProps> = ({
               type="button"
               variant="ghost"
               onClick={() => onSelectMethod(item.id)}
-              className={`w-full h-auto p-3.5 rounded-xl border text-left transition-all relative flex flex-col justify-between font-normal whitespace-normal ${
+              className={`w-full h-auto p-3.5 rounded-xl border text-left transition-all relative flex flex-col justify-between font-normal whitespace-normal break-words overflow-hidden ${
                 isSelected
                   ? 'bg-white dark:bg-[#1e293b] border-[#15171a] dark:border-[#d1ff19] shadow-md ring-2 ring-[#15171a]/10 dark:ring-[#d1ff19]/20 hover:bg-white dark:hover:bg-[#1e293b]'
                   : 'bg-white/80 dark:bg-slate-900/60 border-[#e5e7eb] dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 hover:bg-white/90 dark:hover:bg-slate-900'
               }`}
             >
-              <div>
-                <div className="flex items-center justify-between mb-1.5">
-                  <span className="font-bold text-sm text-[#112220] dark:text-slate-100 flex items-center gap-1">
+              <div className="w-full">
+                <div className="flex items-center justify-between gap-1 mb-1.5 flex-wrap">
+                  <span className="font-bold text-sm text-[#112220] dark:text-slate-100 flex items-center gap-1 whitespace-nowrap">
                     {item.name}
-                    {isSelected && <CheckCircle2 className="w-4 h-4 text-[#112220] dark:text-[#d1ff19]" />}
+                    {isSelected && <CheckCircle2 className="w-4 h-4 text-[#112220] dark:text-[#d1ff19] shrink-0" />}
                   </span>
                   <span
-                    className={`text-[10px] font-bold px-1.5 py-0.5 rounded ${
+                    className={`text-[10px] font-bold px-1.5 py-0.5 rounded shrink-0 whitespace-nowrap ${
                       isLowest
                         ? 'bg-[#d1ff19] text-[#112220]'
                         : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400'
@@ -96,21 +96,21 @@ export const LoanComparisonCard: React.FC<LoanComparisonCardProps> = ({
                     {item.badge}
                   </span>
                 </div>
-                <p className="text-[11px] text-slate-500 dark:text-slate-400 line-clamp-2 leading-relaxed mb-3">
+                <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed mb-3 whitespace-normal break-words line-clamp-2">
                   {item.desc}
                 </p>
               </div>
 
               <div className="space-y-1.5 pt-2.5 border-t border-slate-100 dark:border-slate-800/80 w-full text-xs">
-                <div className="flex justify-between items-baseline">
-                  <span className="text-slate-500 dark:text-slate-400 text-[11px]">총 대출이자</span>
-                  <span className={`font-black ${isLowest ? 'text-emerald-600 dark:text-emerald-400' : 'text-[#112220] dark:text-slate-100'}`}>
+                <div className="flex items-center justify-between gap-1 flex-wrap">
+                  <span className="text-slate-500 dark:text-slate-400 text-[11px] shrink-0 whitespace-nowrap">총 대출이자</span>
+                  <span className={`font-black text-xs whitespace-nowrap ${isLowest ? 'text-emerald-600 dark:text-emerald-400' : 'text-[#112220] dark:text-slate-100'}`}>
                     {item.result.totalInterest.toLocaleString('ko-KR')}원
                   </span>
                 </div>
-                <div className="flex justify-between items-baseline">
-                  <span className="text-slate-500 dark:text-slate-400 text-[11px]">첫 달 상환액</span>
-                  <span className="font-bold text-[#112220] dark:text-slate-200">
+                <div className="flex items-center justify-between gap-1 flex-wrap">
+                  <span className="text-slate-500 dark:text-slate-400 text-[11px] shrink-0 whitespace-nowrap">첫 달 상환액</span>
+                  <span className="font-bold text-xs text-[#112220] dark:text-slate-200 whitespace-nowrap">
                     {item.result.firstMonthPayment.toLocaleString('ko-KR')}원
                   </span>
                 </div>
