@@ -3,6 +3,18 @@
 모든 주요 변경 사항은 본 문서에 기록됩니다.
 버전 체계는 [Semantic Versioning (SemVer)](https://semver.org/)을 준수합니다.
 
+## [1.8.7] - 2026-09-10
+
+### Tabs 컴포넌트 반응형 고정 높이 간섭 해제 및 단위 변환기 1:1 픽셀 복원 (Bug Fix & Pixel-Perfect)
+- **`TabsList` 유동 높이 규격(`size="auto"`) 정식 추가 (`src/components/ui/tabs.tsx`)**:
+  - `tabsListVariants`의 `size` 기본값에 포함된 `sm:h-10`(40px) 반응형 고정 높이로 인해 자식 요소가 컨테이너 밖으로 넘치던 현상을 해소.
+  - 고정 높이를 강제하지 않고 내부 버튼 높이에 맞춰 유동적으로 감싸는 `size="auto"`(`h-auto`) 변형 지원.
+- **`TabsTrigger` 스타일 정밀 보정 (`src/components/ui/tabs.tsx`)**:
+  - `size="auto"`에 맞춘 37px 표준 버튼 규격(`px-3.5 py-2 text-xs gap-2`) 추가 및 활성 탭 1px 테두리(`border-[#e5e7eb] dark:border-slate-700`) 복원.
+- **단위 변환기 탭 1:1 픽셀 퍼펙트 복원 (`UnitCategoryTabs.tsx`)**:
+  - `TabsList`에 `size="auto"`를 적용하여 기존 원본 디자인(상하 4px 패딩, 37px 버튼 높이, 총 47px 컨테이너 높이, 1px 보더)을 1픽셀의 오차도 없이 100% 동일하게 복원.
+  - 1024x768 데스크톱 및 390x844 모바일 전 뷰포트 스크린샷 실측 대조 검증 완료.
+
 ## [1.8.6] - 2026-09-10
 
 ### shadcn UI 기반 표준 Tabs 컴포넌트 구축 및 전역 통합 (Component Standardization)

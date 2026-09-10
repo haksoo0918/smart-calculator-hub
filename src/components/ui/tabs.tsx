@@ -7,7 +7,7 @@ const Tabs = TabsPrimitive.Root;
 
 // Tabs Context for variant & size inheritance
 type TabsVariant = 'default' | 'dark-solid' | 'slate-solid';
-type TabsSize = 'sm' | 'default' | 'lg';
+type TabsSize = 'auto' | 'sm' | 'default' | 'lg';
 
 interface TabsContextValue {
   variant?: TabsVariant;
@@ -32,6 +32,7 @@ const tabsListVariants = cva(
           'bg-slate-100 dark:bg-slate-900 border border-[#e5e7eb] dark:border-slate-800 text-[#64748b] dark:text-slate-400',
       },
       size: {
+        auto: 'h-auto',
         sm: 'h-8 text-xs',
         default: 'h-9 sm:h-10 text-xs sm:text-sm',
         lg: 'h-11 sm:h-12 text-sm sm:text-base',
@@ -74,9 +75,10 @@ const tabsTriggerVariants = cva(
         'dark-solid':
           'text-[#475569] dark:text-slate-400 hover:text-[#112220] dark:hover:text-white data-[state=active]:bg-[#15171a] dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-[#112220] data-[state=active]:shadow-sm',
         'slate-solid':
-          'text-[#64748b] dark:text-slate-400 hover:text-[#112220] dark:hover:text-white data-[state=active]:bg-[#15171a] dark:data-[state=active]:bg-slate-800 data-[state=active]:text-white dark:data-[state=active]:text-white data-[state=active]:shadow-2xs border-transparent border data-[state=active]:border-transparent dark:data-[state=active]:border-slate-700',
+          'text-[#64748b] dark:text-slate-400 hover:text-[#112220] dark:hover:text-white data-[state=active]:bg-[#15171a] dark:data-[state=active]:bg-slate-800 data-[state=active]:text-white dark:data-[state=active]:text-white data-[state=active]:shadow-2xs border border-transparent data-[state=active]:border-[#e5e7eb] dark:data-[state=active]:border-slate-700',
       },
       size: {
+        auto: 'px-3.5 py-2 text-xs gap-2',
         sm: 'px-2.5 py-1 text-xs gap-1.5',
         default: 'px-3.5 py-1.5 text-xs sm:text-sm gap-2',
         lg: 'px-4 py-2 text-sm sm:text-base gap-2.5',

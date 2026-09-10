@@ -750,16 +750,21 @@ export interface LoanComparisonSummary {
   - `TabsList`: 탭 버튼 컨테이너 (스크롤 가능 여부, `variant`, `size` 지원)
     - `variant="default"`: 은은한 슬레이트 배경(`bg-slate-100/80 dark:bg-[#1e293b] rounded-xl border border-slate-200/80 dark:border-slate-800 p-1`)
     - `variant="dark-solid"`: 다크 알약형 배경(`bg-[#15171a] dark:bg-slate-900 rounded-xl p-1 text-white`)
+    - `variant="slate-solid"`: 플랫 슬레이트 배경(`border border-[#e5e7eb] dark:border-slate-800 p-1`)
+    - `size="auto"`: 고정 높이 강제를 배제하고 내부 버튼 높이에 맞춰 유동적으로 감싸는 규격 (`h-auto`, 반응형 높이 충돌 방지)
   - `TabsTrigger`: 개별 탭 버튼 (`role="tab"`)
+    - `size="auto"`: 36~37px 높이 표준 버튼 패딩 (`px-3.5 py-2 text-xs gap-2`)
     - `data-[state=active]` 상태:
       - `default` 변형: 활성 시 `bg-white dark:bg-slate-800 text-[#112220] dark:text-slate-100 shadow-xs`
       - `dark-solid` 변형: 활성 시 `bg-white dark:bg-[#1e293b] text-[#112220] dark:text-[#d1ff19] shadow-xs`
+      - `slate-solid` 변형: 활성 시 `bg-[#15171a] text-white border-[#e5e7eb] dark:border-slate-700 shadow-xs`
     - 포커스 링(`focus-visible:ring-2 focus-visible:ring-[#15171a] dark:focus-visible:ring-[#d1ff19]`) 및 키보드 좌우 화살표 탐색 지원
   - `TabsContent`: 탭 패널 컨테이너 (`role="tabpanel"`)
 
 ### 15.3 적용 대상 및 범위
 1. **단위 변환기 (`UnitCategoryTabs.tsx`)**:
    - 커스텀 버튼 목록을 shadcn `Tabs` 및 `TabsList`, `TabsTrigger`로 마이그레이션.
+   - `size="auto"`를 적용하여 기존 원본 디자인(상하 4px 패딩, 37px 버튼 높이, 총 47px 컨테이너 높이, 1px 보더 라인)을 1픽셀의 오차도 없이 100% 동일하게 유지.
    - 모바일 가로 스크롤(`overflow-x-auto`)을 유지하면서도 표준 WAI-ARIA 탭 접근성 및 활성 인디케이터 연동.
 2. **환율 계산기 (`DualExchangeCard.tsx`)**:
    - 환전 방식(`매매기준율` | `현찰 살 때` | `현찰 팔 때`) 세그먼트를 shadcn `Tabs`로 마이그레이션하여 모바일 3분할 꽉 찬 탭 레이아웃 제공.
