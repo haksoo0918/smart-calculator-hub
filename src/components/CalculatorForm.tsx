@@ -21,6 +21,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from './ui/select';
+import { useClampedNumberInput } from '../hooks/useClampedNumberInput';
 
 interface CalculatorFormProps {
   scenario: ScenarioInput;
@@ -64,6 +65,25 @@ export const CalculatorForm: React.FC<CalculatorFormProps> = ({
       [field]: value,
     });
   };
+
+  const yearsInput = useClampedNumberInput({
+    value: scenario.years,
+    onChange: (val) => updateField('years', val),
+    min: 1,
+    max: 40,
+    fallback: 1,
+    precision: 0,
+  });
+
+  const rateInput = useClampedNumberInput({
+    value: scenario.annualRate,
+    onChange: (val) => updateField('annualRate', val),
+    min: -5,
+    max: 50,
+    fallback: 0,
+    allowNegative: true,
+    precision: 1,
+  });
 
   return (
     <div
@@ -203,21 +223,10 @@ export const CalculatorForm: React.FC<CalculatorFormProps> = ({
               min="1"
               max="40"
               step="1"
-              value={scenario.years === 0 ? '' : scenario.years}
+              value={yearsInput.value}
               placeholder="1"
-              onChange={(e) => {
-                const raw = e.target.value;
-                if (raw === '') {
-                  updateField('years', 0);
-                  return;
-                }
-                const val = parseInt(raw, 10);
-                updateField('years', isNaN(val) ? 0 : val);
-              }}
-              onBlur={() => {
-                const clamped = Math.max(1, Math.min(40, scenario.years || 1));
-                updateField('years', clamped);
-              }}
+              onChange={yearsInput.onChange}
+              onBlur={yearsInput.onBlur}
               className={`w-full text-right font-bold text-[#112220] dark:text-slate-100 pl-3 pr-10 py-2 border border-[#e5e7eb] dark:border-slate-700 rounded-md text-base sm:text-lg tracking-tight bg-slate-50/50 dark:bg-slate-900/60 focus:bg-white dark:focus:bg-slate-900 transition-colors h-11 ${borderFocusClass}`}
             />
             <span className="absolute right-3.5 top-1/2 -translate-y-1/2 text-sm font-medium text-slate-400 dark:text-slate-500 pointer-events-none select-none">
@@ -272,22 +281,10 @@ export const CalculatorForm: React.FC<CalculatorFormProps> = ({
               step="0.1"
               min="-5"
               max="50"
-              value={isNaN(scenario.annualRate) ? '' : scenario.annualRate}
+              value={rateInput.value}
               placeholder="0"
-              onChange={(e) => {
-                const raw = e.target.value;
-                if (raw === '' || raw === '-') {
-                  updateField('annualRate', NaN);
-                  return;
-                }
-                const val = parseFloat(raw);
-                updateField('annualRate', isNaN(val) ? 0 : val);
-              }}
-              onBlur={() => {
-                const val = isNaN(scenario.annualRate) ? 0 : scenario.annualRate;
-                const clamped = Math.max(-5, Math.min(50, Math.round(val * 10) / 10));
-                updateField('annualRate', clamped);
-              }}
+              onChange={rateInput.onChange}
+              onBlur={rateInput.onBlur}
               className={`w-full text-right font-bold ${scenario.annualRate < 0 ? 'text-rose-600 dark:text-rose-400' : 'text-[#112220] dark:text-slate-100'} pl-3 pr-10 py-2 border border-[#e5e7eb] dark:border-slate-700 rounded-md text-base sm:text-lg tracking-tight bg-slate-50/50 dark:bg-slate-900/60 focus:bg-white dark:focus:bg-slate-900 transition-colors h-11 ${borderFocusClass}`}
             />
             <span className={`absolute right-3.5 top-1/2 -translate-y-1/2 text-sm font-medium ${scenario.annualRate < 0 ? 'text-rose-500' : 'text-slate-400 dark:text-slate-500'} pointer-events-none select-none`}>

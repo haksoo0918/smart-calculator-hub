@@ -181,6 +181,11 @@ export const DualExchangeCard: React.FC<DualExchangeCardProps> = ({
                 const val = e.target.value;
                 onAmountChange(val === '' ? '' : parseFloat(val));
               }}
+              onBlur={() => {
+                if (amount === '' || isNaN(amount as number) || (typeof amount === 'number' && amount < 0)) {
+                  onAmountChange(0);
+                }
+              }}
               placeholder="0"
               className="h-auto w-full border-0 bg-transparent p-0 shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 font-extrabold text-2xl sm:text-3xl text-[#112220] dark:text-slate-100 tracking-tight placeholder-slate-300 dark:placeholder-slate-600 tabular-nums"
             />

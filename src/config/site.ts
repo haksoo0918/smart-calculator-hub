@@ -13,7 +13,7 @@ export const siteConfig = {
   copyright: '© sosoFactory',
   
   // 버전 정보
-  version: '1.8.12',
+  version: '1.8.13',
   
   // 링크
   links: {

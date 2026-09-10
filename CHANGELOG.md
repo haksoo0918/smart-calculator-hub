@@ -3,6 +3,20 @@
 모든 주요 변경 사항은 본 문서에 기록됩니다.
 버전 체계는 [Semantic Versioning (SemVer)](https://semver.org/)을 준수합니다.
 
+## [1.8.13] - 2026-09-10
+
+### 공통 숫자 입력 제어 훅(useClampedNumberInput) 신설 및 전 계산기 폼 UX 고도화 (Refactor & UX Polish)
+- **`useClampedNumberInput` 커스텀 훅 신설 및 단위 테스트 구축 (`src/hooks/useClampedNumberInput.ts`, `useClampedNumberInput.test.ts`)**:
+  - 인풋 필드 편집 시 빈 문자열(`''`) 및 음수 부호(`'-'`) 입력을 자연스럽게 허용하고, 포커스 아웃(`onBlur`) 시 허용 유효 범위(`min ~ max`)로 자동 클램핑 및 소수점 자리수 반올림을 수행하는 공통 훅 구현.
+  - 슬라이더 및 외부 프리셋 칩 클릭 시의 외부 prop 변경과 인풋 타이핑 간의 정밀한 동기화 보장 (단위 테스트 8개 100% 통과).
+- **연복리 계산기 폼 리팩터링 (`CalculatorForm.tsx`)**:
+  - `목표 투자 기간`(1~40년) 및 `연 예상 수익률`(-5%~50%) 인라인 핸들러를 `useClampedNumberInput`으로 교체하여 코드 응집도 향상 및 음수 부호 타이핑 안정성 강화.
+- **대출 이자 계산기 폼 UX 개선 (`LoanForm.tsx`)**:
+  - `연 대출 금리`(0.1%~30%, fallback 4.2%) 및 `중도상환 수수료율`(0%~5%, fallback 1.2%)에 `useClampedNumberInput` 적용.
+  - `대출 원금` 및 `중도상환 원금` 인풋에 `onBlur` 안전 폴백을 추가하여 백스페이스로 지운 뒤 포커스 아웃 시 정상 복원.
+- **단위 변환기 및 환율 계산기 빈 값 방어 강화 (`DualConverterCard.tsx`, `DualExchangeCard.tsx`)**:
+  - 출발 수치/금액 입력창에 `onBlur` 안전 보정 핸들러를 보강하여 빈 값 상태 포커스 아웃 시 안전 기본값(0)으로 자동 복원.
+
 ## [1.8.12] - 2026-09-10
 
 ### 연복리 계산기 예상 수익률 프리셋 버튼 선택 스타일 일원화 (UI Polish)

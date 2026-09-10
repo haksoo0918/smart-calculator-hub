@@ -8,6 +8,7 @@ import { Badge } from '../../../components/ui/badge';
 import { SelectableChip } from '../../../components/ui/selectable-chip';
 import { SegmentedControl, SegmentedOption } from '../../../components/ui/segmented-control';
 import { RotateCcw } from 'lucide-react';
+import { useClampedNumberInput } from '../../../hooks/useClampedNumberInput';
 
 interface LoanFormProps {
   input: LoanInput;
@@ -77,6 +78,28 @@ export const LoanForm: React.FC<LoanFormProps> = ({ input, onChange, onReset }) 
 
   const isEarlyEnabled = input.earlyRepayment?.enabled ?? false;
 
+  const rateInput = useClampedNumberInput({
+    value: input.annualRate,
+    onChange: (val) => updateField('annualRate', val),
+    min: 0.1,
+    max: 30,
+    fallback: 4.2,
+    precision: 2,
+  });
+
+  const feeRateInput = useClampedNumberInput({
+    value: input.earlyRepayment?.feeRate ?? 1.2,
+    onChange: (val) =>
+      updateEarlyRepayment((prev) => ({
+        ...prev,
+        feeRate: val,
+      })),
+    min: 0,
+    max: 5,
+    fallback: 1.2,
+    precision: 1,
+  });
+
   return (
     <div className="bg-white dark:bg-[#1e293b] rounded-[24px] border border-[#e5e7eb] dark:border-slate-800 p-4 sm:p-6 space-y-5 shadow-2xs transition-colors">
       {/* 1. 상단 타이틀 & 초기화 버튼 */}
@@ -140,6 +163,11 @@ export const LoanForm: React.FC<LoanFormProps> = ({ input, onChange, onReset }) 
               const raw = e.target.value.replace(/[^0-9]/g, '');
               updateField('loanAmount', raw ? parseInt(raw, 10) : 0);
             }}
+            onBlur={() => {
+              if (!input.loanAmount) {
+                updateField('loanAmount', 10_000_000);
+              }
+            }}
             className="w-full text-right font-bold text-[#112220] dark:text-slate-100 pl-3 pr-10 py-2 border border-[#e5e7eb] dark:border-slate-700 rounded-xl text-base sm:text-lg tracking-tight bg-slate-50/50 dark:bg-slate-900/60 focus-visible:ring-[#15171a] dark:focus-visible:ring-[#d1ff19] h-11"
           />
           <span className="absolute right-3.5 top-1/2 -translate-y-1/2 text-sm font-medium text-slate-400 dark:text-slate-500 pointer-events-none select-none">
@@ -189,11 +217,10 @@ export const LoanForm: React.FC<LoanFormProps> = ({ input, onChange, onReset }) 
             step="0.1"
             min="0.1"
             max="30"
-            value={input.annualRate}
-            onChange={(e) => {
-              const val = parseFloat(e.target.value);
-              updateField('annualRate', isNaN(val) ? 0 : val);
-            }}
+            value={rateInput.value}
+            placeholder="4.2"
+            onChange={rateInput.onChange}
+            onBlur={rateInput.onBlur}
             className="w-full text-right font-bold text-[#112220] dark:text-slate-100 pl-3 pr-10 py-2 border border-[#e5e7eb] dark:border-slate-700 rounded-xl text-base sm:text-lg tracking-tight bg-slate-50/50 dark:bg-slate-900/60 focus-visible:ring-[#15171a] dark:focus-visible:ring-[#d1ff19] h-11"
           />
           <span className="absolute right-3.5 top-1/2 -translate-y-1/2 text-sm font-medium text-slate-400 dark:text-slate-500 pointer-events-none select-none">
@@ -348,6 +375,8 @@ export const LoanForm: React.FC<LoanFormProps> = ({ input, onChange, onReset }) 
               </div>
               <div className="relative">
                 <Input
+                  id="early-amount"
+                  aria-label="중도상환 금액 직접 입력"
                   type="text"
                   inputMode="numeric"
                   value={
@@ -355,12 +384,21 @@ export const LoanForm: React.FC<LoanFormProps> = ({ input, onChange, onReset }) 
                       ? input.earlyRepayment.amount.toLocaleString('ko-KR')
                       : ''
                   }
+                  placeholder="10,000,000"
                   onChange={(e) => {
                     const raw = e.target.value.replace(/[^0-9]/g, '');
                     updateEarlyRepayment((prev) => ({
                       ...prev,
                       amount: raw ? parseInt(raw, 10) : 0,
                     }));
+                  }}
+                  onBlur={() => {
+                    if (input.earlyRepayment?.enabled && !input.earlyRepayment?.amount) {
+                      updateEarlyRepayment((prev) => ({
+                        ...prev,
+                        amount: 10_000_000,
+                      }));
+                    }
                   }}
                   className="w-full text-right font-bold pl-3 pr-10 py-1.5 h-9 text-sm border-[#e5e7eb] dark:border-slate-700 bg-white dark:bg-slate-900"
                 />
@@ -377,18 +415,16 @@ export const LoanForm: React.FC<LoanFormProps> = ({ input, onChange, onReset }) 
               </span>
               <div className="flex items-center gap-1">
                 <Input
+                  id="early-fee-rate"
+                  aria-label="중도상환 수수료율"
                   type="number"
                   step="0.1"
                   min="0"
                   max="5"
-                  value={input.earlyRepayment?.feeRate ?? 1.2}
-                  onChange={(e) => {
-                    const val = parseFloat(e.target.value);
-                    updateEarlyRepayment((prev) => ({
-                      ...prev,
-                      feeRate: isNaN(val) ? 0 : val,
-                    }));
-                  }}
+                  value={feeRateInput.value}
+                  placeholder="1.2"
+                  onChange={feeRateInput.onChange}
+                  onBlur={feeRateInput.onBlur}
                   className="w-16 h-7 text-right text-xs font-bold border-[#e5e7eb] dark:border-slate-700 bg-white dark:bg-slate-900"
                 />
                 <span className="text-slate-500 font-bold">%</span>

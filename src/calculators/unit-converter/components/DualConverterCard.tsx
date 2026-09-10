@@ -128,6 +128,11 @@ export const DualConverterCard: React.FC<DualConverterCardProps> = ({
                 const val = e.target.value;
                 onInputChange(val === '' ? '' : parseFloat(val));
               }}
+              onBlur={() => {
+                if (inputValue === '' || isNaN(inputValue as number)) {
+                  onInputChange(0);
+                }
+              }}
               placeholder="0"
               className="h-auto w-full border-0 bg-transparent p-0 shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 font-extrabold text-2xl sm:text-3xl text-[#112220] dark:text-slate-100 tracking-tight placeholder-slate-300 dark:placeholder-slate-600 tabular-nums"
             />
