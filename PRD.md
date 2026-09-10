@@ -736,9 +736,38 @@ export interface LoanComparisonSummary {
    - **헤더 컨트롤 영역**: 모바일(가용 폭 280px 이하)에서 드롭다운 셀렉트 트리거(`w-28 sm:w-36 lg:w-44`)와 복사 버튼, 라벨 텍스트의 가로 간격을 완벽하게 보장하여 줄바꿈이나 잘림 원천 차단.
    - **입력 인풋 폰트**: 큰 수치 입력 시 컨테이너를 뚫고 나가지 않도록 반응형 폰트 크기(`text-xl sm:text-2xl lg:text-3xl`) 및 `tabular-nums` 적용.
 
-5. **상세 데이터 테이블 (`LoanScheduleTable.tsx`, `DataTable.tsx`)**:
-   - 모바일에서 가로 스크롤이 발생할 때 좌우 내용이 카드 모서리에 닿지 않도록 부드러운 스크롤 컨테이너 및 음영/힌트 패딩 유지.
-   - 모바일 페이지네이션 컨트롤러 터치 영역 확보(`min-h-[36px]`).
+---
+
+## 15. shadcn UI 기반 표준 탭(Tabs) 컴포넌트 표준 규격 및 전역 적용
+
+### 15.1 도입 배경 및 목적
+- 기존에는 단위 변환기(`UnitCategoryTabs.tsx`)가 네이티브 `<button>` 리스트로 개별 구현되어 있고, 환율 계산기(`DualExchangeCard.tsx`)와 대출 차트 대시보드(`LoanChartDashboard.tsx`) 등은 폼용 `SegmentedControl`을 탭 대용으로 사용하여 시맨틱 마크업(`role="tablist"`, `role="tab"`) 및 WAI-ARIA 키보드 접근성(화살표 키 탭 이동)이 파편화되어 있었습니다.
+- 이미 프로젝트에 설치된 `@radix-ui/react-tabs`를 기반으로, shadcn UI 표준을 준수하는 **`Tabs` 공통 컴포넌트 (`src/components/ui/tabs.tsx`)**를 구현하고, 단위 변환기 및 환율 계산기 등의 탭 UI를 표준 컴포넌트로 일원화하여 완성도와 접근성을 극대화합니다.
+
+### 15.2 컴포넌트 구조 및 스타일 사양 (`src/components/ui/tabs.tsx`)
+- **컴포넌트 구성**:
+  - `Tabs`: `@radix-ui/react-tabs`의 `Root` 래퍼 (제어형 `value`/`onValueChange` 및 비제어형 `defaultValue` 지원)
+  - `TabsList`: 탭 버튼 컨테이너 (스크롤 가능 여부, `variant`, `size` 지원)
+    - `variant="default"`: 은은한 슬레이트 배경(`bg-slate-100/80 dark:bg-[#1e293b] rounded-xl border border-slate-200/80 dark:border-slate-800 p-1`)
+    - `variant="dark-solid"`: 다크 알약형 배경(`bg-[#15171a] dark:bg-slate-900 rounded-xl p-1 text-white`)
+  - `TabsTrigger`: 개별 탭 버튼 (`role="tab"`)
+    - `data-[state=active]` 상태:
+      - `default` 변형: 활성 시 `bg-white dark:bg-slate-800 text-[#112220] dark:text-slate-100 shadow-xs`
+      - `dark-solid` 변형: 활성 시 `bg-white dark:bg-[#1e293b] text-[#112220] dark:text-[#d1ff19] shadow-xs`
+    - 포커스 링(`focus-visible:ring-2 focus-visible:ring-[#15171a] dark:focus-visible:ring-[#d1ff19]`) 및 키보드 좌우 화살표 탐색 지원
+  - `TabsContent`: 탭 패널 컨테이너 (`role="tabpanel"`)
+
+### 15.3 적용 대상 및 범위
+1. **단위 변환기 (`UnitCategoryTabs.tsx`)**:
+   - 커스텀 버튼 목록을 shadcn `Tabs` 및 `TabsList`, `TabsTrigger`로 마이그레이션.
+   - 모바일 가로 스크롤(`overflow-x-auto`)을 유지하면서도 표준 WAI-ARIA 탭 접근성 및 활성 인디케이터 연동.
+2. **환율 계산기 (`DualExchangeCard.tsx`)**:
+   - 환전 방식(`매매기준율` | `현찰 살 때` | `현찰 팔 때`) 세그먼트를 shadcn `Tabs`로 마이그레이션하여 모바일 3분할 꽉 찬 탭 레이아웃 제공.
+3. **대출 시각화 대시보드 (`LoanChartDashboard.tsx`)**:
+   - 차트 유형(`대출 잔액 감소` | `누적 납입(원금/이자)`) 전환 탭을 shadcn `Tabs`로 전환.
+4. **테스트 및 검증**:
+   - `tabs.test.tsx` 단위 테스트를 작성하여 마운트, 키보드 인터랙션, 활성 상태 전환을 검증하고 기존 52개 테스트와의 회귀 검증 완료.
+
 
 
 

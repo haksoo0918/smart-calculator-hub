@@ -15,7 +15,7 @@ import { Button } from '../../../components/ui/button';
 import { Input } from '../../../components/ui/input';
 import { Badge } from '../../../components/ui/badge';
 import { SelectableChip } from '../../../components/ui/selectable-chip';
-import { SegmentedControl, SegmentedOption } from '../../../components/ui/segmented-control';
+import { Tabs, TabsList, TabsTrigger } from '../../../components/ui/tabs';
 import {
   Tooltip,
   TooltipContent,
@@ -40,7 +40,7 @@ interface DualExchangeCardProps {
   snapshot: ExchangeRateSnapshot;
 }
 
-const EXCHANGE_TYPE_OPTIONS: SegmentedOption<ExchangeType>[] = [
+const EXCHANGE_TYPE_OPTIONS: { id: ExchangeType; label: string }[] = [
   { id: 'base', label: '매매기준율' },
   { id: 'cash_buy', label: '현찰 살 때' },
   { id: 'cash_sell', label: '현찰 팔 때' },
@@ -79,21 +79,36 @@ export const DualExchangeCard: React.FC<DualExchangeCardProps> = ({
   const discountOptions: SpreadDiscount[] = [90, 80, 50, 0];
 
   return (
-    <div className="bg-white dark:bg-[#1e293b] rounded-[24px] border border-[#e5e7eb] dark:border-slate-800 p-4 sm:p-6 space-y-4 shadow-2xs transition-colors">
+    <div className="bg-white dark:bg-[#1e293b] rounded-[24px] border border-[#e5e7eb] dark:border-slate-800 p-4 sm:p-6 space-y-4 shadow-2xs transition-colors min-w-0">
       {/* 1. 상단 환전 방식 탭 및 기준일자 배지 */}
       <div className="space-y-2.5 pb-3 border-b border-[#e5e7eb] dark:border-slate-800">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
           {/* 환전 방식 탭 (모바일: 3등분 꽉 채움) */}
-          <SegmentedControl
-            options={EXCHANGE_TYPE_OPTIONS}
+          <Tabs
             value={exchangeType}
-            onChange={onTypeChange}
-            variant="slate-solid"
-            className="w-full sm:w-auto"
-          />
+            onValueChange={(val) => onTypeChange(val as ExchangeType)}
+            className="w-full sm:w-auto min-w-0"
+          >
+            <TabsList
+              variant="slate-solid"
+              size="sm"
+              className="grid grid-cols-3 w-full sm:w-auto p-1 h-auto min-w-0"
+            >
+              {EXCHANGE_TYPE_OPTIONS.map((opt) => (
+                <TabsTrigger
+                  key={opt.id}
+                  value={opt.id}
+                  variant="slate-solid"
+                  className="py-1.5 px-1 sm:px-2 text-xs font-semibold cursor-pointer truncate justify-center text-center"
+                >
+                  {opt.label}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+          </Tabs>
 
-          {/* 기준일 및 환율 안내 (모바일: 1행 가로 양끝 정렬) */}
-          <div className="flex items-center justify-between sm:justify-end gap-2 text-xs text-[#64748b] dark:text-slate-300 font-medium pt-[0.5px]">
+          {/* 기준일 및 환율 안내 (모바일: 1행 가로 양끝 정렬 또는 유동 줄바꿈) */}
+          <div className="flex items-center justify-between sm:justify-end gap-2 text-xs text-[#64748b] dark:text-slate-300 font-medium pt-[0.5px] min-w-0 flex-wrap">
             <div className="flex items-center gap-1 text-[11px] bg-slate-50 dark:bg-slate-800/80 px-2 py-1 rounded-md border border-[#e5e7eb] dark:border-slate-700 shrink-0">
               <Calendar className="w-3.5 h-3.5 text-[#64748b] dark:text-slate-400" />
               <span className="whitespace-nowrap">고시: {snapshot.baseDate}</span>

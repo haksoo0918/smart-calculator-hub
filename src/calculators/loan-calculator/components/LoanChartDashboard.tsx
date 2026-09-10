@@ -10,7 +10,7 @@ import {
   CartesianGrid,
 } from 'recharts';
 import { formatKoreanLoanAmount } from '../../../utils/loanCalculator';
-import { SegmentedControl, SegmentedOption } from '../../../components/ui/segmented-control';
+import { Tabs, TabsList, TabsTrigger } from '../../../components/ui/tabs';
 
 interface LoanChartDashboardProps {
   schedule: MonthlyRepayment[];
@@ -18,7 +18,7 @@ interface LoanChartDashboardProps {
 
 type ChartType = 'balance' | 'cumulative';
 
-const CHART_OPTIONS: SegmentedOption<ChartType>[] = [
+const CHART_OPTIONS: { id: ChartType; label: string }[] = [
   { id: 'balance', label: '대출 잔액 감소' },
   { id: 'cumulative', label: '누적 납입(원금/이자)' },
 ];
@@ -66,15 +66,25 @@ export const LoanChartDashboard: React.FC<LoanChartDashboardProps> = ({ schedule
           </p>
         </div>
 
-        {/* 차트 뷰 전환 버튼 */}
-        <SegmentedControl
-          options={CHART_OPTIONS}
+        {/* 차트 뷰 전환 탭 */}
+        <Tabs
           value={chartType}
-          onChange={setChartType}
-          variant="light-card"
-          className="self-start sm:self-auto rounded-lg p-0.5"
-          itemClassName="h-7 px-2.5 text-xs font-semibold rounded-md"
-        />
+          onValueChange={(val) => setChartType(val as ChartType)}
+          className="self-start sm:self-auto"
+        >
+          <TabsList variant="default" size="sm" className="rounded-lg p-0.5">
+            {CHART_OPTIONS.map((opt) => (
+              <TabsTrigger
+                key={opt.id}
+                value={opt.id}
+                variant="default"
+                className="py-1 px-2.5 text-xs font-semibold cursor-pointer"
+              >
+                {opt.label}
+              </TabsTrigger>
+            ))}
+          </TabsList>
+        </Tabs>
       </div>
 
       <div className="h-64 sm:h-72 w-full pt-2">

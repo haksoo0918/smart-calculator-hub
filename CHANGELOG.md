@@ -3,6 +3,21 @@
 모든 주요 변경 사항은 본 문서에 기록됩니다.
 버전 체계는 [Semantic Versioning (SemVer)](https://semver.org/)을 준수합니다.
 
+## [1.8.6] - 2026-09-10
+
+### shadcn UI 기반 표준 Tabs 컴포넌트 구축 및 전역 통합 (Component Standardization)
+- **표준 `Tabs` 공통 컴포넌트 시스템 구축 (`src/components/ui/tabs.tsx`)**:
+  - `@radix-ui/react-tabs` 기반으로 shadcn 표준 컴포넌트 세트(`Tabs`, `TabsList`, `TabsTrigger`, `TabsContent`) 구현.
+  - 디자인 시스템에 최적화된 변형(`default`, `slate-solid`, `dark-solid`) 및 크기(`sm`, `default`, `lg`), WAI-ARIA 웹 접근성 및 키보드 화살표 탐색 완비.
+- **단위 변환기 카테고리 탭 마이그레이션 (`UnitCategoryTabs.tsx`)**:
+  - 기존 버튼 리스트를 표준 `<Tabs>`로 교체하여 가로 스크롤 및 카테고리 아이콘/활성 인디케이터(`bg-[#d1ff19]`) 완벽 연동.
+- **환율 계산기 환전 방식 탭 마이그레이션 (`DualExchangeCard.tsx`, `MultiExchangeGrid.tsx`)**:
+  - 환전 방식(`매매기준율`, `현찰 살 때`, `현찰 팔 때`) 세그먼트를 표준 `<Tabs>`로 전환하고 모바일 뷰포트 반응형 여백 및 정렬 최적화.
+- **대출 상환 추이 차트 뷰 전환 탭 마이그레이션 (`LoanChartDashboard.tsx`)**:
+  - 차트 유형(`대출 잔액 감소` | `누적 납입`) 전환 인터랙션을 표준 `<Tabs>`로 일원화.
+- **단위 테스트 및 프로덕션 검증 완료**:
+  - [`tabs.test.tsx`](file:///c:/Users/hakso/_work/test/src/components/ui/tabs.test.tsx) 신규 작성 및 전체 14개 테스트 스위트 (54개 테스트) 100% 통과, 프로덕션 빌드 완료.
+
 ## [1.8.5] - 2026-09-10
 
 ### 컨테이너 쿼리 도입 및 1024px 반응형 공간 재배치 (Container Queries & Fluid Layout)
