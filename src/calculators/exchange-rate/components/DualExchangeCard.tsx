@@ -14,6 +14,8 @@ import { ArrowLeftRight, Check, Copy, TrendingUp, Calendar } from 'lucide-react'
 import { Button } from '../../../components/ui/button';
 import { Input } from '../../../components/ui/input';
 import { Badge } from '../../../components/ui/badge';
+import { SelectableChip } from '../../../components/ui/selectable-chip';
+import { SegmentedControl, SegmentedOption } from '../../../components/ui/segmented-control';
 import {
   Tooltip,
   TooltipContent,
@@ -29,14 +31,20 @@ interface DualExchangeCardProps {
   exchangeType: ExchangeType;
   discount: SpreadDiscount;
   discountSavedKRW: number;
-  snapshot: ExchangeRateSnapshot;
-  onFromChange: (code: CurrencyCode) => void;
-  onToChange: (code: CurrencyCode) => void;
-  onAmountChange: (amount: number | '') => void;
+  onFromChange: (c: CurrencyCode) => void;
+  onToChange: (c: CurrencyCode) => void;
+  onAmountChange: (val: number | '') => void;
   onSwap: () => void;
-  onTypeChange: (type: ExchangeType) => void;
-  onDiscountChange: (discount: SpreadDiscount) => void;
+  onTypeChange: (t: ExchangeType) => void;
+  onDiscountChange: (d: SpreadDiscount) => void;
+  snapshot: ExchangeRateSnapshot;
 }
+
+const EXCHANGE_TYPE_OPTIONS: SegmentedOption<ExchangeType>[] = [
+  { id: 'base', label: '매매기준율' },
+  { id: 'cash_buy', label: '현찰 살 때' },
+  { id: 'cash_sell', label: '현찰 팔 때' },
+];
 
 export const DualExchangeCard: React.FC<DualExchangeCardProps> = ({
   fromCode,
@@ -47,27 +55,24 @@ export const DualExchangeCard: React.FC<DualExchangeCardProps> = ({
   exchangeType,
   discount,
   discountSavedKRW,
-  snapshot,
   onFromChange,
   onToChange,
   onAmountChange,
   onSwap,
   onTypeChange,
   onDiscountChange,
+  snapshot,
 }) => {
   const [copied, setCopied] = useState(false);
 
   const fromCurr = CURRENCIES_DATA[fromCode];
   const toCurr = CURRENCIES_DATA[toCode];
 
-  const handleCopyResult = async () => {
-    const text = `${formatCurrencyAmount(convertedAmount, toCode)} ${toCurr.symbol}`;
-    try {
-      await navigator.clipboard.writeText(text);
+  const handleCopyResult = () => {
+    if (convertedAmount > 0) {
+      navigator.clipboard.writeText(convertedAmount.toString());
       setCopied(true);
-      setTimeout(() => setCopied(false), 1800);
-    } catch {
-      // fallback
+      setTimeout(() => setCopied(false), 2000);
     }
   };
 
@@ -79,47 +84,13 @@ export const DualExchangeCard: React.FC<DualExchangeCardProps> = ({
       <div className="space-y-2.5 pb-3 border-b border-[#e5e7eb] dark:border-slate-800">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
           {/* 환전 방식 탭 (모바일: 3등분 꽉 채움) */}
-          <div className="grid grid-cols-3 gap-1 bg-slate-100 dark:bg-slate-900 border dark:border-slate-800 p-1 rounded-xl w-full sm:w-auto">
-            <Button
-              type="button"
-              variant="ghost"
-              size="sm"
-              onClick={() => onTypeChange('base')}
-              className={`h-auto px-2 py-1.5 text-xs font-semibold rounded-lg transition-all text-center ${
-                exchangeType === 'base'
-                  ? 'bg-[#15171a] hover:bg-[#2e3238] dark:bg-slate-800 dark:hover:bg-slate-700 text-white hover:text-white shadow-2xs border dark:border-slate-700'
-                  : 'text-[#64748b] dark:text-slate-400 hover:text-[#112220] dark:hover:text-white'
-              }`}
-            >
-              매매기준율
-            </Button>
-            <Button
-              type="button"
-              variant="ghost"
-              size="sm"
-              onClick={() => onTypeChange('cash_buy')}
-              className={`h-auto px-2 py-1.5 text-xs font-semibold rounded-lg transition-all text-center ${
-                exchangeType === 'cash_buy'
-                  ? 'bg-[#15171a] hover:bg-[#2e3238] dark:bg-slate-800 dark:hover:bg-slate-700 text-white hover:text-white shadow-2xs border dark:border-slate-700'
-                  : 'text-[#64748b] dark:text-slate-400 hover:text-[#112220] dark:hover:text-white'
-              }`}
-            >
-              현찰 살 때
-            </Button>
-            <Button
-              type="button"
-              variant="ghost"
-              size="sm"
-              onClick={() => onTypeChange('cash_sell')}
-              className={`h-auto px-2 py-1.5 text-xs font-semibold rounded-lg transition-all text-center ${
-                exchangeType === 'cash_sell'
-                  ? 'bg-[#15171a] hover:bg-[#2e3238] dark:bg-slate-800 dark:hover:bg-slate-700 text-white hover:text-white shadow-2xs border dark:border-slate-700'
-                  : 'text-[#64748b] dark:text-slate-400 hover:text-[#112220] dark:hover:text-white'
-              }`}
-            >
-              현찰 팔 때
-            </Button>
-          </div>
+          <SegmentedControl
+            options={EXCHANGE_TYPE_OPTIONS}
+            value={exchangeType}
+            onChange={onTypeChange}
+            variant="slate-solid"
+            className="w-full sm:w-auto"
+          />
 
           {/* 기준일 및 환율 안내 (모바일: 1행 가로 양끝 정렬) */}
           <div className="flex items-center justify-between sm:justify-end gap-2 text-xs text-[#64748b] dark:text-slate-300 font-medium pt-[0.5px]">
@@ -152,20 +123,14 @@ export const DualExchangeCard: React.FC<DualExchangeCardProps> = ({
 
           <div className="grid grid-cols-4 sm:flex items-center gap-1 w-full sm:w-auto">
             {discountOptions.map((disc) => (
-              <Button
+              <SelectableChip
                 key={disc}
-                type="button"
-                variant="outline"
-                size="sm"
+                isSelected={discount === disc}
                 onClick={() => onDiscountChange(disc)}
-                className={`h-auto py-1 sm:px-2.5 text-xs font-bold rounded-md transition-all text-center ${
-                  discount === disc
-                    ? 'bg-[#15171a] hover:bg-[#2e3238] dark:bg-slate-800 dark:hover:bg-slate-700 text-white hover:text-white border dark:border-slate-700'
-                    : 'bg-white dark:bg-slate-900 border border-[#e5e7eb] dark:border-slate-700 text-[#64748b] dark:text-slate-400 hover:text-[#112220] dark:hover:text-white'
-                }`}
+                className="py-1 sm:px-2.5 h-auto text-center justify-center font-bold"
               >
                 {disc}%
-              </Button>
+              </SelectableChip>
             ))}
           </div>
         </div>

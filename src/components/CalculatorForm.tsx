@@ -10,6 +10,8 @@ import { QuickAmountButtons } from './QuickAmountButtons';
 import { Copy } from 'lucide-react';
 import { Badge } from './ui/badge';
 import { Button } from './ui/button';
+import { SelectableChip } from './ui/selectable-chip';
+import { SegmentedControl, SegmentedOption } from './ui/segmented-control';
 import { Input } from './ui/input';
 import { Slider } from './ui/slider';
 import {
@@ -28,6 +30,12 @@ interface CalculatorFormProps {
   onCopyFromOther?: () => void;
   copyButtonLabel?: string;
 }
+
+const CONTRIBUTION_OPTIONS: SegmentedOption<ContributionFrequency>[] = [
+  { id: 'monthly', label: '매월 적립' },
+  { id: 'annual', label: '매년 적립' },
+  { id: 'none', label: '적립 없음' },
+];
 
 const RATE_PRESETS = [
   { label: '하락장 -10%', rate: -10.0 },
@@ -50,7 +58,6 @@ export const CalculatorForm: React.FC<CalculatorFormProps> = ({
   const isIndigo = accentColor === 'indigo';
   const idPrefix = isIndigo ? 'scenario-b' : 'scenario-a';
   const borderFocusClass = 'focus:border-[#15171a] dark:focus:border-[#d1ff19] focus:ring-1 focus:ring-[#15171a] dark:focus:ring-[#d1ff19]';
-  const activeTabClass = 'bg-[#15171a] hover:bg-[#2e3238] dark:bg-white dark:hover:bg-slate-100 text-white hover:text-white dark:text-[#112220] dark:hover:text-[#112220] font-bold border-[#15171a] dark:border-white shadow-xs';
 
   const updateField = <K extends keyof ScenarioInput>(field: K, value: ScenarioInput[K]) => {
     onChange({
@@ -138,31 +145,13 @@ export const CalculatorForm: React.FC<CalculatorFormProps> = ({
             )}
           </div>
 
-          {/* 주기 탭 */}
-          <div className="grid grid-cols-3 gap-1 p-1 bg-slate-100 dark:bg-slate-900 rounded-md mb-2 text-xs font-semibold border border-[#e5e7eb] dark:border-slate-800">
-            {(
-              [
-                { id: 'monthly', label: '매월 적립' },
-                { id: 'annual', label: '매년 적립' },
-                { id: 'none', label: '적립 없음' },
-              ] as { id: ContributionFrequency; label: string }[]
-            ).map((tab) => (
-              <Button
-                key={tab.id}
-                type="button"
-                variant="ghost"
-                size="sm"
-                onClick={() => updateField('contributionFrequency', tab.id)}
-                className={`h-auto py-1.5 rounded-lg transition-all text-center ${
-                  scenario.contributionFrequency === tab.id
-                    ? activeTabClass
-                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
-                }`}
-              >
-                {tab.label}
-              </Button>
-            ))}
-          </div>
+          <SegmentedControl
+            options={CONTRIBUTION_OPTIONS}
+            value={scenario.contributionFrequency}
+            onChange={(val) => updateField('contributionFrequency', val)}
+            variant="dark-solid"
+            className="mb-2"
+          />
 
           {scenario.contributionFrequency !== 'none' && (
             <>
@@ -170,22 +159,25 @@ export const CalculatorForm: React.FC<CalculatorFormProps> = ({
                 <Input
                   id={`${idPrefix}-regular-contribution`}
                   aria-label="정기 추가 적립금"
-                  type="text"
-                  inputMode="numeric"
-                  value={scenario.regularContribution ? scenario.regularContribution.toLocaleString('ko-KR') : ''}
-                  placeholder="0"
+                  type="number"
+                  step="10000"
+                  min="0"
+                  max="100000000"
+                  value={scenario.regularContribution}
                   onChange={(e) => {
-                    const raw = e.target.value.replace(/[^0-9]/g, '');
-                    updateField('regularContribution', raw ? parseInt(raw, 10) : 0);
+                    const val = parseInt(e.target.value, 10);
+                    updateField('regularContribution', isNaN(val) ? 0 : val);
                   }}
-                  className={`w-full text-right font-bold text-[#112220] dark:text-slate-100 pl-3 pr-10 py-2 border border-[#e5e7eb] dark:border-slate-700 rounded-md text-base sm:text-lg tracking-tight bg-slate-50/50 dark:bg-slate-900/60 focus:bg-white dark:focus:bg-slate-900 transition-colors h-11 ${borderFocusClass}`}
+                  className={`w-full text-right font-extrabold text-lg sm:text-xl pl-3 pr-8 py-2 border border-[#e5e7eb] dark:border-slate-700 rounded-md text-[#112220] dark:text-slate-100 bg-white dark:bg-slate-900 ${borderFocusClass}`}
                 />
-                <span className="absolute right-3.5 top-1/2 -translate-y-1/2 text-sm font-medium text-slate-400 dark:text-slate-500 pointer-events-none select-none">
+                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-slate-400 font-bold">
                   원
                 </span>
               </div>
               <QuickAmountButtons
-                onAdd={(amt) => updateField('regularContribution', (scenario.regularContribution || 0) + amt)}
+                onAdd={(amt) =>
+                  updateField('regularContribution', scenario.regularContribution + amt)
+                }
                 onClear={() => updateField('regularContribution', 0)}
               />
             </>
@@ -195,19 +187,18 @@ export const CalculatorForm: React.FC<CalculatorFormProps> = ({
         {/* 3. 투자 기간 */}
         <div>
           <div className="flex justify-between items-baseline mb-1">
-            <label htmlFor={`${idPrefix}-years-slider`} className="text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-300 cursor-pointer">
+            <label htmlFor={`${idPrefix}-years`} className="text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-300 cursor-pointer">
               목표 투자 기간
             </label>
             <div className="flex items-baseline gap-1">
-              <span className="text-lg font-extrabold text-slate-900 dark:text-slate-100">
-                {scenario.years}
-              </span>
-              <span className="text-xs text-slate-500 dark:text-slate-400 font-semibold">년</span>
+              <span className="font-extrabold text-xl sm:text-2xl text-[#112220] dark:text-slate-100">{scenario.years}</span>
+              <span className="text-sm font-bold text-slate-600 dark:text-slate-400">년</span>
+              <span className="text-xs text-slate-400 font-medium">({scenario.years * 12}개월)</span>
             </div>
           </div>
           <Slider
             id={`${idPrefix}-years-slider`}
-            aria-label="목표 투자 기간 슬라이더"
+            aria-label="투자 기간 슬라이더"
             min={1}
             max={40}
             step={1}
@@ -218,20 +209,14 @@ export const CalculatorForm: React.FC<CalculatorFormProps> = ({
           {/* 기간 프리셋 버튼 */}
           <div className="flex items-center justify-between gap-1 mt-1">
             {YEAR_PRESETS.map((yr) => (
-              <Button
+              <SelectableChip
                 key={yr}
-                type="button"
-                variant="outline"
-                size="sm"
+                isSelected={scenario.years === yr}
                 onClick={() => updateField('years', yr)}
-                className={`flex-1 h-auto py-1 text-[11px] font-medium rounded-md border transition-all ${
-                  scenario.years === yr
-                    ? 'bg-slate-800 hover:bg-slate-700 dark:bg-white dark:hover:bg-slate-100 text-white hover:text-white dark:text-[#112220] dark:hover:text-[#112220] border-slate-800 dark:border-white font-bold'
-                    : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800'
-                }`}
+                className="flex-1 py-1 text-[11px]"
               >
                 {yr}년
-              </Button>
+              </SelectableChip>
             ))}
           </div>
         </div>
@@ -283,22 +268,14 @@ export const CalculatorForm: React.FC<CalculatorFormProps> = ({
               const isSelected = Math.abs(scenario.annualRate - preset.rate) < 0.05;
               const isNegative = preset.rate < 0;
               return (
-                <Button
+                <SelectableChip
                   key={preset.rate}
-                  type="button"
-                  variant="outline"
-                  size="sm"
+                  isSelected={isSelected}
                   onClick={() => updateField('annualRate', preset.rate)}
-                  className={`h-auto px-1 py-1.5 text-[11px] font-medium rounded-md border transition-colors text-center flex items-center justify-center ${
-                    isSelected
-                      ? isNegative
-                        ? 'bg-rose-50 hover:bg-rose-100 dark:bg-rose-950/40 dark:hover:bg-rose-950/70 text-rose-800 dark:text-rose-300 border-rose-300 dark:border-rose-700 font-bold'
-                        : 'bg-[#15171a] hover:bg-[#2e3238] dark:bg-white dark:hover:bg-slate-100 text-white hover:text-white dark:text-[#112220] dark:hover:text-[#112220] border-[#15171a] dark:border-white font-bold'
-                      : 'bg-white dark:bg-slate-900 text-[#334155] dark:text-slate-300 border-[#e5e7eb] dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800'
-                  }`}
+                  className={isNegative && isSelected ? 'bg-rose-50 hover:bg-rose-100 dark:bg-rose-950/40 text-rose-800 dark:text-rose-300 border-rose-300 dark:border-rose-700 font-bold' : undefined}
                 >
                   <span className="truncate">{preset.label}</span>
-                </Button>
+                </SelectableChip>
               );
             })}
           </div>

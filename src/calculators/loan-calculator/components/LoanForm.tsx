@@ -5,6 +5,8 @@ import { Input } from '../../../components/ui/input';
 import { Slider } from '../../../components/ui/slider';
 import { Button } from '../../../components/ui/button';
 import { Badge } from '../../../components/ui/badge';
+import { SelectableChip } from '../../../components/ui/selectable-chip';
+import { SegmentedControl, SegmentedOption } from '../../../components/ui/segmented-control';
 import { RotateCcw } from 'lucide-react';
 
 interface LoanFormProps {
@@ -12,6 +14,12 @@ interface LoanFormProps {
   onChange: (updated: LoanInput) => void;
   onReset: () => void;
 }
+
+const REPAYMENT_OPTIONS: SegmentedOption<RepaymentMethod>[] = [
+  { id: 'equal_payment', label: '원리금균등' },
+  { id: 'equal_principal', label: '원금균등' },
+  { id: 'bullet', label: '만기일시' },
+];
 
 const AMOUNT_PRESETS = [
   { label: '+1,000만', value: 10_000_000 },
@@ -58,7 +66,7 @@ export const LoanForm: React.FC<LoanFormProps> = ({ input, onChange, onReset }) 
     const current = input.earlyRepayment ?? {
       enabled: false,
       afterMonths: 24,
-      amount: 30_000_000,
+      amount: 10_000_000,
       feeRate: 1.2,
     };
     onChange({
@@ -67,21 +75,21 @@ export const LoanForm: React.FC<LoanFormProps> = ({ input, onChange, onReset }) 
     });
   };
 
-  const isEarlyEnabled = Boolean(input.earlyRepayment?.enabled);
+  const isEarlyEnabled = input.earlyRepayment?.enabled ?? false;
 
   return (
-    <div className="bg-white dark:bg-[#1e293b] p-4 sm:p-6 rounded-[24px] border border-[#e5e7eb] dark:border-slate-800 shadow-sm transition-colors space-y-6">
-      {/* 1. 상단 타이틀 및 초기화 버튼 */}
+    <div className="bg-white dark:bg-[#1e293b] rounded-[24px] border border-[#e5e7eb] dark:border-slate-800 p-4 sm:p-6 space-y-5 shadow-2xs transition-colors">
+      {/* 1. 상단 타이틀 & 초기화 버튼 */}
       <div className="flex items-center justify-between pb-3 border-b border-[#e5e7eb] dark:border-slate-800">
-        <div>
-          <h2 className="text-base sm:text-lg font-bold text-[#112220] dark:text-slate-100 flex items-center gap-2">
-            <span>대출 조건 설정</span>
-            <Badge variant="outline" className="text-[10px] font-bold text-slate-500 border-slate-300 dark:border-slate-700">
-              실시간 시뮬레이션
+        <div className="space-y-0.5">
+          <h2 className="text-base sm:text-lg font-black text-[#112220] dark:text-slate-100 flex items-center gap-2">
+            대출 조건 입력
+            <Badge variant="outline" className="text-[10px] px-1.5 py-0 h-4 border-slate-300 dark:border-slate-700">
+              스마트 비교
             </Badge>
           </h2>
-          <p className="text-xs text-[#64748b] dark:text-slate-400 mt-0.5">
-            원금, 금리, 기간을 조절하여 3대 상환방식을 비교하세요
+          <p className="text-xs text-[#64748b] dark:text-slate-400">
+            원하는 상환 방식과 금액을 입력하면 총이자와 상환 스케줄이 계산됩니다
           </p>
         </div>
         <Button
@@ -89,9 +97,9 @@ export const LoanForm: React.FC<LoanFormProps> = ({ input, onChange, onReset }) 
           variant="ghost"
           size="sm"
           onClick={onReset}
-          className="h-8 px-2 text-xs text-[#64748b] dark:text-slate-400 hover:text-[#112220] dark:hover:text-white"
+          className="h-8 gap-1 text-xs text-slate-500 dark:text-slate-400 hover:text-[#112220] dark:hover:text-white"
         >
-          <RotateCcw className="w-3.5 h-3.5 mr-1" />
+          <RotateCcw className="w-3.5 h-3.5" />
           초기화
         </Button>
       </div>
@@ -101,30 +109,13 @@ export const LoanForm: React.FC<LoanFormProps> = ({ input, onChange, onReset }) 
         <label className="block text-xs font-bold text-[#112220] dark:text-slate-200 mb-2">
           상환 방식
         </label>
-        <div className="grid grid-cols-3 gap-1.5 p-1 bg-slate-100 dark:bg-slate-900 rounded-xl border border-[#e5e7eb] dark:border-slate-800">
-          {(
-            [
-              { id: 'equal_payment', label: '원리금균등' },
-              { id: 'equal_principal', label: '원금균등' },
-              { id: 'bullet', label: '만기일시' },
-            ] as { id: RepaymentMethod; label: string }[]
-          ).map((tab) => (
-            <Button
-              key={tab.id}
-              type="button"
-              variant="ghost"
-              size="sm"
-              onClick={() => updateField('repaymentMethod', tab.id)}
-              className={`h-auto py-2 text-xs sm:text-sm font-bold rounded-lg transition-all text-center ${
-                input.repaymentMethod === tab.id
-                  ? 'bg-[#15171a] hover:bg-[#2e3238] dark:bg-white dark:hover:bg-slate-100 text-white hover:text-white dark:text-[#112220] dark:hover:text-[#112220] shadow-sm'
-                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
-              }`}
-            >
-              {tab.label}
-            </Button>
-          ))}
-        </div>
+        <SegmentedControl
+          options={REPAYMENT_OPTIONS}
+          value={input.repaymentMethod}
+          onChange={(val) => updateField('repaymentMethod', val)}
+          variant="dark-solid"
+          itemClassName="py-2 text-xs sm:text-sm"
+        />
       </div>
 
       {/* 3. 대출 원금 */}
@@ -211,20 +202,13 @@ export const LoanForm: React.FC<LoanFormProps> = ({ input, onChange, onReset }) 
         </div>
         <div className="flex items-center gap-1.5 mt-2 flex-wrap">
           {RATE_PRESETS.map((preset) => (
-            <Button
+            <SelectableChip
               key={preset.label}
-              type="button"
-              variant="outline"
-              size="sm"
+              isSelected={input.annualRate === preset.value}
               onClick={() => updateField('annualRate', preset.value)}
-              className={`h-7 px-2.5 text-xs font-semibold ${
-                input.annualRate === preset.value
-                  ? 'border-[#15171a] hover:border-[#2e3238] dark:border-white bg-[#15171a] hover:bg-[#2e3238] dark:bg-white dark:hover:bg-slate-100 text-white hover:text-white dark:text-[#112220] dark:hover:text-[#112220]'
-                  : 'bg-white dark:bg-slate-900 border-[#e5e7eb] dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800'
-              }`}
             >
               {preset.label}
-            </Button>
+            </SelectableChip>
           ))}
         </div>
       </div>
@@ -250,20 +234,13 @@ export const LoanForm: React.FC<LoanFormProps> = ({ input, onChange, onReset }) 
         />
         <div className="flex items-center gap-1.5 mt-2 flex-wrap">
           {TERM_PRESETS.map((term) => (
-            <Button
+            <SelectableChip
               key={term}
-              type="button"
-              variant="outline"
-              size="sm"
+              isSelected={input.loanTermYears === term}
               onClick={() => updateField('loanTermYears', term)}
-              className={`h-7 px-2.5 text-xs font-semibold ${
-                input.loanTermYears === term
-                  ? 'border-[#15171a] hover:border-[#2e3238] dark:border-white bg-[#15171a] hover:bg-[#2e3238] dark:bg-white dark:hover:bg-slate-100 text-white hover:text-white dark:text-[#112220] dark:hover:text-[#112220]'
-                  : 'bg-white dark:bg-slate-900 border-[#e5e7eb] dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800'
-              }`}
             >
               {term}년
-            </Button>
+            </SelectableChip>
           ))}
         </div>
       </div>
@@ -282,20 +259,14 @@ export const LoanForm: React.FC<LoanFormProps> = ({ input, onChange, onReset }) 
         </div>
         <div className="grid grid-cols-4 gap-1.5">
           {GRACE_PRESETS.map((preset) => (
-            <Button
+            <SelectableChip
               key={preset.label}
-              type="button"
-              variant="outline"
-              size="sm"
+              isSelected={input.gracePeriodMonths === preset.months}
               onClick={() => updateField('gracePeriodMonths', preset.months)}
-              className={`h-auto py-2 text-xs font-semibold rounded-lg border transition-all text-center ${
-                input.gracePeriodMonths === preset.months
-                  ? 'border-[#15171a] hover:border-[#2e3238] dark:border-white bg-[#15171a] hover:bg-[#2e3238] dark:bg-white dark:hover:bg-slate-100 text-white hover:text-white dark:text-[#112220] dark:hover:text-[#112220]'
-                  : 'border-[#e5e7eb] dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800'
-              }`}
+              className="h-auto py-2"
             >
               {preset.label}
-            </Button>
+            </SelectableChip>
           ))}
         </div>
       </div>
@@ -347,25 +318,18 @@ export const LoanForm: React.FC<LoanFormProps> = ({ input, onChange, onReset }) 
               </div>
               <div className="grid grid-cols-4 gap-1 mt-1">
                 {EARLY_MONTH_PRESETS.map((preset) => (
-                  <Button
+                  <SelectableChip
                     key={preset.label}
-                    type="button"
-                    variant="outline"
-                    size="sm"
+                    isSelected={input.earlyRepayment?.afterMonths === preset.months}
                     onClick={() =>
                       updateEarlyRepayment((prev) => ({
                         ...prev,
                         afterMonths: preset.months,
                       }))
                     }
-                    className={`h-7 text-xs font-semibold ${
-                      input.earlyRepayment?.afterMonths === preset.months
-                        ? 'border-[#15171a] hover:border-[#2e3238] dark:border-white bg-[#15171a] hover:bg-[#2e3238] dark:bg-white dark:hover:bg-slate-100 text-white hover:text-white dark:text-[#112220] dark:hover:text-[#112220]'
-                        : 'bg-white dark:bg-slate-900 border-[#e5e7eb] dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800'
-                    }`}
                   >
                     {preset.label}
-                  </Button>
+                  </SelectableChip>
                 ))}
               </div>
             </div>

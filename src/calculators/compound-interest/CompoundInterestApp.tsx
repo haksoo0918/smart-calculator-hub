@@ -15,7 +15,13 @@ import {
   TooltipTrigger,
 } from '../../components/ui/tooltip';
 import { Button } from '../../components/ui/button';
+import { SegmentedControl, SegmentedOption } from '../../components/ui/segmented-control';
 import { siteConfig } from '../../config/site';
+
+const MOBILE_TAB_OPTIONS: SegmentedOption<'A' | 'B'>[] = [
+  { id: 'A', label: '시나리오 A' },
+  { id: 'B', label: '시나리오 B' },
+];
 
 const DEFAULT_SCENARIO_A: ScenarioInput = {
   name: '시나리오 A',
@@ -141,33 +147,14 @@ export const CompoundInterestApp: React.FC<CompoundInterestAppProps> = () => {
 
       {/* 모바일 비교 모드 시 탭 네비게이션 */}
       {isComparisonMode && (
-        <div className="lg:hidden flex rounded-lg bg-slate-100 dark:bg-slate-900 p-1 border border-[#e5e7eb] dark:border-slate-800">
-          <Button
-            type="button"
-            variant="ghost"
-            size="sm"
-            onClick={() => setActiveMobileTab('A')}
-            className={`flex-1 h-auto py-2 text-xs sm:text-sm font-bold rounded-md transition-colors ${
-              activeMobileTab === 'A'
-                ? 'bg-[#15171a] hover:bg-[#2e3238] dark:bg-slate-800 dark:hover:bg-slate-700 text-white hover:text-white'
-                : 'text-[#64748b] dark:text-slate-400 hover:text-[#112220] dark:hover:text-white'
-            }`}
-          >
-            시나리오 A
-          </Button>
-          <Button
-            type="button"
-            variant="ghost"
-            size="sm"
-            onClick={() => setActiveMobileTab('B')}
-            className={`flex-1 h-auto py-2 text-xs sm:text-sm font-bold rounded-md transition-colors ${
-              activeMobileTab === 'B'
-                ? 'bg-[#15171a] hover:bg-[#2e3238] dark:bg-slate-800 dark:hover:bg-slate-700 text-white hover:text-white'
-                : 'text-[#64748b] dark:text-slate-400 hover:text-[#112220] dark:hover:text-white'
-            }`}
-          >
-            시나리오 B
-          </Button>
+        <div className="lg:hidden">
+          <SegmentedControl
+            options={MOBILE_TAB_OPTIONS}
+            value={activeMobileTab}
+            onChange={setActiveMobileTab}
+            variant="slate-solid"
+            itemClassName="py-2 text-xs sm:text-sm font-bold"
+          />
         </div>
       )}
 

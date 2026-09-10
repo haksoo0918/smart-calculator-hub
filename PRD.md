@@ -552,6 +552,17 @@ export interface ExchangeResult {
   - **웹 접근성 및 포커스 링**: shadcn Button의 기본 `focus-visible:ring-2 focus-visible:ring-[#15171a] dark:focus-visible:ring-[#d1ff19]` 포커스 링을 통해 키보드 사용자 탐색성 100% 보장
   - **디자인 보존**: `className` 오버라이드를 통해 기존 `ghost.design.md`의 라운드, 패딩, 폰트 웨이트, 모노크롬 다크모드 스타일을 100% 동일하게 유지
 
+### 11.4 공통 인터랙션 컴포넌트 추상화 규격 (`SelectableChip`, `SegmentedControl`)
+- **목적**: 2회 이상 중복되는 인터랙션 버튼의 상태 로직(Active/Hover)과 스타일을 공통 컴포넌트로 일원화하여 유지보수성 향상.
+- **신규 컴포넌트 구성**:
+  1. **`SelectableChip` (`src/components/ui/selectable-chip.tsx`)**:
+     - 금리, 기간, 거치기간, 수익률, 우대율 등 선택형 프리셋 칩 표준 컴포넌트.
+     - 주요 속성: `isSelected: boolean`, `children`, `onClick`
+  2. **`SegmentedControl` (`src/components/ui/segmented-control.tsx`)**:
+     - 상환방식, 적립주기, 환전방식, 차트 뷰 등 2~4분할 세그먼트 탭 표준 컴포넌트.
+     - 주요 속성: `options: { id, label }[]`, `value`, `onChange`
+- **적용 대상**: `LoanForm`, `LoanChartDashboard`, `DualExchangeCard`, `DualConverterCard`, `CalculatorForm`, `CompoundInterestApp`
+
 ---
 
 ## 12. 연복리 계산기 투자 상식 및 유의사항 안내 규격 (`CompoundInfoCard`)

@@ -3,6 +3,7 @@ import { DecimalPrecision, UnitDefinition } from '../../../types/unit';
 import { ArrowLeftRight, HelpCircle, Check, Copy } from 'lucide-react';
 import { Button } from '../../../components/ui/button';
 import { Input } from '../../../components/ui/input';
+import { SegmentedControl } from '../../../components/ui/segmented-control';
 import {
   Tooltip,
   TooltipContent,
@@ -80,26 +81,16 @@ export const DualConverterCard: React.FC<DualConverterCardProps> = ({
           )}
         </div>
 
-        <div className="flex items-center gap-1">
-          <span className="text-[11px] text-[#64748b] dark:text-slate-400 font-medium mr-1">소수점</span>
-          <div className="flex items-center bg-slate-100 dark:bg-slate-900 p-0.5 rounded-md border border-[#e5e7eb] dark:border-slate-800">
-            {precisionOptions.map((p) => (
-              <Button
-                key={p}
-                type="button"
-                variant="ghost"
-                size="sm"
-                onClick={() => onPrecisionChange(p)}
-                className={`h-auto px-2 py-0.5 text-[11px] font-semibold rounded transition-colors ${
-                  precision === p
-                    ? 'bg-[#15171a] hover:bg-[#2e3238] dark:bg-slate-800 dark:hover:bg-slate-700 text-white hover:text-white font-bold'
-                    : 'text-[#64748b] dark:text-slate-400 hover:text-[#112220] dark:hover:text-white'
-                }`}
-              >
-                {p}자리
-              </Button>
-            ))}
-          </div>
+        <div className="flex items-center gap-1.5">
+          <span className="text-[11px] text-[#64748b] dark:text-slate-400 font-medium">소수점</span>
+          <SegmentedControl
+            options={precisionOptions.map((p) => ({ id: p.toString(), label: `${p}자리` }))}
+            value={precision.toString()}
+            onChange={(val) => onPrecisionChange(Number(val) as DecimalPrecision)}
+            variant="slate-solid"
+            className="p-0.5 rounded-md"
+            itemClassName="h-auto py-0.5 px-2 text-[11px]"
+          />
         </div>
       </div>
 
