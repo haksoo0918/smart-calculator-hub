@@ -84,18 +84,20 @@ export const DualConverterCard: React.FC<DualConverterCardProps> = ({
           <span className="text-[11px] text-[#64748b] dark:text-slate-400 font-medium mr-1">소수점</span>
           <div className="flex items-center bg-slate-100 dark:bg-slate-900 p-0.5 rounded-md border border-[#e5e7eb] dark:border-slate-800">
             {precisionOptions.map((p) => (
-              <button
+              <Button
                 key={p}
                 type="button"
+                variant="ghost"
+                size="sm"
                 onClick={() => onPrecisionChange(p)}
-                className={`px-2 py-0.5 text-[11px] font-semibold rounded transition-colors ${
+                className={`h-auto px-2 py-0.5 text-[11px] font-semibold rounded transition-colors ${
                   precision === p
-                    ? 'bg-[#15171a] dark:bg-slate-800 text-white font-bold'
+                    ? 'bg-[#15171a] dark:bg-slate-800 text-white font-bold hover:bg-[#15171a] dark:hover:bg-slate-800 hover:text-white'
                     : 'text-[#64748b] dark:text-slate-400 hover:text-[#112220] dark:hover:text-white'
                 }`}
               >
                 {p}자리
-              </button>
+              </Button>
             ))}
           </div>
         </div>

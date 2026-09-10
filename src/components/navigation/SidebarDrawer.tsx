@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import { Sheet, SheetContent, SheetTitle } from '../ui/sheet';
 import { Badge } from '../ui/badge';
+import { Button } from '../ui/button';
 import { siteConfig } from '../../config/site';
 
 interface SidebarDrawerProps {
@@ -89,16 +90,17 @@ export const SidebarDrawer: React.FC<SidebarDrawerProps> = ({
                 const isComingSoon = item.status === 'coming-soon';
 
                 return (
-                  <button
+                  <Button
                     key={item.id}
                     type="button"
+                    variant="ghost"
                     onClick={() => {
                       onSelect(item.id);
                       onCloseMobile();
                     }}
-                    className={`w-full flex items-center justify-between px-3 py-2.5 rounded-md text-left transition-colors ${
+                    className={`w-full h-auto justify-between px-3 py-2.5 rounded-md text-left font-normal transition-colors ${
                       isActive
-                        ? 'bg-slate-100 dark:bg-slate-800 text-[#112220] dark:text-white font-bold border border-[#e5e7eb] dark:border-slate-700'
+                        ? 'bg-slate-100 dark:bg-slate-800 text-[#112220] dark:text-white font-bold border border-[#e5e7eb] dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800'
                         : isComingSoon
                         ? 'text-[#94a3b8] dark:text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800/40'
                         : 'text-[#334155] dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/60 hover:text-[#112220] dark:hover:text-white font-medium'
@@ -125,7 +127,7 @@ export const SidebarDrawer: React.FC<SidebarDrawerProps> = ({
                         {item.badge}
                       </Badge>
                     )}
-                  </button>
+                  </Button>
                 );
               })}
             </div>

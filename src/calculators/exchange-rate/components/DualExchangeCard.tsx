@@ -80,39 +80,45 @@ export const DualExchangeCard: React.FC<DualExchangeCardProps> = ({
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
           {/* 환전 방식 탭 (모바일: 3등분 꽉 채움) */}
           <div className="grid grid-cols-3 gap-1 bg-slate-100 dark:bg-slate-900 border dark:border-slate-800 p-1 rounded-xl w-full sm:w-auto">
-            <button
+            <Button
               type="button"
+              variant="ghost"
+              size="sm"
               onClick={() => onTypeChange('base')}
-              className={`px-2 py-1.5 text-xs font-semibold rounded-lg transition-all text-center ${
+              className={`h-auto px-2 py-1.5 text-xs font-semibold rounded-lg transition-all text-center ${
                 exchangeType === 'base'
-                  ? 'bg-[#15171a] dark:bg-slate-800 text-white shadow-2xs border dark:border-slate-700'
+                  ? 'bg-[#15171a] dark:bg-slate-800 text-white shadow-2xs border dark:border-slate-700 hover:bg-[#15171a] dark:hover:bg-slate-800 hover:text-white'
                   : 'text-[#64748b] dark:text-slate-400 hover:text-[#112220] dark:hover:text-white'
               }`}
             >
               매매기준율
-            </button>
-            <button
+            </Button>
+            <Button
               type="button"
+              variant="ghost"
+              size="sm"
               onClick={() => onTypeChange('cash_buy')}
-              className={`px-2 py-1.5 text-xs font-semibold rounded-lg transition-all text-center ${
+              className={`h-auto px-2 py-1.5 text-xs font-semibold rounded-lg transition-all text-center ${
                 exchangeType === 'cash_buy'
-                  ? 'bg-[#15171a] dark:bg-slate-800 text-white shadow-2xs border dark:border-slate-700'
+                  ? 'bg-[#15171a] dark:bg-slate-800 text-white shadow-2xs border dark:border-slate-700 hover:bg-[#15171a] dark:hover:bg-slate-800 hover:text-white'
                   : 'text-[#64748b] dark:text-slate-400 hover:text-[#112220] dark:hover:text-white'
               }`}
             >
               현찰 살 때
-            </button>
-            <button
+            </Button>
+            <Button
               type="button"
+              variant="ghost"
+              size="sm"
               onClick={() => onTypeChange('cash_sell')}
-              className={`px-2 py-1.5 text-xs font-semibold rounded-lg transition-all text-center ${
+              className={`h-auto px-2 py-1.5 text-xs font-semibold rounded-lg transition-all text-center ${
                 exchangeType === 'cash_sell'
-                  ? 'bg-[#15171a] dark:bg-slate-800 text-white shadow-2xs border dark:border-slate-700'
+                  ? 'bg-[#15171a] dark:bg-slate-800 text-white shadow-2xs border dark:border-slate-700 hover:bg-[#15171a] dark:hover:bg-slate-800 hover:text-white'
                   : 'text-[#64748b] dark:text-slate-400 hover:text-[#112220] dark:hover:text-white'
               }`}
             >
               현찰 팔 때
-            </button>
+            </Button>
           </div>
 
           {/* 기준일 및 환율 안내 (모바일: 1행 가로 양끝 정렬) */}
@@ -146,18 +152,20 @@ export const DualExchangeCard: React.FC<DualExchangeCardProps> = ({
 
           <div className="grid grid-cols-4 sm:flex items-center gap-1 w-full sm:w-auto">
             {discountOptions.map((disc) => (
-              <button
+              <Button
                 key={disc}
                 type="button"
+                variant="outline"
+                size="sm"
                 onClick={() => onDiscountChange(disc)}
-                className={`py-1 sm:px-2.5 text-xs font-bold rounded-md transition-all text-center ${
+                className={`h-auto py-1 sm:px-2.5 text-xs font-bold rounded-md transition-all text-center ${
                   discount === disc
-                    ? 'bg-[#15171a] dark:bg-slate-800 text-white border dark:border-slate-700'
+                    ? 'bg-[#15171a] dark:bg-slate-800 text-white border dark:border-slate-700 hover:bg-[#15171a] dark:hover:bg-slate-800 hover:text-white'
                     : 'bg-white dark:bg-slate-900 border border-[#e5e7eb] dark:border-slate-700 text-[#64748b] dark:text-slate-400 hover:text-[#112220] dark:hover:text-white'
                 }`}
               >
                 {disc}%
-              </button>
+              </Button>
             ))}
           </div>
         </div>

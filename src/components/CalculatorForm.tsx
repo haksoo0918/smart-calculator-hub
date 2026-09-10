@@ -147,18 +147,20 @@ export const CalculatorForm: React.FC<CalculatorFormProps> = ({
                 { id: 'none', label: '적립 없음' },
               ] as { id: ContributionFrequency; label: string }[]
             ).map((tab) => (
-              <button
+              <Button
                 key={tab.id}
                 type="button"
+                variant="ghost"
+                size="sm"
                 onClick={() => updateField('contributionFrequency', tab.id)}
-                className={`py-1.5 rounded-lg transition-all text-center ${
+                className={`h-auto py-1.5 rounded-lg transition-all text-center ${
                   scenario.contributionFrequency === tab.id
                     ? activeTabClass
                     : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
                 }`}
               >
                 {tab.label}
-              </button>
+              </Button>
             ))}
           </div>
 
@@ -216,18 +218,20 @@ export const CalculatorForm: React.FC<CalculatorFormProps> = ({
           {/* 기간 프리셋 버튼 */}
           <div className="flex items-center justify-between gap-1 mt-1">
             {YEAR_PRESETS.map((yr) => (
-              <button
+              <Button
                 key={yr}
                 type="button"
+                variant="outline"
+                size="sm"
                 onClick={() => updateField('years', yr)}
-                className={`flex-1 py-1 text-[11px] font-medium rounded-md border transition-all ${
+                className={`flex-1 h-auto py-1 text-[11px] font-medium rounded-md border transition-all ${
                   scenario.years === yr
-                    ? 'bg-slate-800 dark:bg-white text-white dark:text-[#112220] border-slate-800 dark:border-white font-bold'
+                    ? 'bg-slate-800 dark:bg-white text-white dark:text-[#112220] border-slate-800 dark:border-white font-bold hover:bg-slate-800 dark:hover:bg-white hover:text-white dark:hover:text-[#112220]'
                     : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800'
                 }`}
               >
                 {yr}년
-              </button>
+              </Button>
             ))}
           </div>
         </div>
@@ -279,20 +283,22 @@ export const CalculatorForm: React.FC<CalculatorFormProps> = ({
               const isSelected = Math.abs(scenario.annualRate - preset.rate) < 0.05;
               const isNegative = preset.rate < 0;
               return (
-                <button
+                <Button
                   key={preset.rate}
                   type="button"
+                  variant="outline"
+                  size="sm"
                   onClick={() => updateField('annualRate', preset.rate)}
-                  className={`px-1 py-1.5 text-[11px] font-medium rounded-md border transition-colors text-center flex items-center justify-center ${
+                  className={`h-auto px-1 py-1.5 text-[11px] font-medium rounded-md border transition-colors text-center flex items-center justify-center ${
                     isSelected
                       ? isNegative
-                        ? 'bg-rose-50 dark:bg-rose-950/40 text-rose-800 dark:text-rose-300 border-rose-300 dark:border-rose-700 font-bold'
-                        : 'bg-[#15171a] dark:bg-white text-white dark:text-[#112220] border-[#15171a] dark:border-white font-bold'
+                        ? 'bg-rose-50 dark:bg-rose-950/40 text-rose-800 dark:text-rose-300 border-rose-300 dark:border-rose-700 font-bold hover:bg-rose-50 dark:hover:bg-rose-950/40'
+                        : 'bg-[#15171a] dark:bg-white text-white dark:text-[#112220] border-[#15171a] dark:border-white font-bold hover:bg-[#15171a] dark:hover:bg-white hover:text-white dark:hover:text-[#112220]'
                       : 'bg-white dark:bg-slate-900 text-[#334155] dark:text-slate-300 border-[#e5e7eb] dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800'
                   }`}
                 >
                   <span className="truncate">{preset.label}</span>
-                </button>
+                </Button>
               );
             })}
           </div>

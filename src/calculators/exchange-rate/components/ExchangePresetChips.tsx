@@ -2,6 +2,7 @@ import React from 'react';
 import { ExchangePreset } from '../../../types/exchange';
 import { EXCHANGE_PRESETS } from '../../../utils/exchangeCalculator';
 import { Badge } from '../../../components/ui/badge';
+import { Button } from '../../../components/ui/button';
 
 interface ExchangePresetChipsProps {
   onSelectPreset: (preset: ExchangePreset) => void;
@@ -21,11 +22,13 @@ export const ExchangePresetChips: React.FC<ExchangePresetChipsProps> = ({
 
       <div className="flex items-center gap-1.5 flex-wrap">
         {EXCHANGE_PRESETS.map((preset) => (
-          <button
+          <Button
             key={preset.label}
             type="button"
+            variant="outline"
+            size="sm"
             onClick={() => onSelectPreset(preset)}
-            className="group flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-slate-50 dark:bg-slate-900 border border-[#e5e7eb] dark:border-slate-700 hover:border-[#15171a] dark:hover:border-[#d1ff19] hover:bg-white dark:hover:bg-slate-800 text-[#112220] dark:text-slate-200 transition-all cursor-pointer shadow-2xs"
+            className="h-auto flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-slate-50 dark:bg-slate-900 border border-[#e5e7eb] dark:border-slate-700 hover:border-[#15171a] dark:hover:border-[#d1ff19] hover:bg-white dark:hover:bg-slate-800 text-[#112220] dark:text-slate-200 transition-all cursor-pointer shadow-2xs"
           >
             <span className="pt-[0.5px] leading-normal">{preset.label}</span>
             {preset.badge && (
@@ -36,7 +39,7 @@ export const ExchangePresetChips: React.FC<ExchangePresetChipsProps> = ({
                 {preset.badge}
               </Badge>
             )}
-          </button>
+          </Button>
         ))}
       </div>
     </div>

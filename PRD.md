@@ -525,8 +525,28 @@ export interface ExchangeResult {
   - 키보드 방향키(좌/우/상/하)를 통한 정밀한 증감 제어 및 부드러운 터치 드래그 지원.
   - `value={[scenario.years]}` 및 `onValueChange={([val]) => ...}` 규격 연동.
 
-### 11.3 Button 컴포넌트 프리셋 및 보조 요소 적용 확대 (`src/components/ui/button.tsx`)
-- **배경**: 계산기 내부의 퀵 프리셋 칩, 금액 증감 퀵 버튼, 적립 주기 탭을 shadcn `Button` (`variant="outline"`, `variant="ghost"`, `size="sm"`) 기반으로 일원화하여 일관된 클릭 피드백 및 포커스 스타일 보장.
+### 11.3 Button 컴포넌트 전면 표준화 (`src/components/ui/button.tsx`)
+- **배경**: 인라인 `<button>` 태그를 shadcn `Button` (`variant="outline"`, `variant="ghost"`, `variant="default"`)으로 전면 일원화하여 통일된 호버 트랜지션, 포커스 링 및 접근성 지원.
+- **적용 대상**:
+  - `LoanForm.tsx`: 상환 방식 탭 버튼, 거치 기간 프리셋 칩, 중도상환 토글
+  - `LoanComparisonCard.tsx`: 3대 상환방식 선택 카드 버튼
+  - `LoanChartDashboard.tsx`: 차트 뷰 전환 버튼 (잔액 감소 vs 누적 납입)
+  - `CalculatorForm.tsx`: 적립 주기 탭, 기간 프리셋 칩, 수익률 프리셋 칩
+  - `CompoundInterestApp.tsx`: 시뮬레이션 비교 모드 ON/OFF 버튼, 모바일 시나리오 탭 버튼
+  - `QuickAmountButtons.tsx`: 금액 증감 칩 및 정정 버튼
+  - `UnitCategoryTabs.tsx`: 단위 변환기 5대 카테고리 탭 버튼
+  - `QuickPresetChips.tsx`: 단위 변환기 생활 밀착 프리셋 칩
+  - `ExchangePresetChips.tsx`: 환율 계산기 여행/직구 프리셋 칩
+  - `DualExchangeCard.tsx`: 환전 거래 유형 탭 및 스프레드 우대율 칩, 통화 맞바꾸기(Swap) 버튼
+  - `DataTable.tsx`: 연도별 아코디언 토글 헤더 및 더보기 버튼
+  - `SidebarDrawer.tsx`: 네비게이션 메뉴 아이템 버튼
+  - `PlaceholderView.tsx`: 이전으로 돌아가기 버튼
+- **구현 원칙 및 변형(Variants) 매핑 규격**:
+  - **탭 및 세그먼트 컨트롤러**: `variant="ghost"` + 활성화 시 배경/글자색 반전(`bg-[#15171a] dark:bg-white text-white dark:text-[#112220]`) 적용
+  - **프리셋 칩 및 보조 조작 버튼**: `variant="outline"` + `size="sm"` + 간결한 패딩(`h-7 px-2.5 text-xs`) 적용
+  - **카드형 인터랙션 버튼**: `variant="ghost"` 또는 `variant="outline"` + `w-full h-auto p-3.5 text-left`로 카드 전체를 버튼화하여 키보드 Tab 및 Enter 인터랙션 보장
+  - **웹 접근성 및 포커스 링**: shadcn Button의 기본 `focus-visible:ring-2 focus-visible:ring-[#15171a] dark:focus-visible:ring-[#d1ff19]` 포커스 링을 통해 키보드 사용자 탐색성 100% 보장
+  - **디자인 보존**: `className` 오버라이드를 통해 기존 `ghost.design.md`의 라운드, 패딩, 폰트 웨이트, 모노크롬 다크모드 스타일을 100% 동일하게 유지
 
 ---
 

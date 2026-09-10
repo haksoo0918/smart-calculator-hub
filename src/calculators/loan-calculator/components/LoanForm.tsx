@@ -109,18 +109,20 @@ export const LoanForm: React.FC<LoanFormProps> = ({ input, onChange, onReset }) 
               { id: 'bullet', label: '만기일시' },
             ] as { id: RepaymentMethod; label: string }[]
           ).map((tab) => (
-            <button
+            <Button
               key={tab.id}
               type="button"
+              variant="ghost"
+              size="sm"
               onClick={() => updateField('repaymentMethod', tab.id)}
-              className={`py-2 text-xs sm:text-sm font-bold rounded-lg transition-all text-center ${
+              className={`h-auto py-2 text-xs sm:text-sm font-bold rounded-lg transition-all text-center ${
                 input.repaymentMethod === tab.id
-                  ? 'bg-[#15171a] dark:bg-white text-white dark:text-[#112220] shadow-sm'
+                  ? 'bg-[#15171a] dark:bg-white text-white dark:text-[#112220] shadow-sm hover:bg-[#15171a] hover:text-white dark:hover:bg-white dark:hover:text-[#112220]'
                   : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
               }`}
             >
               {tab.label}
-            </button>
+            </Button>
           ))}
         </div>
       </div>
@@ -280,18 +282,20 @@ export const LoanForm: React.FC<LoanFormProps> = ({ input, onChange, onReset }) 
         </div>
         <div className="grid grid-cols-4 gap-1.5">
           {GRACE_PRESETS.map((preset) => (
-            <button
+            <Button
               key={preset.label}
               type="button"
+              variant="outline"
+              size="sm"
               onClick={() => updateField('gracePeriodMonths', preset.months)}
-              className={`py-2 text-xs font-semibold rounded-lg border transition-all text-center ${
+              className={`h-auto py-2 text-xs font-semibold rounded-lg border transition-all text-center ${
                 input.gracePeriodMonths === preset.months
-                  ? 'border-[#15171a] dark:border-[#d1ff19] bg-[#15171a] dark:bg-slate-800 text-white'
+                  ? 'border-[#15171a] dark:border-[#d1ff19] bg-[#15171a] dark:bg-slate-800 text-white hover:bg-[#15171a] hover:text-white dark:hover:bg-slate-800'
                   : 'border-[#e5e7eb] dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800'
               }`}
             >
               {preset.label}
-            </button>
+            </Button>
           ))}
         </div>
       </div>
@@ -307,26 +311,28 @@ export const LoanForm: React.FC<LoanFormProps> = ({ input, onChange, onReset }) 
               조기 상환 시 아낄 수 있는 이자와 수수료를 계산합니다
             </p>
           </div>
-          <button
+          <Button
             type="button"
             role="switch"
+            variant="ghost"
             aria-checked={isEarlyEnabled}
+            aria-label="중도상환 시뮬레이션 토글"
             onClick={() =>
               updateEarlyRepayment((prev) => ({
                 ...prev,
                 enabled: !prev.enabled,
               }))
             }
-            className={`w-11 h-6 flex items-center rounded-full p-1 transition-colors ${
+            className={`w-11 h-6 p-1 rounded-full hover:bg-transparent dark:hover:bg-transparent ${
               isEarlyEnabled ? 'bg-[#15171a] dark:bg-[#d1ff19]' : 'bg-slate-200 dark:bg-slate-700'
             }`}
           >
-            <div
-              className={`bg-white dark:bg-[#112220] w-4 h-4 rounded-full shadow-md transform transition-transform ${
+            <span
+              className={`bg-white dark:bg-[#112220] w-4 h-4 rounded-full shadow-md transform transition-transform block ${
                 isEarlyEnabled ? 'translate-x-5' : 'translate-x-0'
               }`}
             />
-          </button>
+          </Button>
         </div>
 
         {isEarlyEnabled && (

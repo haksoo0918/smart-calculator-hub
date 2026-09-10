@@ -2,6 +2,7 @@ import React from 'react';
 import { UnitCategory } from '../../../types/unit';
 import { UNIT_CATEGORIES } from '../../../utils/unitConverter';
 import { Square, Ruler, Scale, Box, Thermometer } from 'lucide-react';
+import { Button } from '../../../components/ui/button';
 
 interface UnitCategoryTabsProps {
   activeCategory: UnitCategory;
@@ -38,13 +39,15 @@ export const UnitCategoryTabs: React.FC<UnitCategoryTabsProps> = ({
         {UNIT_CATEGORIES.map((cat) => {
           const isActive = activeCategory === cat.id;
           return (
-            <button
+            <Button
               key={cat.id}
               type="button"
+              variant="ghost"
+              size="sm"
               onClick={() => onSelectCategory(cat.id)}
-              className={`group flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs font-semibold transition-all duration-150 ${
+              className={`group h-auto flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs font-semibold transition-all duration-150 ${
                 isActive
-                  ? 'bg-[#15171a] dark:bg-slate-900 text-white shadow-xs border dark:border-slate-700'
+                  ? 'bg-[#15171a] dark:bg-slate-900 text-white shadow-xs border dark:border-slate-700 hover:bg-[#15171a] dark:hover:bg-slate-900 hover:text-white'
                   : 'text-[#475569] dark:text-slate-400 hover:bg-white/80 dark:hover:bg-slate-800 hover:text-[#112220] dark:hover:text-white'
               }`}
             >
@@ -53,7 +56,7 @@ export const UnitCategoryTabs: React.FC<UnitCategoryTabsProps> = ({
               {isActive && (
                 <span className="w-1.5 h-1.5 rounded-full bg-[#d1ff19] ml-0.5" />
               )}
-            </button>
+            </Button>
           );
         })}
       </div>

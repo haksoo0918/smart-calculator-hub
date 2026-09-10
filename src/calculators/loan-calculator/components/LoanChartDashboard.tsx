@@ -10,6 +10,7 @@ import {
   CartesianGrid,
 } from 'recharts';
 import { formatKoreanLoanAmount } from '../../../utils/loanCalculator';
+import { Button } from '../../../components/ui/button';
 
 interface LoanChartDashboardProps {
   schedule: MonthlyRepayment[];
@@ -60,28 +61,32 @@ export const LoanChartDashboard: React.FC<LoanChartDashboardProps> = ({ schedule
 
         {/* 차트 뷰 전환 버튼 */}
         <div className="flex items-center gap-1 p-0.5 bg-slate-100 dark:bg-slate-900 rounded-lg border border-[#e5e7eb] dark:border-slate-800 self-start sm:self-auto">
-          <button
+          <Button
             type="button"
+            variant="ghost"
+            size="sm"
             onClick={() => setChartType('balance')}
-            className={`px-2.5 py-1 text-xs font-semibold rounded-md transition-all ${
+            className={`h-7 px-2.5 text-xs font-semibold rounded-md transition-all ${
               chartType === 'balance'
-                ? 'bg-white dark:bg-slate-800 text-[#112220] dark:text-white shadow-xs'
+                ? 'bg-white dark:bg-slate-800 text-[#112220] dark:text-white shadow-xs hover:bg-white dark:hover:bg-slate-800'
                 : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
             }`}
           >
             대출 잔액 감소
-          </button>
-          <button
+          </Button>
+          <Button
             type="button"
+            variant="ghost"
+            size="sm"
             onClick={() => setChartType('cumulative')}
-            className={`px-2.5 py-1 text-xs font-semibold rounded-md transition-all ${
+            className={`h-7 px-2.5 text-xs font-semibold rounded-md transition-all ${
               chartType === 'cumulative'
-                ? 'bg-white dark:bg-slate-800 text-[#112220] dark:text-white shadow-xs'
+                ? 'bg-white dark:bg-slate-800 text-[#112220] dark:text-white shadow-xs hover:bg-white dark:hover:bg-slate-800'
                 : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
             }`}
           >
             누적 납입(원금/이자)
-          </button>
+          </Button>
         </div>
       </div>
 

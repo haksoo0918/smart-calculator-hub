@@ -2,6 +2,7 @@ import React from 'react';
 import { LoanComparisonSummary, RepaymentMethod } from '../../../types/loan';
 import { formatKoreanLoanAmount } from '../../../utils/loanCalculator';
 import { CheckCircle2 } from 'lucide-react';
+import { Button } from '../../../components/ui/button';
 
 interface LoanComparisonCardProps {
   comparison: LoanComparisonSummary;
@@ -68,14 +69,15 @@ export const LoanComparisonCard: React.FC<LoanComparisonCardProps> = ({
           const isLowest = item.id === 'equal_principal';
 
           return (
-            <button
+            <Button
               key={item.id}
               type="button"
+              variant="ghost"
               onClick={() => onSelectMethod(item.id)}
-              className={`p-3.5 rounded-xl border text-left transition-all relative flex flex-col justify-between ${
+              className={`w-full h-auto p-3.5 rounded-xl border text-left transition-all relative flex flex-col justify-between font-normal whitespace-normal ${
                 isSelected
-                  ? 'bg-white dark:bg-[#1e293b] border-[#15171a] dark:border-[#d1ff19] shadow-md ring-2 ring-[#15171a]/10 dark:ring-[#d1ff19]/20'
-                  : 'bg-white/80 dark:bg-slate-900/60 border-[#e5e7eb] dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700'
+                  ? 'bg-white dark:bg-[#1e293b] border-[#15171a] dark:border-[#d1ff19] shadow-md ring-2 ring-[#15171a]/10 dark:ring-[#d1ff19]/20 hover:bg-white dark:hover:bg-[#1e293b]'
+                  : 'bg-white/80 dark:bg-slate-900/60 border-[#e5e7eb] dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 hover:bg-white/90 dark:hover:bg-slate-900'
               }`}
             >
               <div>
@@ -113,7 +115,7 @@ export const LoanComparisonCard: React.FC<LoanComparisonCardProps> = ({
                   </span>
                 </div>
               </div>
-            </button>
+            </Button>
           );
         })}
       </div>

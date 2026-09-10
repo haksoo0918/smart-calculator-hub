@@ -14,6 +14,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '../../components/ui/tooltip';
+import { Button } from '../../components/ui/button';
 import { siteConfig } from '../../config/site';
 
 const DEFAULT_SCENARIO_A: ScenarioInput = {
@@ -97,12 +98,14 @@ export const CompoundInterestApp: React.FC<CompoundInterestAppProps> = () => {
           <span className="text-xs font-bold text-[#112220] dark:text-slate-200 hidden sm:inline">
             시뮬레이션 모드:
           </span>
-          <button
+          <Button
             type="button"
+            variant="outline"
+            size="sm"
             onClick={() => setIsComparisonMode(!isComparisonMode)}
-            className={`flex items-center gap-1.5 px-3 py-1.5 text-xs sm:text-sm font-semibold rounded-md border transition-colors ${
+            className={`h-auto flex items-center gap-1.5 px-3 py-1.5 text-xs sm:text-sm font-semibold rounded-md border transition-colors ${
               isComparisonMode
-                ? 'bg-[#15171a] dark:bg-white text-white dark:text-[#112220] border-[#15171a] dark:border-white'
+                ? 'bg-[#15171a] dark:bg-white text-white dark:text-[#112220] border-[#15171a] dark:border-white hover:bg-[#15171a] dark:hover:bg-white hover:text-white dark:hover:text-[#112220]'
                 : 'bg-white dark:bg-slate-900 text-[#334155] dark:text-slate-300 border-[#e5e7eb] dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800'
             }`}
           >
@@ -115,20 +118,22 @@ export const CompoundInterestApp: React.FC<CompoundInterestAppProps> = () => {
             >
               {isComparisonMode ? 'ON' : 'OFF'}
             </span>
-          </button>
+          </Button>
         </div>
 
         <Tooltip>
           <TooltipTrigger asChild>
-            <button
+            <Button
               type="button"
+              variant="ghost"
+              size="sm"
               onClick={handleReset}
-              className="flex items-center gap-1 text-xs text-[#64748b] dark:text-slate-400 hover:text-[#112220] dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 px-2.5 py-1.5 rounded-md transition-colors border border-transparent hover:border-[#e5e7eb] dark:hover:border-slate-700"
+              className="h-auto flex items-center gap-1 text-xs text-[#64748b] dark:text-slate-400 hover:text-[#112220] dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 px-2.5 py-1.5 rounded-md transition-colors border border-transparent hover:border-[#e5e7eb] dark:hover:border-slate-700"
               aria-label="기본값 초기화"
             >
               <RotateCcw className="w-3.5 h-3.5" />
               <span className="hidden xs:inline">초기화</span>
-            </button>
+            </Button>
           </TooltipTrigger>
           <TooltipContent>기본값 초기화</TooltipContent>
         </Tooltip>
@@ -137,28 +142,32 @@ export const CompoundInterestApp: React.FC<CompoundInterestAppProps> = () => {
       {/* 모바일 비교 모드 시 탭 네비게이션 */}
       {isComparisonMode && (
         <div className="lg:hidden flex rounded-lg bg-slate-100 dark:bg-slate-900 p-1 border border-[#e5e7eb] dark:border-slate-800">
-          <button
+          <Button
             type="button"
+            variant="ghost"
+            size="sm"
             onClick={() => setActiveMobileTab('A')}
-            className={`flex-1 py-2 text-xs sm:text-sm font-bold rounded-md transition-colors ${
+            className={`flex-1 h-auto py-2 text-xs sm:text-sm font-bold rounded-md transition-colors ${
               activeMobileTab === 'A'
-                ? 'bg-[#15171a] dark:bg-slate-800 text-white'
+                ? 'bg-[#15171a] dark:bg-slate-800 text-white hover:bg-[#15171a] dark:hover:bg-slate-800 hover:text-white'
                 : 'text-[#64748b] dark:text-slate-400 hover:text-[#112220] dark:hover:text-white'
             }`}
           >
             시나리오 A
-          </button>
-          <button
+          </Button>
+          <Button
             type="button"
+            variant="ghost"
+            size="sm"
             onClick={() => setActiveMobileTab('B')}
-            className={`flex-1 py-2 text-xs sm:text-sm font-bold rounded-md transition-colors ${
+            className={`flex-1 h-auto py-2 text-xs sm:text-sm font-bold rounded-md transition-colors ${
               activeMobileTab === 'B'
-                ? 'bg-[#15171a] dark:bg-slate-800 text-white'
+                ? 'bg-[#15171a] dark:bg-slate-800 text-white hover:bg-[#15171a] dark:hover:bg-slate-800 hover:text-white'
                 : 'text-[#64748b] dark:text-slate-400 hover:text-[#112220] dark:hover:text-white'
             }`}
           >
             시나리오 B
-          </button>
+          </Button>
         </div>
       )}
 

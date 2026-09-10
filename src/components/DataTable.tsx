@@ -69,21 +69,24 @@ export const DataTable: React.FC<DataTableProps> = ({
     <div className="bg-white dark:bg-[#1e293b] rounded-[24px] border border-[#e5e7eb] dark:border-slate-800 overflow-hidden transition-colors">
       {/* 아코디언 헤더 */}
       <div className="px-5 py-4 flex items-center justify-between hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-colors select-none">
-        <button
+        <Button
           type="button"
+          variant="ghost"
           onClick={() => setIsOpen(!isOpen)}
           aria-expanded={isOpen}
           aria-controls="data-table-content"
-          className="flex-1 flex items-center gap-2.5 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#15171a] dark:focus-visible:ring-[#d1ff19] rounded-md py-0.5"
+          className="flex-1 h-auto justify-start p-0 text-left font-normal hover:bg-transparent dark:hover:bg-transparent"
         >
-          <TableIcon className="w-4 h-4 text-[#112220] dark:text-slate-100 shrink-0" />
-          <h3 className="text-sm sm:text-base font-bold text-[#112220] dark:text-slate-100">
-            연도별 상세 자산 흐름표
-          </h3>
-          <span className="text-xs text-[#94a3b8] dark:text-slate-400 font-medium">
-            ({result.breakdown.length}개년 데이터)
+          <span className="flex items-center gap-2.5">
+            <TableIcon className="w-4 h-4 text-[#112220] dark:text-slate-100 shrink-0" />
+            <h3 className="text-sm sm:text-base font-bold text-[#112220] dark:text-slate-100">
+              연도별 상세 자산 흐름표
+            </h3>
+            <span className="text-xs text-[#94a3b8] dark:text-slate-400 font-medium">
+              ({result.breakdown.length}개년 데이터)
+            </span>
           </span>
-        </button>
+        </Button>
 
         <div className="flex items-center gap-2 shrink-0">
           {isOpen && (
@@ -101,16 +104,18 @@ export const DataTable: React.FC<DataTableProps> = ({
 
           <Tooltip>
             <TooltipTrigger asChild>
-              <button
+              <Button
                 type="button"
+                variant="ghost"
+                size="icon"
                 onClick={() => setIsOpen(!isOpen)}
                 aria-expanded={isOpen}
                 aria-controls="data-table-content"
-                className="p-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-md transition-colors"
+                className="h-7 w-7 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-md transition-colors"
                 aria-label={isOpen ? '흐름표 접기' : '흐름표 펼치기'}
               >
                 {isOpen ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-              </button>
+              </Button>
             </TooltipTrigger>
             <TooltipContent>{isOpen ? '흐름표 접기' : '흐름표 펼치기'}</TooltipContent>
           </Tooltip>
