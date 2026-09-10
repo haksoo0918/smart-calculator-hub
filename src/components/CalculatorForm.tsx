@@ -38,14 +38,13 @@ const CONTRIBUTION_OPTIONS: SegmentedOption<ContributionFrequency>[] = [
 ];
 
 const RATE_PRESETS = [
-  { label: '하락장 -10%', rate: -10.0 },
-  { label: '약세장 -3%', rate: -3.0 },
-  { label: '예적금 3.5%', rate: 3.5 },
-  { label: '지수 ETF 8%', rate: 8.0 },
-  { label: '공격투자 12%', rate: 12.0 },
+  { label: '-3%', rate: -3.0 },
+  { label: '3.5%', rate: 3.5 },
+  { label: '8%', rate: 8.0 },
+  { label: '15%', rate: 15.0 },
 ];
 
-const YEAR_PRESETS = [5, 10, 15, 20, 30];
+const YEAR_PRESETS = [5, 10, 20, 30];
 
 export const CalculatorForm: React.FC<CalculatorFormProps> = ({
   scenario,
@@ -68,9 +67,8 @@ export const CalculatorForm: React.FC<CalculatorFormProps> = ({
 
   return (
     <div
-      className={`bg-white dark:bg-[#1e293b] rounded-[24px] p-5 sm:p-6 border border-[#e5e7eb] dark:border-slate-800 transition-colors ${
-        isIndigo ? 'ring-1 ring-slate-900/5' : ''
-      }`}
+      className={`bg-white dark:bg-[#1e293b] rounded-[24px] p-5 sm:p-6 border border-[#e5e7eb] dark:border-slate-800 transition-colors ${isIndigo ? 'ring-1 ring-slate-900/5' : ''
+        }`}
     >
       {/* 상단 뱃지 및 타이틀 */}
       <div className="flex items-center justify-between pb-3 mb-4 border-b border-slate-100 dark:border-slate-800">
@@ -241,16 +239,15 @@ export const CalculatorForm: React.FC<CalculatorFormProps> = ({
                 aria-label="연 예상 수익률 직접 입력"
                 type="number"
                 step="0.1"
-                min="-30"
-                max="50"
+                min="-5"
+                max="100"
                 value={scenario.annualRate}
                 onChange={(e) => {
                   const val = parseFloat(e.target.value);
                   updateField('annualRate', isNaN(val) ? 0 : val);
                 }}
-                className={`w-20 h-8 text-right font-extrabold text-base p-1 border-b border-[#e5e7eb] dark:border-slate-700 focus:border-[#15171a] dark:focus:border-[#d1ff19] bg-transparent outline-none rounded-none ${
-                  scenario.annualRate < 0 ? 'text-rose-600 dark:text-rose-400' : 'text-[#112220] dark:text-slate-100'
-                }`}
+                className={`w-20 h-8 text-right font-extrabold text-base p-1 border-b border-[#e5e7eb] dark:border-slate-700 focus:border-[#15171a] dark:focus:border-[#d1ff19] bg-transparent outline-none rounded-none ${scenario.annualRate < 0 ? 'text-rose-600 dark:text-rose-400' : 'text-[#112220] dark:text-slate-100'
+                  }`}
               />
               <span className={`text-sm font-extrabold ${scenario.annualRate < 0 ? 'text-rose-500' : 'text-slate-600 dark:text-slate-400'}`}>%</span>
             </div>
@@ -258,15 +255,15 @@ export const CalculatorForm: React.FC<CalculatorFormProps> = ({
           <Slider
             id={`${idPrefix}-annual-rate-slider`}
             aria-label="연 예상 수익률 슬라이더"
-            min={-20}
-            max={30}
+            min={-5}
+            max={100}
             step={0.1}
             value={[scenario.annualRate]}
             onValueChange={([val]) => updateField('annualRate', Math.round(val * 10) / 10)}
             className="my-2"
           />
           {/* 수익률 프리셋 칩 */}
-          <div className="grid grid-cols-3 sm:grid-cols-5 gap-1.5 mt-1.5">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5 mt-1.5">
             {RATE_PRESETS.map((preset) => {
               const isSelected = Math.abs(scenario.annualRate - preset.rate) < 0.05;
               const isNegative = preset.rate < 0;
@@ -275,7 +272,10 @@ export const CalculatorForm: React.FC<CalculatorFormProps> = ({
                   key={preset.rate}
                   isSelected={isSelected}
                   onClick={() => updateField('annualRate', preset.rate)}
-                  className={isNegative && isSelected ? 'bg-rose-50 hover:bg-rose-100 dark:bg-rose-950/40 text-rose-800 dark:text-rose-300 border-rose-300 dark:border-rose-700 font-bold' : undefined}
+                  className={`px-1 sm:px-2 text-[11px] ${isNegative && isSelected
+                      ? 'bg-rose-50 hover:bg-rose-100 dark:bg-rose-950/40 text-rose-800 dark:text-rose-300 border-rose-300 dark:border-rose-700 font-bold'
+                      : ''
+                    }`}
                 >
                   <span className="truncate">{preset.label}</span>
                 </SelectableChip>

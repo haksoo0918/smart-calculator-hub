@@ -6,8 +6,7 @@ import {
   formatMultiple,
   formatPercent,
 } from '../utils/formatters';
-import { Wallet, PiggyBank, ArrowUpRight } from 'lucide-react';
-import { Card, CardContent } from './ui/card';
+import { Wallet, PiggyBank, ArrowUpRight, ShieldAlert } from 'lucide-react';
 import { Badge } from './ui/badge';
 import {
   Tooltip,
@@ -105,85 +104,79 @@ export const SummaryCards: React.FC<SummaryCardsProps> = ({
       {/* 3단 서브 지표 그리드 (비교 모드에서는 좌우 분할 공간 협소 방지를 위해 1열 세로 배치, 단일 모드에서는 sm 3열) */}
       <div className={title ? "grid grid-cols-1 gap-2" : "grid grid-cols-1 sm:grid-cols-3 gap-2"}>
         {/* 총 투자 원금 */}
-        <Card className="rounded-xl sm:rounded-2xl border-[#e5e7eb] dark:border-slate-800 shadow-2xs">
-          <CardContent className="p-3">
-            <div className={`flex items-center gap-1 text-[11px] font-medium text-slate-500 dark:text-slate-400 mb-1 ${
-              title ? 'justify-between' : 'justify-between sm:justify-start'
+        <div className="rounded-xl border border-[#e5e7eb] dark:border-slate-800 bg-white dark:bg-[#1e293b] p-3 shadow-2xs">
+          <div className={`flex items-center gap-1 text-[11px] font-medium text-slate-500 dark:text-slate-400 mb-1 ${
+            title ? 'justify-between' : 'justify-between sm:justify-start'
+          }`}>
+            <div className="flex items-center gap-1">
+              <PiggyBank className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500" />
+              <span>총 투자원금</span>
+            </div>
+            <span className={`text-[11px] text-slate-400 dark:text-slate-500 font-medium ${
+              title ? 'block' : 'sm:hidden'
             }`}>
-              <div className="flex items-center gap-1">
-                <PiggyBank className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500" />
-                <span>총 투자원금</span>
-              </div>
-              <span className={`text-[11px] text-slate-400 dark:text-slate-500 font-medium ${
-                title ? 'block' : 'sm:hidden'
-              }`}>
-                {formatKoreanUnit(result.totalPrincipal)}
-              </span>
+              {formatKoreanUnit(result.totalPrincipal)}
+            </span>
+          </div>
+          <div className="text-sm sm:text-base font-bold text-slate-800 dark:text-slate-100">
+            {formatCurrency(result.totalPrincipal)}
+          </div>
+          {!title && (
+            <div className="hidden sm:block text-[11px] text-slate-400 dark:text-slate-500 font-medium mt-0.5">
+              {formatKoreanUnit(result.totalPrincipal)}
             </div>
-            <div className="text-sm sm:text-base font-bold text-slate-800 dark:text-slate-100">
-              {formatCurrency(result.totalPrincipal)}
-            </div>
-            {!title && (
-              <div className="hidden sm:block text-[11px] text-slate-400 dark:text-slate-500 font-medium mt-0.5">
-                {formatKoreanUnit(result.totalPrincipal)}
-              </div>
-            )}
-          </CardContent>
-        </Card>
+          )}
+        </div>
 
         {/* 세후 총 이자 / 손익 */}
-        <Card className="rounded-xl sm:rounded-2xl border-[#e5e7eb] dark:border-slate-800 shadow-2xs">
-          <CardContent className="p-3">
-            <div className={`flex items-center gap-1 text-[11px] font-medium text-slate-500 dark:text-slate-400 mb-1 ${
-              title ? 'justify-between' : 'justify-between sm:justify-start'
-            }`}>
-              <div className="flex items-center gap-1">
-                <ArrowUpRight className={`w-3.5 h-3.5 ${isLoss ? 'text-rose-500 rotate-90' : 'text-emerald-500 dark:text-emerald-400'}`} />
-                <span>{isLoss ? '순손실액' : '세후 순이자'}</span>
-              </div>
-              <span className={`text-[11px] font-medium ${
-                isLoss ? 'text-rose-700 dark:text-rose-300' : 'text-emerald-700 dark:text-emerald-300'
-              } ${title ? 'block' : 'sm:hidden'}`}>
-                {formatPercent(result.netReturnRate, true)}
-              </span>
+        <div className="rounded-xl border border-[#e5e7eb] dark:border-slate-800 bg-white dark:bg-[#1e293b] p-3 shadow-2xs">
+          <div className={`flex items-center gap-1 text-[11px] font-medium text-slate-500 dark:text-slate-400 mb-1 ${
+            title ? 'justify-between' : 'justify-between sm:justify-start'
+          }`}>
+            <div className="flex items-center gap-1">
+              <ArrowUpRight className={`w-3.5 h-3.5 ${isLoss ? 'text-rose-500 rotate-90' : 'text-emerald-500 dark:text-emerald-400'}`} />
+              <span>{isLoss ? '순손실액' : '세후 순이자'}</span>
             </div>
-            <div className={`text-sm sm:text-base font-bold ${isLoss ? 'text-rose-600 dark:text-rose-400' : 'text-emerald-600 dark:text-emerald-400'}`}>
-              {formatCurrency(result.netInterest)}
+            <span className={`text-[11px] font-medium ${
+              isLoss ? 'text-rose-700 dark:text-rose-300' : 'text-emerald-700 dark:text-emerald-300'
+            } ${title ? 'block' : 'sm:hidden'}`}>
+              {formatPercent(result.netReturnRate, true)}
+            </span>
+          </div>
+          <div className={`text-sm sm:text-base font-bold ${isLoss ? 'text-rose-600 dark:text-rose-400' : 'text-emerald-600 dark:text-emerald-400'}`}>
+            {formatCurrency(result.netInterest)}
+          </div>
+          {!title && (
+            <div className={`hidden sm:block text-[11px] font-medium mt-0.5 ${isLoss ? 'text-rose-700 dark:text-rose-300' : 'text-emerald-700 dark:text-emerald-300'}`}>
+              {formatPercent(result.netReturnRate, true)}
             </div>
-            {!title && (
-              <div className={`hidden sm:block text-[11px] font-medium mt-0.5 ${isLoss ? 'text-rose-700 dark:text-rose-300' : 'text-emerald-700 dark:text-emerald-300'}`}>
-                {formatPercent(result.netReturnRate, true)}
-              </div>
-            )}
-          </CardContent>
-        </Card>
+          )}
+        </div>
 
         {/* 이자 소득세 */}
-        <Card className="rounded-xl sm:rounded-2xl border-[#e5e7eb] dark:border-slate-800 shadow-2xs">
-          <CardContent className="p-3">
-            <div className={`flex items-center gap-1 text-[11px] font-medium text-slate-500 dark:text-slate-400 mb-1 ${
-              title ? 'justify-between' : 'justify-between sm:justify-start'
+        <div className="rounded-xl border border-[#e5e7eb] dark:border-slate-800 bg-white dark:bg-[#1e293b] p-3 shadow-2xs">
+          <div className={`flex items-center gap-1 text-[11px] font-medium text-slate-500 dark:text-slate-400 mb-1 ${
+            title ? 'justify-between' : 'justify-between sm:justify-start'
+          }`}>
+            <div className="flex items-center gap-1">
+              <ShieldAlert className="w-3.5 h-3.5 text-rose-500" />
+              <span>이자 소득세</span>
+            </div>
+            <span className={`text-[11px] text-slate-400 dark:text-slate-500 font-medium ${
+              title ? 'block' : 'sm:hidden'
             }`}>
-              <div className="flex items-center gap-1">
-                <span className="w-2 h-2 rounded-full bg-rose-400 inline-block" />
-                <span>이자 소득세</span>
-              </div>
-              <span className={`text-[11px] text-slate-400 dark:text-slate-500 font-medium ${
-                title ? 'block' : 'sm:hidden'
-              }`}>
-                세전 {formatCurrency(result.grossInterest)}
-              </span>
+              세전 {formatCurrency(result.grossInterest)}
+            </span>
+          </div>
+          <div className="text-sm sm:text-base font-bold text-rose-600 dark:text-rose-400">
+            {formatCurrency(result.taxAmount)}
+          </div>
+          {!title && (
+            <div className="hidden sm:block text-[11px] text-slate-400 dark:text-slate-500 font-medium mt-0.5">
+              세전 {formatCurrency(result.grossInterest)}
             </div>
-            <div className="text-sm sm:text-base font-bold text-rose-600 dark:text-rose-400">
-              {formatCurrency(result.taxAmount)}
-            </div>
-            {!title && (
-              <div className="hidden sm:block text-[11px] text-slate-400 dark:text-slate-500 font-medium mt-0.5">
-                세전 {formatCurrency(result.grossInterest)}
-              </div>
-            )}
-          </CardContent>
-        </Card>
+          )}
+        </div>
       </div>
     </div>
   );

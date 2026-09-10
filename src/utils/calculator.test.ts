@@ -1,4 +1,4 @@
-﻿import { describe, it, expect } from 'vitest';
+import { describe, it, expect } from 'vitest';
 import { calculateCompoundInterest, getTaxRate, getMonthlyEffectiveRate } from './calculator';
 
 describe('Compound Interest Calculator Unit Tests', () => {
@@ -67,5 +67,22 @@ describe('Compound Interest Calculator Unit Tests', () => {
   it('월 복리 실효 이율이 올바르게 계산되어야 한다', () => {
     const rate = getMonthlyEffectiveRate(12, 'monthly');
     expect(rate).toBeCloseTo(0.01, 4);
+  });
+
+  it('고수익률(100%) 시뮬레이션에서도 복리 계산이 정상적으로 수행되어야 한다', () => {
+    const result = calculateCompoundInterest({
+      name: '고수익 테스트',
+      principal: 10000000,
+      regularContribution: 0,
+      contributionFrequency: 'none',
+      years: 1,
+      annualRate: 100,
+      compoundingFrequency: 'annual',
+      taxType: 'exempt',
+    });
+
+    expect(result.futureValuePreTax).toBe(20000000);
+    expect(result.netInterest).toBe(10000000);
+    expect(result.netReturnRate).toBe(100);
   });
 });
