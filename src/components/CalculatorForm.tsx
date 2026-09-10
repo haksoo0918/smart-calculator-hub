@@ -308,17 +308,12 @@ export const CalculatorForm: React.FC<CalculatorFormProps> = ({
           <div className="flex items-center justify-between gap-1 mt-1">
             {RATE_PRESETS.map((preset) => {
               const isSelected = Math.abs((scenario.annualRate || 0) - preset.rate) < 0.05;
-              const isNegative = preset.rate < 0;
               return (
                 <SelectableChip
                   key={preset.rate}
                   isSelected={isSelected}
                   onClick={() => updateField('annualRate', preset.rate)}
-                  className={`flex-1 py-1 text-[11px] ${
-                    isNegative && isSelected
-                      ? 'bg-rose-50 hover:bg-rose-100 dark:bg-rose-950/40 text-rose-800 dark:text-rose-300 border-rose-300 dark:border-rose-700 font-bold'
-                      : ''
-                  }`}
+                  className="flex-1 py-1 text-[11px]"
                 >
                   {preset.label}
                 </SelectableChip>
