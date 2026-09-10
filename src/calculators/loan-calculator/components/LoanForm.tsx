@@ -82,9 +82,9 @@ export const LoanForm: React.FC<LoanFormProps> = ({ input, onChange, onReset }) 
       {/* 1. 상단 타이틀 & 초기화 버튼 */}
       <div className="flex items-center justify-between pb-3 border-b border-[#e5e7eb] dark:border-slate-800">
         <div className="space-y-0.5">
-          <h2 className="text-base sm:text-lg font-black text-[#112220] dark:text-slate-100 flex items-center gap-2">
+          <h2 className="text-base sm:text-lg font-black text-[#112220] dark:text-slate-100 flex items-center gap-2 whitespace-nowrap">
             대출 조건 입력
-            <Badge variant="outline" className="text-[10px] px-1.5 py-0 h-4 border-slate-300 dark:border-slate-700">
+            <Badge variant="outline" className="text-[10px] px-1.5 py-0 h-4 border-slate-300 dark:border-slate-700 whitespace-nowrap shrink-0">
               스마트 비교
             </Badge>
           </h2>
@@ -120,7 +120,7 @@ export const LoanForm: React.FC<LoanFormProps> = ({ input, onChange, onReset }) 
 
       {/* 3. 대출 원금 */}
       <div>
-        <div className="flex justify-between items-baseline mb-1">
+        <div className="flex flex-wrap items-baseline justify-between gap-1 mb-1">
           <label htmlFor="loan-amount" className="text-xs sm:text-sm font-bold text-[#112220] dark:text-slate-200 cursor-pointer">
             대출 원금
           </label>
@@ -173,7 +173,7 @@ export const LoanForm: React.FC<LoanFormProps> = ({ input, onChange, onReset }) 
 
       {/* 4. 대출 금리 (% 연이율) */}
       <div>
-        <div className="flex justify-between items-baseline mb-1">
+        <div className="flex flex-wrap items-baseline justify-between gap-1 mb-1">
           <label htmlFor="loan-rate" className="text-xs sm:text-sm font-bold text-[#112220] dark:text-slate-200 cursor-pointer">
             연 대출 금리
           </label>
@@ -213,9 +213,9 @@ export const LoanForm: React.FC<LoanFormProps> = ({ input, onChange, onReset }) 
         </div>
       </div>
 
-      {/* 5. 대출 기간 */}
+      {/* 5. 대출 기간 (만기) */}
       <div>
-        <div className="flex justify-between items-baseline mb-2">
+        <div className="flex flex-wrap items-baseline justify-between gap-1 mb-1">
           <label htmlFor="loan-term" className="text-xs sm:text-sm font-bold text-[#112220] dark:text-slate-200 cursor-pointer">
             대출 기간
           </label>
@@ -247,13 +247,13 @@ export const LoanForm: React.FC<LoanFormProps> = ({ input, onChange, onReset }) 
 
       {/* 6. 거치 기간 (이자만 납입) */}
       <div>
-        <div className="flex justify-between items-baseline mb-2">
+        <div className="flex flex-wrap items-baseline justify-between gap-1 mb-2">
           <label className="text-xs sm:text-sm font-bold text-[#112220] dark:text-slate-200">
-            거치 기간 (원금 상환 유예)
+            거치 기간 <span className="text-[11px] font-normal text-slate-500 dark:text-slate-400">(원금 상환 유예)</span>
           </label>
-          <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">
+          <span className="text-xs font-semibold text-slate-600 dark:text-slate-300">
             {input.gracePeriodMonths === 0
-              ? '거치 없음 (즉시 원금 상환)'
+              ? '거치 없음'
               : `${Math.floor(input.gracePeriodMonths / 12)}년 (${input.gracePeriodMonths}개월)`}
           </span>
         </div>

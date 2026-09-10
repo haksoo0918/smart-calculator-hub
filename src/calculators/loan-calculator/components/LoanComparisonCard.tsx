@@ -61,8 +61,8 @@ export const LoanComparisonCard: React.FC<LoanComparisonCardProps> = ({
         </div>
       </div>
 
-      {/* 3개 카드 그리드 (우측 패널 너비에 맞춰 1열 기본, md/xl 이상 가변 정렬 & 텍스트 쪼개짐 원천 방지) */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+      {/* 3개 카드 그리드 (부모 폭에 맞춰 1열/2열/3열 유동 적응하여 카드당 최소 185px 확보) */}
+      <div className="grid grid-cols-[repeat(auto-fit,minmax(185px,1fr))] gap-3">
         {methods.map((item) => {
           const isSelected = activeMethod === item.id;
           const isLowest = item.id === 'equal_principal';
@@ -73,7 +73,7 @@ export const LoanComparisonCard: React.FC<LoanComparisonCardProps> = ({
               type="button"
               variant="ghost"
               onClick={() => onSelectMethod(item.id)}
-              className={`w-full h-auto p-3.5 rounded-xl border text-left transition-all relative flex flex-col justify-between font-normal whitespace-normal break-words overflow-hidden ${
+              className={`@container w-full h-auto p-3.5 @xs:p-4 rounded-xl border text-left transition-all relative flex flex-col justify-between font-normal whitespace-normal break-words overflow-hidden ${
                 isSelected
                   ? 'bg-white dark:bg-[#1e293b] border-[#15171a] dark:border-[#d1ff19] shadow-md ring-2 ring-[#15171a]/10 dark:ring-[#d1ff19]/20 hover:bg-white dark:hover:bg-[#1e293b]'
                   : 'bg-white/80 dark:bg-slate-900/60 border-[#e5e7eb] dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 hover:bg-white/90 dark:hover:bg-slate-900'
@@ -81,7 +81,7 @@ export const LoanComparisonCard: React.FC<LoanComparisonCardProps> = ({
             >
               <div className="w-full">
                 {/* 1행: 상환 방식 명칭 및 뱃지 */}
-                <div className="flex items-center justify-between mb-1">
+                <div className="flex items-center justify-between mb-1.5 gap-2">
                   <span className="font-bold text-sm text-[#112220] dark:text-slate-100 whitespace-nowrap">
                     {item.name}
                   </span>
@@ -96,23 +96,23 @@ export const LoanComparisonCard: React.FC<LoanComparisonCardProps> = ({
                   </span>
                 </div>
 
-                {/* 2행: 핵심 요약 설명 문구 (3개 카드 동일한 2줄 높이 유지, 한글 단어 끊김 방지) */}
-                <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed mb-3 whitespace-normal break-keep line-clamp-2 min-h-[32px]">
+                {/* 2행: 핵심 요약 설명 문구 (인위적 가두기 없이 자연스럽게 흐르는 텍스트) */}
+                <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed mb-3 whitespace-normal break-keep">
                   {item.desc}
                 </p>
               </div>
 
-              {/* 하단 금액 정보 (시맨틱 dl dt dd 1줄 구성) */}
-              <dl className="space-y-1.5 pt-2.5 border-t border-[#e5e7eb] dark:border-slate-800/80 w-full text-xs">
-                <div className="flex items-center justify-between gap-1">
-                  <dt className="text-slate-500 dark:text-slate-400 text-[11px] shrink-0 whitespace-nowrap">총 대출이자</dt>
-                  <dd className={`font-black text-xs whitespace-nowrap ${isLowest ? 'text-emerald-600 dark:text-emerald-400' : 'text-[#112220] dark:text-slate-100'}`}>
+              {/* 하단 금액 정보 (컨테이너 쿼리: 좁을 때는 세로 1열, 카드가 커지면 가로 2분할 그리드로 공간 효율화) */}
+              <dl className="pt-2.5 border-t border-[#e5e7eb] dark:border-slate-800/80 w-full text-xs grid grid-cols-1 @xs:grid-cols-2 gap-2 @xs:gap-3">
+                <div className="flex flex-col gap-0.5">
+                  <dt className="text-slate-500 dark:text-slate-400 text-[11px] whitespace-nowrap">총 대출이자</dt>
+                  <dd className={`font-black text-xs sm:text-sm tracking-tight ${isLowest ? 'text-emerald-600 dark:text-emerald-400' : 'text-[#112220] dark:text-slate-100'}`}>
                     {item.result.totalInterest.toLocaleString('ko-KR')}원
                   </dd>
                 </div>
-                <div className="flex items-center justify-between gap-1">
-                  <dt className="text-slate-500 dark:text-slate-400 text-[11px] shrink-0 whitespace-nowrap">첫 달 상환액</dt>
-                  <dd className="font-bold text-xs text-[#112220] dark:text-slate-200 whitespace-nowrap">
+                <div className="flex flex-col gap-0.5">
+                  <dt className="text-slate-500 dark:text-slate-400 text-[11px] whitespace-nowrap">첫 달 상환액</dt>
+                  <dd className="font-bold text-xs sm:text-sm text-[#112220] dark:text-slate-200 tracking-tight">
                     {item.result.firstMonthPayment.toLocaleString('ko-KR')}원
                   </dd>
                 </div>

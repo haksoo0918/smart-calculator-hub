@@ -57,12 +57,11 @@ describe('Seam: LoanComparisonCard Header and Alignment', () => {
     expect(screen.getByText('최저 총이자')).toBeInTheDocument();
     expect(screen.getByText('초기부담 최소')).toBeInTheDocument();
 
-    // 설명 문구 한글 단어 보존(break-keep) 및 높이 균일화(min-h-[32px]) 확인
+    // 설명 문구 한글 단어 보존(break-keep) 확인
     const descElements = screen.getAllByText(/상환액이 일정하여|이자가 줄어들어|이자만 납입하므로/);
     expect(descElements).toHaveLength(3);
     descElements.forEach((el) => {
       expect(el).toHaveClass('break-keep');
-      expect(el).toHaveClass('min-h-[32px]');
     });
 
     // 선택 체크 아이콘이 제거되어 타이틀 대칭성이 보존되었는지 확인 (방법 1)
