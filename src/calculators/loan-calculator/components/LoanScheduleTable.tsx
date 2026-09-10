@@ -55,7 +55,7 @@ export const LoanScheduleTable: React.FC<LoanScheduleTableProps> = ({ schedule }
         <div>
           <h3 className="text-sm sm:text-base font-bold text-[#112220] dark:text-slate-100 flex items-center gap-2">
             <span>월별 상환 스케줄 상세표</span>
-            <Badge variant="outline" className="text-[10px] font-bold text-slate-500 border-slate-300 dark:border-slate-700">
+            <Badge variant="outline" size="sm">
               총 {schedule.length}회차
             </Badge>
           </h3>

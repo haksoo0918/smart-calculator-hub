@@ -3,6 +3,18 @@
 모든 주요 변경 사항은 본 문서에 기록됩니다.
 버전 체계는 [Semantic Versioning (SemVer)](https://semver.org/)을 준수합니다.
 
+## [1.8.8] - 2026-09-10
+
+### 카드 헤더 서브 뱃지(Header Meta Badge) 디자인 일원화 및 공통 표준화 (UI Polish)
+- **`Badge` 공통 컴포넌트 `size="sm"` 표준 규격 추가 (`src/components/ui/badge.tsx`)**:
+  - 카드 타이틀 옆에 부가 상태 및 메타 정보를 표시하는 표준 헤더 뱃지 규격(`h-5 px-1.5 text-[10px] font-semibold leading-none rounded-md`) 정의.
+  - `variant="outline"` 테두리(`border-[#e5e7eb] dark:border-slate-700`) 및 은은한 배경(`bg-slate-50/70 dark:bg-slate-800/60`), 텍스트 색상(`text-[#475569] dark:text-slate-300`) 통일.
+- **대출 계산기 헤더 라벨 스타일 일원화 (`LoanForm.tsx`, `LoanScheduleTable.tsx`)**:
+  - `대출 조건 입력` 타이틀 옆의 `스마트 비교` 라벨과 `월별 상환 스케줄 상세표` 옆의 `총 360회차` 라벨의 인라인 스타일을 제거하고 `<Badge variant="outline" size="sm">` 공통 컴포넌트로 일원화.
+  - 두 라벨 간 높이(20px), 패딩, 모서리 라운드, 타이틀 베이스라인 수직 정렬 완벽 일치 검증.
+- **단위 테스트 및 프로덕션 검증 완료**:
+  - [`card-and-badge.test.tsx`](file:///c:/Users/hakso/_work/test/src/components/ui/card-and-badge.test.tsx)에 `size="sm"` 렌더링 단위 테스트 추가, 55개 단위 테스트 100% 통과 및 프로덕션 빌드 완료.
+
 ## [1.8.7] - 2026-09-10
 
 ### Tabs 컴포넌트 반응형 고정 높이 간섭 해제 및 단위 변환기 1:1 픽셀 복원 (Bug Fix & Pixel-Perfect)

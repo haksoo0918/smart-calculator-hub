@@ -773,6 +773,36 @@ export interface LoanComparisonSummary {
 4. **테스트 및 검증**:
    - `tabs.test.tsx` 단위 테스트를 작성하여 마운트, 키보드 인터랙션, 활성 상태 전환을 검증하고 기존 52개 테스트와의 회귀 검증 완료.
 
+---
+
+## 16. 카드 헤더 서브 뱃지(Header Meta Badge) 공통 표준화
+
+### 16.1 문제 정의 및 도입 배경
+- 카드 헤더 타이틀 옆에 부가 상태나 메타 정보를 표시하는 뱃지들이 컴포넌트별로 인라인 스타일로 파편화되어 있음:
+  - `LoanForm.tsx` ("스마트 비교"): `text-[10px] px-1.5 py-0 h-4 border-slate-300 dark:border-slate-700 whitespace-nowrap shrink-0` (높이 16px)
+  - `LoanScheduleTable.tsx` ("총 360회차"): `text-[10px] font-bold text-slate-500 border-slate-300 dark:border-slate-700` (높이 약 22px, 패딩 및 폰트 색상 상이)
+- 동일한 카드 헤더 레벨에서 라벨의 높이, 여백, 모서리 라운드, 텍스트 색상이 제각각 렌더링되는 시각적 비대칭을 해소하고, shadcn UI `Badge` 컴포넌트의 표준 크기 변형(`size="sm"`)으로 통합하여 재사용성과 시각적 통일성을 확보합니다.
+
+### 16.2 컴포넌트 규격 사양 (`src/components/ui/badge.tsx`)
+- **`badgeVariants`의 `size` 변형 추가**:
+  - `size="default"`: `px-2 py-0.5 text-xs` (기본 뱃지 규격, 약 22px 높이)
+  - `size="sm"`: `px-1.5 py-0.5 text-[10px] font-semibold leading-tight shrink-0 whitespace-nowrap rounded-md` (헤더 메타 서브 뱃지 표준, 균형 잡힌 약 18px 높이)
+- **`variant="outline"` 스타일 정밀화**:
+  - 테두리: `border-[#e5e7eb] dark:border-slate-700` (플랫 헤어라인 일원화)
+  - 배경: `bg-slate-50/70 dark:bg-slate-800/60` (카드 본문 위에서 깔끔하게 정돈된 서피스 감각)
+  - 텍스트: `text-[#475569] dark:text-slate-300 font-semibold`
+
+### 16.3 적용 대상 및 범위
+1. **대출 조건 입력 (`LoanForm.tsx`)**:
+   - 기존의 파편화된 인라인 스타일을 제거하고 `<Badge variant="outline" size="sm">스마트 비교</Badge>`로 일원화.
+2. **월별 상환 스케줄 상세표 (`LoanScheduleTable.tsx`)**:
+   - 기존의 파편화된 인라인 스타일을 제거하고 `<Badge variant="outline" size="sm">총 {schedule.length}회차</Badge>`로 일원화.
+3. **타이틀과의 수직 정렬 규격**:
+   - `flex items-center gap-2` 내에서 타이틀 텍스트의 베이스라인 및 수직 중앙 밸런스를 완벽히 유지.
+4. **단위 테스트**:
+   - `src/components/ui/card-and-badge.test.tsx`에 `Badge`의 `size="sm"` 렌더링 검증 테스트 케이스 추가.
+
+
 
 
 
