@@ -68,7 +68,7 @@ export const LoanChartDashboard: React.FC<LoanChartDashboardProps> = ({ schedule
             onClick={() => setChartType('balance')}
             className={`h-7 px-2.5 text-xs font-semibold rounded-md transition-all ${
               chartType === 'balance'
-                ? 'bg-white dark:bg-slate-800 text-[#112220] dark:text-white shadow-xs hover:bg-white dark:hover:bg-slate-800'
+                ? 'bg-white hover:bg-slate-50 dark:bg-slate-800 dark:hover:bg-slate-700 text-[#112220] dark:text-white shadow-xs'
                 : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
             }`}
           >
@@ -81,7 +81,7 @@ export const LoanChartDashboard: React.FC<LoanChartDashboardProps> = ({ schedule
             onClick={() => setChartType('cumulative')}
             className={`h-7 px-2.5 text-xs font-semibold rounded-md transition-all ${
               chartType === 'cumulative'
-                ? 'bg-white dark:bg-slate-800 text-[#112220] dark:text-white shadow-xs hover:bg-white dark:hover:bg-slate-800'
+                ? 'bg-white hover:bg-slate-50 dark:bg-slate-800 dark:hover:bg-slate-700 text-[#112220] dark:text-white shadow-xs'
                 : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
             }`}
           >

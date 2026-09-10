@@ -92,7 +92,7 @@ export const DualConverterCard: React.FC<DualConverterCardProps> = ({
                 onClick={() => onPrecisionChange(p)}
                 className={`h-auto px-2 py-0.5 text-[11px] font-semibold rounded transition-colors ${
                   precision === p
-                    ? 'bg-[#15171a] dark:bg-slate-800 text-white font-bold hover:bg-[#15171a] dark:hover:bg-slate-800 hover:text-white'
+                    ? 'bg-[#15171a] hover:bg-[#2e3238] dark:bg-slate-800 dark:hover:bg-slate-700 text-white hover:text-white font-bold'
                     : 'text-[#64748b] dark:text-slate-400 hover:text-[#112220] dark:hover:text-white'
                 }`}
               >

@@ -87,7 +87,7 @@ export const DualExchangeCard: React.FC<DualExchangeCardProps> = ({
               onClick={() => onTypeChange('base')}
               className={`h-auto px-2 py-1.5 text-xs font-semibold rounded-lg transition-all text-center ${
                 exchangeType === 'base'
-                  ? 'bg-[#15171a] dark:bg-slate-800 text-white shadow-2xs border dark:border-slate-700 hover:bg-[#15171a] dark:hover:bg-slate-800 hover:text-white'
+                  ? 'bg-[#15171a] hover:bg-[#2e3238] dark:bg-slate-800 dark:hover:bg-slate-700 text-white hover:text-white shadow-2xs border dark:border-slate-700'
                   : 'text-[#64748b] dark:text-slate-400 hover:text-[#112220] dark:hover:text-white'
               }`}
             >
@@ -100,7 +100,7 @@ export const DualExchangeCard: React.FC<DualExchangeCardProps> = ({
               onClick={() => onTypeChange('cash_buy')}
               className={`h-auto px-2 py-1.5 text-xs font-semibold rounded-lg transition-all text-center ${
                 exchangeType === 'cash_buy'
-                  ? 'bg-[#15171a] dark:bg-slate-800 text-white shadow-2xs border dark:border-slate-700 hover:bg-[#15171a] dark:hover:bg-slate-800 hover:text-white'
+                  ? 'bg-[#15171a] hover:bg-[#2e3238] dark:bg-slate-800 dark:hover:bg-slate-700 text-white hover:text-white shadow-2xs border dark:border-slate-700'
                   : 'text-[#64748b] dark:text-slate-400 hover:text-[#112220] dark:hover:text-white'
               }`}
             >
@@ -113,7 +113,7 @@ export const DualExchangeCard: React.FC<DualExchangeCardProps> = ({
               onClick={() => onTypeChange('cash_sell')}
               className={`h-auto px-2 py-1.5 text-xs font-semibold rounded-lg transition-all text-center ${
                 exchangeType === 'cash_sell'
-                  ? 'bg-[#15171a] dark:bg-slate-800 text-white shadow-2xs border dark:border-slate-700 hover:bg-[#15171a] dark:hover:bg-slate-800 hover:text-white'
+                  ? 'bg-[#15171a] hover:bg-[#2e3238] dark:bg-slate-800 dark:hover:bg-slate-700 text-white hover:text-white shadow-2xs border dark:border-slate-700'
                   : 'text-[#64748b] dark:text-slate-400 hover:text-[#112220] dark:hover:text-white'
               }`}
             >
@@ -160,7 +160,7 @@ export const DualExchangeCard: React.FC<DualExchangeCardProps> = ({
                 onClick={() => onDiscountChange(disc)}
                 className={`h-auto py-1 sm:px-2.5 text-xs font-bold rounded-md transition-all text-center ${
                   discount === disc
-                    ? 'bg-[#15171a] dark:bg-slate-800 text-white border dark:border-slate-700 hover:bg-[#15171a] dark:hover:bg-slate-800 hover:text-white'
+                    ? 'bg-[#15171a] hover:bg-[#2e3238] dark:bg-slate-800 dark:hover:bg-slate-700 text-white hover:text-white border dark:border-slate-700'
                     : 'bg-white dark:bg-slate-900 border border-[#e5e7eb] dark:border-slate-700 text-[#64748b] dark:text-slate-400 hover:text-[#112220] dark:hover:text-white'
                 }`}
               >

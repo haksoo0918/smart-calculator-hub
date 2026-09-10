@@ -105,7 +105,7 @@ export const CompoundInterestApp: React.FC<CompoundInterestAppProps> = () => {
             onClick={() => setIsComparisonMode(!isComparisonMode)}
             className={`h-auto flex items-center gap-1.5 px-3 py-1.5 text-xs sm:text-sm font-semibold rounded-md border transition-colors ${
               isComparisonMode
-                ? 'bg-[#15171a] dark:bg-white text-white dark:text-[#112220] border-[#15171a] dark:border-white hover:bg-[#15171a] dark:hover:bg-white hover:text-white dark:hover:text-[#112220]'
+                ? 'bg-[#15171a] hover:bg-[#2e3238] dark:bg-white dark:hover:bg-slate-100 text-white hover:text-white dark:text-[#112220] dark:hover:text-[#112220] border-[#15171a] dark:border-white'
                 : 'bg-white dark:bg-slate-900 text-[#334155] dark:text-slate-300 border-[#e5e7eb] dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800'
             }`}
           >
@@ -149,7 +149,7 @@ export const CompoundInterestApp: React.FC<CompoundInterestAppProps> = () => {
             onClick={() => setActiveMobileTab('A')}
             className={`flex-1 h-auto py-2 text-xs sm:text-sm font-bold rounded-md transition-colors ${
               activeMobileTab === 'A'
-                ? 'bg-[#15171a] dark:bg-slate-800 text-white hover:bg-[#15171a] dark:hover:bg-slate-800 hover:text-white'
+                ? 'bg-[#15171a] hover:bg-[#2e3238] dark:bg-slate-800 dark:hover:bg-slate-700 text-white hover:text-white'
                 : 'text-[#64748b] dark:text-slate-400 hover:text-[#112220] dark:hover:text-white'
             }`}
           >
@@ -162,7 +162,7 @@ export const CompoundInterestApp: React.FC<CompoundInterestAppProps> = () => {
             onClick={() => setActiveMobileTab('B')}
             className={`flex-1 h-auto py-2 text-xs sm:text-sm font-bold rounded-md transition-colors ${
               activeMobileTab === 'B'
-                ? 'bg-[#15171a] dark:bg-slate-800 text-white hover:bg-[#15171a] dark:hover:bg-slate-800 hover:text-white'
+                ? 'bg-[#15171a] hover:bg-[#2e3238] dark:bg-slate-800 dark:hover:bg-slate-700 text-white hover:text-white'
                 : 'text-[#64748b] dark:text-slate-400 hover:text-[#112220] dark:hover:text-white'
             }`}
           >

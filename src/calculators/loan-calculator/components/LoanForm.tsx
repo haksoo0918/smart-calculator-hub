@@ -117,7 +117,7 @@ export const LoanForm: React.FC<LoanFormProps> = ({ input, onChange, onReset }) 
               onClick={() => updateField('repaymentMethod', tab.id)}
               className={`h-auto py-2 text-xs sm:text-sm font-bold rounded-lg transition-all text-center ${
                 input.repaymentMethod === tab.id
-                  ? 'bg-[#15171a] dark:bg-white text-white dark:text-[#112220] shadow-sm hover:bg-[#15171a] hover:text-white dark:hover:bg-white dark:hover:text-[#112220]'
+                  ? 'bg-[#15171a] hover:bg-[#2e3238] dark:bg-white dark:hover:bg-slate-100 text-white hover:text-white dark:text-[#112220] dark:hover:text-[#112220] shadow-sm'
                   : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
               }`}
             >
@@ -219,7 +219,7 @@ export const LoanForm: React.FC<LoanFormProps> = ({ input, onChange, onReset }) 
               onClick={() => updateField('annualRate', preset.value)}
               className={`h-7 px-2.5 text-xs font-semibold ${
                 input.annualRate === preset.value
-                  ? 'border-[#15171a] dark:border-white bg-[#15171a] dark:bg-white text-white dark:text-[#112220]'
+                  ? 'border-[#15171a] hover:border-[#2e3238] dark:border-white bg-[#15171a] hover:bg-[#2e3238] dark:bg-white dark:hover:bg-slate-100 text-white hover:text-white dark:text-[#112220] dark:hover:text-[#112220]'
                   : 'bg-white dark:bg-slate-900 border-[#e5e7eb] dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800'
               }`}
             >
@@ -258,7 +258,7 @@ export const LoanForm: React.FC<LoanFormProps> = ({ input, onChange, onReset }) 
               onClick={() => updateField('loanTermYears', term)}
               className={`h-7 px-2.5 text-xs font-semibold ${
                 input.loanTermYears === term
-                  ? 'border-[#15171a] dark:border-white bg-[#15171a] dark:bg-white text-white dark:text-[#112220]'
+                  ? 'border-[#15171a] hover:border-[#2e3238] dark:border-white bg-[#15171a] hover:bg-[#2e3238] dark:bg-white dark:hover:bg-slate-100 text-white hover:text-white dark:text-[#112220] dark:hover:text-[#112220]'
                   : 'bg-white dark:bg-slate-900 border-[#e5e7eb] dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800'
               }`}
             >
@@ -290,7 +290,7 @@ export const LoanForm: React.FC<LoanFormProps> = ({ input, onChange, onReset }) 
               onClick={() => updateField('gracePeriodMonths', preset.months)}
               className={`h-auto py-2 text-xs font-semibold rounded-lg border transition-all text-center ${
                 input.gracePeriodMonths === preset.months
-                  ? 'border-[#15171a] dark:border-[#d1ff19] bg-[#15171a] dark:bg-slate-800 text-white hover:bg-[#15171a] hover:text-white dark:hover:bg-slate-800'
+                  ? 'border-[#15171a] hover:border-[#2e3238] dark:border-white bg-[#15171a] hover:bg-[#2e3238] dark:bg-white dark:hover:bg-slate-100 text-white hover:text-white dark:text-[#112220] dark:hover:text-[#112220]'
                   : 'border-[#e5e7eb] dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800'
               }`}
             >
@@ -300,8 +300,8 @@ export const LoanForm: React.FC<LoanFormProps> = ({ input, onChange, onReset }) 
         </div>
       </div>
 
-      {/* 7. 중도상환 시뮬레이션 (선택 토글) */}
-      <div className="pt-4 border-t border-[#e5e7eb] dark:border-slate-800 space-y-3">
+      {/* 7. 중도상환 시뮬레이터 (선택 옵션) */}
+      <div className="pt-2 border-t border-slate-100 dark:border-slate-800/80 space-y-3">
         <div className="flex items-center justify-between">
           <div className="space-y-0.5">
             <span className="text-xs sm:text-sm font-bold text-[#112220] dark:text-slate-200">
@@ -336,7 +336,7 @@ export const LoanForm: React.FC<LoanFormProps> = ({ input, onChange, onReset }) 
         </div>
 
         {isEarlyEnabled && (
-          <div className="p-3.5 bg-slate-50 dark:bg-slate-900/60 rounded-xl border border-[#e5e7eb] dark:border-slate-800 space-y-3.5 text-xs animate-page-fade">
+          <div className="bg-slate-50 dark:bg-slate-900/60 rounded-xl p-3.5 border border-[#e5e7eb] dark:border-slate-800 space-y-3">
             {/* 상환 시점 */}
             <div>
               <div className="flex justify-between items-baseline mb-1">
@@ -360,8 +360,8 @@ export const LoanForm: React.FC<LoanFormProps> = ({ input, onChange, onReset }) 
                     }
                     className={`h-7 text-xs font-semibold ${
                       input.earlyRepayment?.afterMonths === preset.months
-                        ? 'border-[#15171a] dark:border-white bg-[#15171a] dark:bg-white text-white dark:text-[#112220]'
-                        : 'bg-white dark:bg-slate-900 border-[#e5e7eb] dark:border-slate-700'
+                        ? 'border-[#15171a] hover:border-[#2e3238] dark:border-white bg-[#15171a] hover:bg-[#2e3238] dark:bg-white dark:hover:bg-slate-100 text-white hover:text-white dark:text-[#112220] dark:hover:text-[#112220]'
+                        : 'bg-white dark:bg-slate-900 border-[#e5e7eb] dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800'
                     }`}
                   >
                     {preset.label}

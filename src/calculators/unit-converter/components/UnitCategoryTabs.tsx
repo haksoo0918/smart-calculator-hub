@@ -47,7 +47,7 @@ export const UnitCategoryTabs: React.FC<UnitCategoryTabsProps> = ({
               onClick={() => onSelectCategory(cat.id)}
               className={`group h-auto flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs font-semibold transition-all duration-150 ${
                 isActive
-                  ? 'bg-[#15171a] dark:bg-slate-900 text-white shadow-xs border dark:border-slate-700 hover:bg-[#15171a] dark:hover:bg-slate-900 hover:text-white'
+                  ? 'bg-[#15171a] hover:bg-[#2e3238] dark:bg-slate-900 dark:hover:bg-slate-800 text-white hover:text-white shadow-xs border dark:border-slate-700'
                   : 'text-[#475569] dark:text-slate-400 hover:bg-white/80 dark:hover:bg-slate-800 hover:text-[#112220] dark:hover:text-white'
               }`}
             >

@@ -543,6 +543,10 @@ export interface ExchangeResult {
   - `PlaceholderView.tsx`: 이전으로 돌아가기 버튼
 - **구현 원칙 및 변형(Variants) 매핑 규격**:
   - **탭 및 세그먼트 컨트롤러**: `variant="ghost"` + 활성화 시 배경/글자색 반전(`bg-[#15171a] dark:bg-white text-white dark:text-[#112220]`) 적용
+  - **선택(Active) 버튼 호버 인터랙션 표준 (방안 A)**:
+    - 선택된 버튼(탭/칩/카드)에 마우스 오버 시 정적 고정되지 않고 미세 명도 피드백을 일관되게 제공.
+    - 라이트 모드: `bg-[#15171a] hover:bg-[#2e3238] text-white hover:text-white`
+    - 다크 모드: `dark:bg-white dark:hover:bg-slate-100 dark:text-[#112220] dark:hover:text-[#112220]` (또는 다크 배경 세그먼트의 경우 `dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-white`)
   - **프리셋 칩 및 보조 조작 버튼**: `variant="outline"` + `size="sm"` + 간결한 패딩(`h-7 px-2.5 text-xs`) 적용
   - **카드형 인터랙션 버튼**: `variant="ghost"` 또는 `variant="outline"` + `w-full h-auto p-3.5 text-left`로 카드 전체를 버튼화하여 키보드 Tab 및 Enter 인터랙션 보장
   - **웹 접근성 및 포커스 링**: shadcn Button의 기본 `focus-visible:ring-2 focus-visible:ring-[#15171a] dark:focus-visible:ring-[#d1ff19]` 포커스 링을 통해 키보드 사용자 탐색성 100% 보장

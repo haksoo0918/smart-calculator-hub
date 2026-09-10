@@ -50,7 +50,7 @@ export const CalculatorForm: React.FC<CalculatorFormProps> = ({
   const isIndigo = accentColor === 'indigo';
   const idPrefix = isIndigo ? 'scenario-b' : 'scenario-a';
   const borderFocusClass = 'focus:border-[#15171a] dark:focus:border-[#d1ff19] focus:ring-1 focus:ring-[#15171a] dark:focus:ring-[#d1ff19]';
-  const activeTabClass = 'bg-[#15171a] dark:bg-white text-white dark:text-[#112220] font-bold border-[#15171a] dark:border-white';
+  const activeTabClass = 'bg-[#15171a] hover:bg-[#2e3238] dark:bg-white dark:hover:bg-slate-100 text-white hover:text-white dark:text-[#112220] dark:hover:text-[#112220] font-bold border-[#15171a] dark:border-white shadow-xs';
 
   const updateField = <K extends keyof ScenarioInput>(field: K, value: ScenarioInput[K]) => {
     onChange({
@@ -226,7 +226,7 @@ export const CalculatorForm: React.FC<CalculatorFormProps> = ({
                 onClick={() => updateField('years', yr)}
                 className={`flex-1 h-auto py-1 text-[11px] font-medium rounded-md border transition-all ${
                   scenario.years === yr
-                    ? 'bg-slate-800 dark:bg-white text-white dark:text-[#112220] border-slate-800 dark:border-white font-bold hover:bg-slate-800 dark:hover:bg-white hover:text-white dark:hover:text-[#112220]'
+                    ? 'bg-slate-800 hover:bg-slate-700 dark:bg-white dark:hover:bg-slate-100 text-white hover:text-white dark:text-[#112220] dark:hover:text-[#112220] border-slate-800 dark:border-white font-bold'
                     : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800'
                 }`}
               >
@@ -292,8 +292,8 @@ export const CalculatorForm: React.FC<CalculatorFormProps> = ({
                   className={`h-auto px-1 py-1.5 text-[11px] font-medium rounded-md border transition-colors text-center flex items-center justify-center ${
                     isSelected
                       ? isNegative
-                        ? 'bg-rose-50 dark:bg-rose-950/40 text-rose-800 dark:text-rose-300 border-rose-300 dark:border-rose-700 font-bold hover:bg-rose-50 dark:hover:bg-rose-950/40'
-                        : 'bg-[#15171a] dark:bg-white text-white dark:text-[#112220] border-[#15171a] dark:border-white font-bold hover:bg-[#15171a] dark:hover:bg-white hover:text-white dark:hover:text-[#112220]'
+                        ? 'bg-rose-50 hover:bg-rose-100 dark:bg-rose-950/40 dark:hover:bg-rose-950/70 text-rose-800 dark:text-rose-300 border-rose-300 dark:border-rose-700 font-bold'
+                        : 'bg-[#15171a] hover:bg-[#2e3238] dark:bg-white dark:hover:bg-slate-100 text-white hover:text-white dark:text-[#112220] dark:hover:text-[#112220] border-[#15171a] dark:border-white font-bold'
                       : 'bg-white dark:bg-slate-900 text-[#334155] dark:text-slate-300 border-[#e5e7eb] dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800'
                   }`}
                 >
