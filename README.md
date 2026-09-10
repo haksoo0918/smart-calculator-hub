@@ -51,6 +51,7 @@ Ghost 디자인 시스템의 모노크롬 미니멀 감성과 Electric Lime 하�
 
 - **Ghost 디자인 시스템**: 미니멀 모노크롬 팔레트(`#15171a`, `#0b0c0e`, `#f8fafc`)와 Electric Lime(`#d1ff19`) 액센트를 적용하여 높은 가독성과 정돈된 심미성 제공.
 - **shadcn/ui 컴포넌트 전면 표준화**: `Button`, `Input`, `Slider`, `Select`, `Tooltip`, `Sheet`, `Card`, `Badge` 등 모든 폼과 인터랙션 요소를 shadcn/ui 컴포넌트로 일원화하여 일관된 디자인과 키보드 웹 접근성(WCAG 2.1 AA) 보장.
+- **공통 인터랙션 컴포넌트 추상화 (`SelectableChip`, `SegmentedControl`)**: 2회 이상 중복되는 프리셋 칩 및 2~4분할 세그먼트 탭을 공통 컴포넌트로 캡슐화하여 DRY 원칙 달성 및 일관된 호버 피드백 보장.
 - **모바일 퍼스트 UX**: 슬라이드형 사이드바 드로어 네비게이션, 가로 스크롤 칩, 터치 친화적 탭 및 버튼 인터랙션.
 - **성능 최적화 (Route Code-Splitting)**: React.lazy와 Suspense를 적용하여 초기 진입 번들 크기를 경감(154kB)하고 빠른 체감 로딩 속도 달성.
 - **PWA (Progressive Web App)**: 서비스 워커와 캐시 스토리지를 통해 네트워크 연결이 불안정하거나 오프라인 상태인 환경에서도 모든 계산 기능 정상 작동.
@@ -62,7 +63,7 @@ Ghost 디자인 시스템의 모노크롬 미니멀 감성과 Electric Lime 하�
 
 - **Core**: React 18, TypeScript, Vite
 - **Routing**: React Router DOM (v7)
-- **UI Components**: [shadcn/ui](https://ui.shadcn.com/) (`Button`, `Input`, `Slider`, `Select`, `Tooltip`, `Sheet`, `Card`, `Badge`)
+- **UI Components**: [shadcn/ui](https://ui.shadcn.com/) (`Button`, `Input`, `Slider`, `Select`, `Tooltip`, `Sheet`, `Card`, `Badge`), `SelectableChip`, `SegmentedControl`
 - **Styling**: Tailwind CSS, Class Variance Authority (CVA), clsx, tailwind-merge
 - **Data Visualization**: Recharts
 - **Icons**: Lucide React

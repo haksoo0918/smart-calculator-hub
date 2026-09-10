@@ -3,6 +3,20 @@
 모든 주요 변경 사항은 본 문서에 기록됩니다.
 버전 체계는 [Semantic Versioning (SemVer)](https://semver.org/)을 준수합니다.
 
+## [1.8.1] - 2026-09-10
+
+### 인터랙션 요소 전면 표준화 및 공통 컴포넌트 추상화 (Component Refactoring & DRY)
+- **전 모듈 shadcn `Button` 컴포넌트 전면 통일**:
+  - 인라인 네이티브 `<button>` 태그를 shadcn `Button`으로 100% 교체하여 일관된 포커스 링, 웹 접근성, 트랜지션 적용.
+- **선택(Active) 버튼 호버 인터랙션 미세 명도 피드백 표준화**:
+  - 선택된 버튼에 마우스 오버 시 색상이 고정되거나 기본 고스트 스타일이 튀어나오던 현상 개선.
+  - 라이트 모드 `hover:bg-[#2e3238]`, 다크 모드 `dark:hover:bg-slate-700` / `dark:hover:bg-slate-100`으로 자연스러운 클릭 가능 피드백 통일.
+- **2회 이상 중복 인터랙션 요소의 공통 컴포넌트 추상화 (DRY 원칙)**:
+  - `SelectableChip` (`src/components/ui/selectable-chip.tsx`): 금리, 기간, 거치기간, 수익률, 우대율 등 선택형 프리셋 칩 표준화.
+  - `SegmentedControl` (`src/components/ui/segmented-control.tsx`): 상환방식, 적립주기, 환전방식, 차트 뷰 등 2~4분할 세그먼트 탭 표준화.
+- **적용 모듈**: 대출 계산기(`LoanForm`, `LoanChartDashboard`), 단위 변환기(`DualConverterCard`), 환율 계산기(`DualExchangeCard`), 복리 계산기(`CalculatorForm`, `CompoundInterestApp`).
+- 단위/통합/라우팅 테스트 49종 전체 통과 및 프로덕션 빌드 완료.
+
 ## [1.8.0] - 2026-09-10
 
 ### 대출이자 & 상환방식 비교 계산기 신규 출시 (Loan Repayment Calculator)
