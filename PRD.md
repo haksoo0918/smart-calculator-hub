@@ -1,164 +1,194 @@
 # [PRD] 모바일 우선 스마트 멀티 계산기 플랫폼 (Smart Calculator Hub)
 
+> **버전**: v1.8.12  
+> **최종 갱신일**: 2026-09-10  
+> **제작 및 브랜딩**: © sosoFactory  
+> **기본 원칙**: Ghost 디자인 시스템 원칙 준수, 모바일 퍼스트(Mobile-First), 일관된 UI/UX, 100% 오프라인 동작(PWA), WCAG 웹 접근성 준수
+
+---
+
+## 목차 (Table of Contents)
+
+1. [프로젝트 개요](#1-프로젝트-개요)
+2. [제품 아키텍처 및 네비게이션 구조](#2-제품-아키텍처-및-네비게이션-구조)
+   - 2.1 좌측 네비게이션 시스템 (Left Sidebar & Drawer)
+   - 2.2 공통 모바일 퍼스트 및 반응형 레이아웃 원칙
+   - 2.3 Ghost 디자인 시스템 기반 공통 UI/UX 설계 원칙
+   - 2.4 모듈형 컴포넌트 아키텍처 (디렉터리 구조)
+   - 2.5 전역 다크 모드 지원 및 전환 인터랙션
+3. [계산기 모듈별 상세 기능 명세](#3-계산기-모듈별-상세-기능-명세)
+   - 3.1 [금융/투자] 연복리 & 자산 성장 계산기 (`CompoundInterestApp` - 구현 완료)
+   - 3.2 [생활/측정] 단위 변환기 (`UnitConverterApp` - 구현 완료)
+   - 3.3 [통화/글로벌] 환율 계산기 (`ExchangeApp` - 구현 완료)
+   - 3.4 [금융/투자] 대출 이자 및 상환방식 비교 계산기 (`LoanApp` - 구현 완료)
+   - 3.5 향후 확장 예정 모듈 (Roadmap)
+4. [데이터 모델 (Data Models)](#4-데이터-모델-data-models)
+   - 4.0 사이트 전역 설정 모델 (`src/config/site.ts`)
+   - 4.1 글로벌 네비게이션 모델 (`src/types/navigation.ts`)
+   - 4.2 연복리 계산 데이터 모델 (`src/types/calculator.ts`)
+   - 4.3 단위 변환 데이터 모델 (`src/types/unit.ts`)
+   - 4.4 환율 계산 데이터 모델 (`src/types/exchange.ts`)
+   - 4.5 대출 이자 계산 데이터 모델 (`src/types/loan.ts`)
+5. [기술 스택 및 아키텍처](#5-기술-스택-및-아키텍처)
+6. [비기능적 요구사항 및 품질 검증 기준](#6-비기능적-요구사항-및-품질-검증-기준)
+7. [검색엔진 최적화 (SEO) 전략 및 명세](#7-검색엔진-최적화-seo-전략-및-명세)
+8. [PWA (Progressive Web App) 명세 및 설치 지원](#8-pwa-progressive-web-app-명세-및-설치-지원)
+9. [품질 안정화 및 신뢰성 규격 (Quality & Reliability)](#9-품질-안정화-및-신뢰성-규격-quality--reliability)
+10. [웹 표준 및 웹 접근성(A11y) 규격](#10-웹-표준-및-웹-접근성a11y-규격)
+11. [공통 폼 및 인터랙션 컴포넌트 표준 규격](#11-공통-폼-및-인터랙션-컴포넌트-표준-규격)
+12. [모바일 퍼스트 및 반응형 리플로우 전역 규격](#12-모바일-퍼스트-및-반응형-리플로우-전역-규격)
+13. [금융 및 생활 상식 안내 카드 규격 (`InfoCard`)](#13-금융-및-생활-상식-안내-카드-규격-infocard)
+
+---
+
 ## 1. 프로젝트 개요
 
 - **프로젝트명**: 스마트 멀티 계산기 허브 (Smart Calculator Hub)
-- **목적**: 일상과 금융 생활에서 자주 필요한 다양한 계산 도구들을 한곳에 모아 모바일과 데스크톱에서 빠르고 직관적으로 사용할 수 있도록 제공하는 모듈형 계산기 포털 웹 애플리케이션
+- **목적**: 일상과 금융 생활에서 자주 필요한 다양한 계산 도구들을 한곳에 모아 모바일과 데스크톱 전 환경에서 빠르고 직관적으로 사용할 수 있도록 제공하는 모듈형 계산기 포털 웹 애플리케이션.
 - **핵심 가치**:
-  - **원스톱 계산 허브**: 연복리, 단위 변환, 환율 계산 등 필수 계산기들을 탭/메뉴 전환으로 손쉽게 이용
-  - **모바일 퍼스트(Mobile-First) UX**: 한 손 터치에 최적화된 하단 네비게이션/상단 스크롤 탭 및 빠른 입력 패드
-  - **확장 가능한 모듈형 아키텍처**: 새로운 계산기(대출 이자, 적금, 연봉 실수령액 등)를 언제든 플러그인 형태로 추가 가능한 구조
-  - **데이터 지속성**: 각 계산기별 최근 입력값 및 설정을 브라우저 `LocalStorage`에 개별 저장/유지
+  - **Ghost 디자인 철학 계승**: 절제된 모노크롬 베이스와 단 하나의 정밀한 액센트(Electric Lime) 전압을 사용하는 Ghost 디자인 시스템(`ghost.design.md`)을 전역 디자인 원칙으로 확립하여, 불필요한 시각적 잡음을 배제하고 본질적인 계산 데이터와 정보에 온전히 집중하는 명료한 사용자 경험 제공.
+  - **원스톱 계산 허브**: 연복리, 단위 변환, 환율 계산, 대출 이자 비교 등 필수 계산기들을 탭/메뉴 전환으로 손쉽게 이용.
+  - **모바일 퍼스트(Mobile-First) UX**: 한 손 터치에 최적화된 네비게이션, 유동적 그리드 및 빠른 입력 패드.
+  - **확장 가능한 모듈형 아키텍처**: 새로운 계산기(배당금, 목표자산 역산 등)를 언제든 독립적으로 추가/확장 가능한 구조.
+  - **데이터 지속성 & 오프라인 지원**: 각 계산기별 최근 입력값을 브라우저 `LocalStorage`에 자동 유지하며, PWA 기반으로 인터넷 연결 없이도 100% 정상 작동.
 
 ---
 
 ## 2. 제품 아키텍처 및 네비게이션 구조
 
 ### 2.1 좌측 네비게이션 시스템 (Left Sidebar & Drawer)
-- **메뉴 확장성 최적화**: 향후 계산기 도구가 10개 이상 늘어나더라도 스크롤 가능한 세로 목록으로 깔끔하게 확장 대응.
-- **모바일 뷰포트 (360px ~ 768px)**:
-  - 상단 좌측 햄버거 메뉴 버튼(`Menu`) 터치 시 좌측에서 부드럽게 슬라이드인되는 **좌측 오버레이 드로어(Slide-over Drawer)**.
-  - **슬라이드 애니메이션 및 오버레이 페이드 규격**:
-    - 열림(Open): 300ms 이징(`cubic-bezier(0.16, 1, 0.3, 1)` 감속 곡선)으로 좌측 바깥(`translateX(-100%)`)에서 스르륵 부드럽게 진입.
-    - 닫힘(Close): 250ms 가속 곡선으로 좌측 바깥으로 자연스럽게 퇴장.
-    - 딤드(Dimmed) 배경 오버레이: 300ms 동안 `opacity 0 ➔ 1`로 페이드인되며 배경 블러(`backdrop-blur-xs`) 연출.
-    - CSS 키프레임 기반 하드웨어 가속(`transform: translate3d`)을 적용하여 모바일 사파리 및 크롬 등 모든 모바일 브라우저에서 60fps 이상의 부드러운 전환 보장.
-  - 카테고리별(금융/투자, 생활/측정, 통화/글로벌) 그룹화 및 직관적인 아이콘 버튼 형태.
-  - 드로어 외부 터치 또는 항목 선택 시 자동 닫힘.
-- **데스크톱 뷰포트 (1024px 이상)**:
-  - 좌측 고정 사이드바(Width: 260px) + 우측 메인 콘텐츠 영역의 2열 레이아웃.
-  - 사이드바 접기/펼치기(Collapse/Expand) 토글 지원으로 넓은 작업 공간 확보 가능.
-- **전역 페이지 라우트 전환 페이드(Page Transition Fade) 규격**:
-  - 계산기 간 화면 이동 시(예: 연복리 ↔ 단위 변환 ↔ 환율) 메인 콘텐츠 영역(`main`)이 즉시 전환되어 발생하는 시각적 이질감을 해소하고 모던 앱 경험을 제공함.
-  - **애니메이션 사양**:
-    - 불투명도: `opacity 0 ➔ 1`
-    - 미세 모션: `translate3d(0, 4px, 0) ➔ translate3d(0, 0, 0)` (하단에서 부드럽게 안착)
-    - 지속 시간 및 이징: 200ms `ease-out` (사용자 입력 지연이 없도록 신속하고 경쾌하게 전환)
-    - React Router의 `location.pathname` 키 기반 재마운트 트랜지션 적용으로 데스크탑 및 모바일 전 기기에서 동일하게 동작 보장.
-- **헤더 및 푸터 브랜딩/정렬 규격**:
-  - **사이드바 로고 영역**:
-    - 검은색 계산기 아이콘(`w-9 h-9`)과 우측 텍스트 묶음 간의 세로 중심선(Vertical Center) 정렬 보정
-    - 불필요한 'Ghost Design' 수식어를 제거하고 직관적인 영문 서브타이틀(`Smart Calculator`)로 변경
-    - 우측 글로벌 헤더 텍스트 블록과의 시각적 수직 중심 밸런스 유지
-  - **사이드바 푸터**:
-    - 'Ghost Design' 표기를 배제하고 공식 카피라이트 `© sosoFactory` 및 버전 정보 표기 (`© sosoFactory • 스마트 계산기 v1.5.0`)
+- **메뉴 확장성 최적화**: 향후 계산기 도구가 늘어나더라도 세로 스크롤을 통해 유연하게 확장 가능한 목록 구조 제공.
+- **모바일 뷰포트**:
+  - 상단 좌측 햄버거 메뉴 버튼 터치 시 부드럽게 열리고 닫히는 **슬라이드 오버레이 드로어(Slide-over Drawer)** 지원.
+  - 배경을 어둡게 처리(Dimmed Overlay)하여 현재 메뉴에 대한 집중도 향상.
+  - 카테고리별(금융/투자, 생활/측정, 통화/글로벌) 그룹화 및 직관적인 아이콘 제공.
+  - 드로어 외부 터치 또는 메뉴 항목 선택 시 자동으로 닫힘 처리.
+- **데스크톱 뷰포트**:
+  - 좌측 고정 사이드바 + 우측 메인 콘텐츠 영역의 2열 레이아웃.
+  - 사이드바 접기/펼치기(Collapse/Expand) 토글을 지원하여 넓은 작업 공간 확보 가능.
+- **전역 페이지 전환 인터랙션**:
+  - 계산기 간 화면 전환 시 즉각적인 깜빡임 없이 부드러운 안착 페이드 효과를 적용하여 자연스러운 앱 경험 제공.
+  - 브라우저 히스토리(뒤로가기/앞으로가기) 및 딥링크 지원.
+- **헤더 및 푸터 정렬**:
+  - 좌측 사이드바 상단과 메인 화면 상단 헤더의 높이 기준선을 일치시켜 시각적 수평선 통일감 유지.
+  - 사이드바 하단 푸터에 공식 카피라이트 및 버전 정보(`© sosoFactory • 스마트 계산기 v1.8.12`) 표기.
 
-### 2.2 공통 모바일 퍼스트(Mobile-First) 및 반응형 컨테이너 표준 규격
-모든 계산기 모듈과 글로벌 네비게이션은 다음의 표준 규격을 공통으로 상속받아 일관성을 유지합니다:
-- **헤더 엣지-투-엣지(Edge-to-Edge) 풀 와이드 및 본문 컨테이너 확장(`max-w-7xl`) 표준화**:
-  - **글로벌 상단 헤더 (`GlobalHeader.tsx`)**: 뷰포트 좌우 끝까지 100% 확장되는 풀 와이드(`w-full px-4 sm:px-6`) 구조를 적용하여, 좌측 타이틀 영역과 우측 테마 토글 버튼이 화면 양 끝에 넉넉하고 시원하게 붙도록 배치.
-  - **메인 본문 콘텐츠 (`App.tsx`의 `<main>`)**: 2열 레이아웃(좌측 폼 5, 우측 결과 7)의 우측 패널 가용 폭을 대폭 넓혀 3열 비교 카드 및 시각화 차트가 비좁게 구겨지지 않도록 단일 컨테이너 규격을 기존 `max-w-5xl`(1024px)에서 **`max-w-7xl`(1280px)**로 전격 확장.
-  - 개별 페이지 컴포넌트(`CompoundInterestApp.tsx`, `UnitConverterApp.tsx`, `ExchangeApp.tsx`, `LoanApp.tsx`) 내부의 불필요한 인라인 너비 제한을 배제하여, 페이지 이동 시 레이아웃 좌우 정렬선이 완벽하게 일원화되도록 보장.
-- **단일 열(Single Column) 흐름 최적화**: 좁은 모바일 화면(360px ~ 430px)에서 가로 스크롤 없이 엄지손가락 터치 반경 내에서 모든 인터랙션 완결.
-- **상단 카테고리/모드 스와이프 탭**: 손쉬운 가로 스크롤/탭 전환 지원.
-- **대형 인터랙티브 듀얼 카드(Dual Interactive Card) 표준 규격**:
-  - 단위 변환기(`DualConverterCard.tsx`)와 환율 계산기(`DualExchangeCard.tsx`)의 From(입력)/To(결과) 영역의 구조, 배경색, 인풋 필드, 단위 선택 드롭다운, 타이포그래피를 동일한 규격으로 통일함:
-    - **From (출발 입력 카드)**:
-      - 컨테이너: `bg-slate-50/70 border border-[#e5e7eb] rounded-2xl p-4 focus-within:border-[#15171a] focus-within:bg-white transition-all`
-      - 상단 행: 좌측 `text-xs font-bold text-[#64748b]` 라벨 + 우측 통일된 크기의 shadcn `Select` (단위/통화 선택)
-      - 하단 행: 대형 `text-2xl sm:text-3xl font-extrabold text-[#112220] tabular-nums` 입력 필드 + 우측 심볼/단위 표시
-    - **To (도착 결과 카드)**:
-      - 컨테이너: 시각적 반전 및 하이라이트를 위해 `bg-[#15171a] text-white rounded-2xl p-4 border border-[#15171a]` 통일 적용 (환율 계산기의 밋밋한 화이트 인풋 박스를 단위 변환기와 동일한 다크 하이라이트 카드로 통일하거나, 두 화면의 테마 톤앤매너를 일관되게 단일 표준으로 맞춤)
-      - 상단 행: 좌측 `text-xs font-bold text-[#d1ff19]` (Electric Lime 포인트 뱃지 + 결과 라벨) + 우측 복사 버튼 + 우측 다크 테마 shadcn `Select`
-      - 하단 행: 대형 `text-2xl sm:text-3xl font-extrabold text-white tabular-nums` 결과값 + 우측 단위/심볼
-    - **중앙 Swap 버튼**: `w-10 h-10 rounded-full border border-[#e5e7eb] bg-white hover:bg-slate-100 active:scale-95 shadow-2xs` 통일.
-- **원클릭 퀵 프리셋 칩(Quick Preset Chips)**: 한국 사용자가 자주 찾는 대표 생활/여행/투자 시나리오를 탭 한 번으로 즉시 자동 입력.
-- **모바일 좁은 화면(360px ~ 390px) 텍스트 깨짐 및 가로 넘침(Overflow) 방지 표준**:
-  - **From / To 듀얼 카드 상단 헤더 반응형 분기**:
-    - 모바일(가용 폭 270px 이하)에서 우측 컨트롤(복사 버튼 + 단위/통화 드롭다운 셀렉트)이 과도한 공간을 차지해 좌측 라벨 텍스트가 2~3줄로 찌그러지거나 잘리는 현상을 원천 방지함.
-    - 라벨 텍스트 간결화: `입력 (From)`, `결과 (To)`로 통일 및 `text-[11px] sm:text-xs whitespace-nowrap` 적용.
-    - 복사 버튼 규격 통일: 모바일에서는 텍스트("복사/복사완료") 대신 컴팩트 아이콘 버튼(`w-7 h-7`, `Tooltip` 피드백 내장)을 배치하여 가로 폭 40px 이상 절약.
-    - 드롭다운 트리거 너비: 모바일 `w-28 sm:w-36 lg:w-44` 가변형 적용 및 `truncate`로 긴 단위/통화명이 넘치지 않도록 처리.
-  - **통화/단위 선택기(CurrencySelect) 모바일 렌더링 최적화**:
-    - `SelectTrigger` 내부 텍스트가 줄바꿈되어 컨트롤 높이가 무너지는 현상을 막기 위해, 모바일 트리거에서는 심볼과 코드가 우선적으로 깔끔하게 표시되도록 인라인 정렬 보정.
-  - **전체 일괄 환산표 그리드(Multi-Result Grid) 모바일 헤더 재구성**:
-    - 모바일(360px)에서 긴 타이틀("전체 주요 통화 실시간 일괄 환산")과 기준 배지(`기준: 1,350.00 KRW`)가 한 줄에 억지로 배치되어 타이틀이 글자 단위로 쪼개지는 현상 차단.
-    - 헤더 레이아웃을 `flex-col items-start gap-1.5 sm:flex-row sm:items-center sm:justify-between`으로 변경: 모바일 1행(타이틀 + 우측 기준 배지), 2행(보조 설명문구 전체 너비)으로 분리하여 가독성 및 시각적 안정성 극대화.
-  - **환전 방식 탭 및 기준일/실시간 환율 바 모바일 최적화**:
-    - 환전 방식 탭: 모바일에서 `w-full grid grid-cols-3 gap-1`로 시원하게 꽉 채워 텍스트 줄바꿈 방지 및 엄지 터치 영역 확보.
-    - 기준일 및 1통화 환율 정보: 모바일에서 불규칙한 줄바꿈 없이 `w-full flex items-center justify-between text-[11px] pt-1`로 깔끔하게 1행 정리.
-  - **은행 우대율 바 모바일 최적화**:
-    - 모바일에서 우대율 배지와 4개 버튼(90%, 80%, 50%, 0%)이 줄바꿈으로 깨지지 않도록 `flex items-center justify-between gap-1` 및 버튼 폰트/패딩 최적화.
-- **결과 원클릭 복사 및 피드백**: 계산된 핵심 결과를 탭 한 번으로 클립보드에 복사하고 시각적 복사 완료 피드백 제공.
-- **안내 팁 카드 및 문구 작성 원칙**: 유용한 상식 및 팁을 안내할 때 텍스트나 문구에 컬러 이모지를 절대 넣지 않음.
+### 2.2 공통 모바일 퍼스트 및 반응형 레이아웃 원칙
+모든 계산기 모듈과 글로벌 네비게이션은 다음의 원칙을 공통으로 적용합니다:
+- **풀 와이드 헤더와 여유로운 본문 폭 확보**:
+  - 상단 헤더는 뷰포트 좌우 끝까지 100% 확장되어 브랜드 타이틀과 테마 토글 버튼이 여유롭게 배치되도록 구성.
+  - 메인 본문 콘텐츠는 2열 레이아웃(좌측 입력 폼, 우측 결과 및 차트)에서 카드와 차트가 구겨지지 않도록 충분한 최대 가용 폭을 확보.
+- **단일 열(Single Column) 모바일 인터랙션 완결**:
+  - 좁은 모바일 화면에서 가로 스크롤 없이 엄지손가락 터치 반경 내에서 모든 입력과 결과 조회가 완결되도록 단일 열 흐름 최적화.
+- **대형 인터랙티브 듀얼 카드(Dual Interactive Card) 구조**:
+  - 단위 변환기와 환율 계산기는 직관적인 입력(From) 및 결과(To) 듀얼 카드 구조를 표준화:
+    - **출발(From) 입력 카드**: 변환/환전할 수치 입력 필드와 단위/통화 선택 드롭다운 배치.
+    - **도착(To) 결과 카드**: 계산된 변환 결과를 시각적으로 강조하여 표시하고, 원클릭 클립보드 복사 버튼과 도착 단위/통화 선택 드롭다운 배치.
+    - **중앙 맞바꾸기(Swap) 버튼**: 출발 단위와 도착 단위를 한 번의 터치로 즉시 맞바꾸는 인터랙션 지원.
+- **원클릭 퀵 프리셋(Quick Presets)**:
+  - 사용자가 자주 찾는 대표적인 생활, 여행, 투자 수치를 탭 한 번으로 즉시 자동 입력할 수 있는 빠른 프리셋 버튼 제공.
+- **모바일 가로 넘침 및 텍스트 깨짐 방지**:
+  - 좁은 모바일 화면에서 우측 컨트롤(복사 버튼, 드롭다운 셀렉트)로 인해 좌측 라벨이 여러 줄로 찌그러지거나 잘리는 현상을 방지하도록 가변 폭 및 컴팩트 아이콘 버튼 적용.
+  - 긴 타이틀이나 기준 정보는 필요 시 상하 2행으로 자연스럽게 분리하여 가독성 유지.
+- **결과 복사 피드백**:
+  - 계산된 핵심 결과를 탭 한 번으로 클립보드에 복사하고, 복사 완료 상태를 즉시 시각적으로 피드백.
 
-### 2.3 공통 디자인 시스템 원칙 (Ghost Design System)
-플랫폼 내 모든 UI 컴포넌트는 Ghost 디자인 시스템 사양을 전역 일관되게 적용합니다:
-- **배경 및 서피스**: Warm White (`#ffffff`), Slate Hairlines (`border-[#e5e7eb]`, 그림자 배제 플랫 원칙), 24px 대형 둥근 모서리(`rounded-[24px]` / `rounded-3xl`).
-- **인터랙션 및 버튼**: Near-black (`#15171a`, text `#ffffff`), 6px/8px 반경, 39px 높이 규격.
-- **시그니처 포인트**: Electric Lime (`#d1ff19`) - 상단 12px uppercase 볼드 아이브로우 및 뱃지 포인트로 제한적/절제된 사용.
-- **타이포그래피 & 수직 정렬**: Pretendard Variable 폰트, Tabular Numbers(고정폭 숫자), 한글 수직 중앙(Vertical Center) 정렬 보정(`leading-normal` 및 미세 baseline 패딩).
-- **모듈형 UI 컴포넌트**: shadcn/ui 기반 표준 토큰 컴포넌트(Button, Select, Input, Badge, Tooltip, Sheet).
+### 2.3 Ghost 디자인 시스템 기반 공통 UI/UX 설계 원칙
+모든 계산기 모듈과 화면 인터페이스는 Ghost 디자인 시스템(`ghost.design.md`)의 핵심 철학과 다음의 UI/UX 설계 원칙을 전역 일관되게 적용합니다:
+- **Ghost 디자인 철학 (Design Philosophy)**:
+  - **단일 진실 공급원 (SSOT)**: 제품의 모든 컴포넌트, 시각적 계층, 레이아웃 규격은 프로젝트 루트의 `ghost.design.md` 사양을 기준으로 설계 및 확장.
+  - **절제와 집중 (Restraint & Focus)**: 전면적인 다색상 배치를 엄격히 통제하고, 차분한 모노크롬 베이스(Near-black & Warm White)를 바탕으로 아이브로우 라벨과 핵심 인터랙션에만 절제된 일렉트릭 라임(Electric Lime) 전압을 부여하여 시각적 피로도를 낮추고 정보 전달력을 극대화.
+  - **에디토리얼 밴드 리듬 (Editorial Band Rhythm)**: 어수선한 구분선이나 인위적인 그라데이션 대신, 명확한 수평 여백과 카드 분할을 통해 매거진 스프레드를 넘겨보듯 자연스러운 시선 흐름 형성.
+- **명확한 정보 계층 구조**: 입력 폼과 결과 요약, 시각화 차트, 상세 흐름표의 순서로 자연스러운 시선 흐름을 유도.
+- **한 손 조작성 최적화**: 모바일 환경에서 중요한 조작 버튼과 프리셋 칩을 엄지손가락 터치 영역 내에 균형 배치.
+- **숫자 판독성 강화**: 금액, 환율, 변환 수치 등 모든 금융/측정 데이터에 고정폭 숫자(Tabular Numbers)를 적용하여 수치 변동 시 자리 흔들림 방지.
+- **컬러 이모지 전면 배제**: UI 레이아웃 및 팁 안내 문구에 알록달록한 컬러 이모지를 넣지 않고, 단정한 텍스트 및 표준 라인 아이콘(Lucide React)으로 전문적이고 신뢰감 있는 톤앤매너 유지.
+- **입력 유효성 실시간 피드백**: 잘못된 수치 입력이나 음수/범위 초과 시 사용자 입력을 즉시 보정하거나 직관적으로 안내.
 
 ### 2.4 모듈형 컴포넌트 아키텍처
 ```text
 src/
 ├── calculators/
-│   ├── compound-interest/   # 1. 연복리 & 자산 성장 계산기
-│   ├── unit-converter/      # 2. 단위 변환기 (평수 ↔ ㎡ 등)
-│   ├── exchange-rate/       # 3. 환율 계산기 (실시간/기준 환율 및 우대율)
-│   ├── loan-interest/       # 4. [추천] 대출 이자 및 상환 방식 비교 계산기
-│   ├── dividend/            # 5. [추천] 배당금 및 월 배당 현금흐름 계산기
-│   └── goal-planner/        # 6. [추천] 목표 자산 역산(얼마씩 모아야 할까) 계산기
-├── components/              # LeftSidebar, GlobalHeader, Layout, ThemeToggle
-├── context/
-│   └── ThemeContext.tsx     # 전역 테마 상태 (light/dark/system) 관리 Context
+│   └── loan-calculator/             # 대출이자 & 상환방식 비교 모듈
+│       ├── components/              # LoanForm, LoanComparisonCard, LoanChartDashboard 등
+│       └── LoanApp.tsx              # 대출 계산기 메인 뷰
+├── components/
+│   ├── ui/                          # shadcn/ui 기반 표준 토큰 컴포넌트
+│   │   ├── badge.tsx                # Badge (메타 정보 및 상태 뱃지)
+│   │   ├── button.tsx               # Button (통일된 호버 및 상태 인터랙션)
+│   │   ├── input.tsx                # Input (대형 인풋 및 유효성 대응)
+│   │   ├── selectable-chip.tsx      # SelectableChip (프리셋 선택 칩)
+│   │   ├── segmented-control.tsx    # SegmentedControl (세그먼트 탭)
+│   │   ├── select.tsx               # Radix Select 기반 드롭다운
+│   │   ├── slider.tsx               # Radix Slider (정밀 슬라이더 제어)
+│   │   ├── tabs.tsx                 # Radix Tabs 기반 표준 WAI-ARIA 탭
+│   │   └── tooltip.tsx              # 툴팁 안내
+│   ├── CalculatorForm.tsx           # 연복리 입력 폼 (표준 풀 와이드 인풋, 프리셋 4개화)
+│   ├── SummaryCards.tsx             # 연복리 요약 카드 (메인 결과 + 서브 지표)
+│   ├── DualConverterCard.tsx        # 단위 변환기 From/To 듀얼 카드
+│   ├── DualExchangeCard.tsx         # 환율 계산기 From/To 듀얼 카드
+│   ├── GlobalHeader.tsx             # 상단 전역 헤더
+│   ├── LeftSidebar.tsx              # 좌측 네비게이션 사이드바
+│   └── SidebarDrawer.tsx            # 모바일 슬라이드 드로어
 ├── config/
-│   └── site.ts              # 사이트 전역 브랜드 명칭, 타이틀, 카피라이트 SSOT
-└── ...
+│   └── site.ts                      # 사이트 전역 메타데이터 및 브랜드 명칭 SSOT
+├── context/
+│   └── ThemeContext.tsx             # 테마(light/dark/system) 관리 Context
+├── types/
+│   ├── calculator.ts                # 연복리 계산 타입
+│   ├── exchange.ts                  # 환율 계산 타입
+│   ├── loan.ts                      # 대출 이자 계산 타입
+│   ├── navigation.ts                # 네비게이션 및 메뉴 타입
+│   └── unit.ts                      # 단위 변환 타입
+└── utils/
+    ├── calculator.ts                # 복리 연산 비즈니스 로직
+    ├── exchangeCalculator.ts        # 환율 및 우대율 연산 로직
+    ├── formatters.ts                # 통화, 한글 단위, 백분율 포매터
+    ├── loanCalculator.ts            # 대출 3대 상환방식 및 중도상환 수학 로직
+    └── unitConverter.ts             # 단위 환산 계수 및 비선형 온도 변환 로직
 ```
 
-### 2.5 전역 다크 모드 시스템 사양 (Dark Mode Architecture & UX)
-- **테마 모드 지원 및 상태 관리**:
+### 2.5 전역 다크 모드 지원 및 전환 인터랙션
+- **테마 모드 지원**:
   - `light` (라이트 모드), `dark` (다크 모드), `system` (OS 시스템 설정 자동 동기화) 3가지 모드 지원.
-  - 최초 진입 시: 사용자 로컬 스토리지(`localStorage.getItem('theme')`) 설정을 우선하며, 저장된 값이 없을 경우 OS 환경(`window.matchMedia('(prefers-color-scheme: dark)')`)을 감지하여 자동 적용.
-  - 상태 지속성: 테마 변경 시 `localStorage`에 즉시 저장하고, 루트 `<html>` 태그에 `.dark` 클래스를 토글하여 Tailwind CSS의 `darkMode: 'class'`와 연동.
-  - 시스템 테마 실시간 반응: 사용자가 시스템 모드를 사용하는 경우, OS 테마 변경 이벤트 리스너를 통해 즉시 테마 동기화.
-- **테마 토글 인터페이스 (Theme Toggle Interface)**:
-  - **글로벌 헤더 우측 상단 단일 배치**: 모바일 및 데스크톱 뷰포트 전반에서 항시 즉시 접근 가능한 우측 액션 영역 1곳에만 일원화하여 불필요한 UI 중복 배제.
-  - **shadcn UI 표준 모드 토글 버튼 (Icon Toggle Button) 사양**:
-    - 컴포넌트: shadcn UI `Button` (`variant="outline"`, `size="icon"`, `w-9 h-9`) 기반.
-    - 아이콘 모션 연출:
-      - 라이트 모드: `Sun` 아이콘 표시 (`rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0`).
-      - 다크 모드: `Moon` 아이콘 표시 (`rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100 absolute`).
-      - 회전 및 스케일 트랜지션으로 시각적 완성도와 경쾌한 반응성 제공.
-    - 접근성 및 터치 최적화: `aria-label={isDark ? '라이트 모드로 전환' : '다크 모드로 전환'}`, shadcn Tooltip 안내.
-- **다크 모드 컬러 팔레트 및 토큰 규격 (Ghost Dark Theme)**:
-  - **메인 뷰포트 배경**: `dark:bg-[#0f172a]` (Slate 900)
-  - **카드 및 컴포넌트 서피스**: `dark:bg-[#1e293b]` (Slate 800)
-  - **사이드바 & 글로벌 헤더**: `dark:bg-[#0b1120]`, `dark:border-slate-800`
-  - **테두리 선(Hairlines)**: `border-[#e5e7eb]` ➔ `dark:border-slate-700/80`
-  - **기본 텍스트**: `#112220` ➔ `dark:text-slate-100`, 서브 텍스트: `dark:text-slate-400`
-  - **인풋/셀렉트 폼 컨트롤**: `dark:bg-slate-900/60`, `dark:border-slate-700`, `dark:text-white`
-  - **Ghost 시그니처 Lime (`#d1ff19`)**: 다크 모드에서 한층 높은 대비와 가독성을 발휘하여 배지, 아이브로우, 토글 하이라이트에 그대로 적용.
-  - **차트(Recharts) 시각화 적응**: 다크 모드 전환 시 그리드선 색상(`rgba(255,255,255,0.08)`), 축 라벨 텍스트 색상(`dark:text-slate-400`), 툴팁 배경(`dark:bg-slate-800 dark:border-slate-700`)이 자동으로 가독성 높게 조정.
-- **모바일 퍼스트 UX 고려사항**:
-  - 야간 및 저조도 환경에서 눈부심 없는 최적의 명암비(WCAG AA 기준 준수) 확보.
-  - 테마 전환 시 화면 전체가 깜빡이거나 튀지 않도록 부드러운 CSS 배경색/텍스트 트랜지션 적용.
+  - 최초 진입 시 사용자의 로컬 스토리지 설정을 우선 적용하며, 저장된 값이 없을 경우 OS 환경을 감지하여 자동 적용.
+  - 테마 변경 시 로컬 스토리지에 즉시 저장되어 재방문 시에도 설정이 유지됨.
+  - 시스템 모드 사용 중 사용자가 OS 테마를 전환하면 즉시 화면에 실시간 동기화.
+- **테마 토글 인터페이스**:
+  - 글로벌 헤더 우측 상단 1곳에 일원화 배치하여 모바일/데스크톱 전 환경에서 항시 접근 가능.
+  - 라이트/다크 전환 시 경쾌한 아이콘 회전 트랜지션 및 툴팁 안내 제공.
+  - 야간 및 저조도 환경에서 눈부심을 방지하고 최적의 명암비(WCAG AA 기준)를 확보하여 장시간 사용 편의성 제공.
+  - 차트(Recharts) 시각화 또한 다크 모드 전환 시 축 라벨과 그리드선, 툴팁이 가독성 높게 자동 전환.
 
 ---
 
 ## 3. 계산기 모듈별 상세 기능 명세
 
-### 3.1 [금융/투자] 연복리 & 자산 성장 계산기 (Compound Interest - 구현 완료)
+### 3.1 [금융/투자] 연복리 & 자산 성장 계산기 (`CompoundInterestApp` - 구현 완료)
 - **기능 요약**: 초기 원금, 정기 적립금, 복리 주기, 한국형 세금 체계를 반영한 자산 증식 시뮬레이터.
 - **주요 기능**:
   - 월초/연초 정기 적립식 복리 산출.
-  - 복리 주기 (월복리, 연복리, 분기복리, 일복리).
-  - 과세 체계 (일반과세 15.4%, 비과세 0%, ISA 9.9%, 직접입력).
-  - 하락장/손실 및 고수익 시뮬레이션 (-5% ~ +100% 및 손실 시 세금 0원 면제).
+  - 복리 주기 (월복리, 연복리, 분기복리, 일복리 - shadcn `Select` 적용).
+  - 과세 체계 (일반과세 15.4%, 비과세 0%, ISA 9.9%, 직접입력 - shadcn `Select` 적용).
+  - 하락장/손실 및 고수익 시뮬레이션 (-5% ~ +50% 및 손실 시 세금 0원 면제).
   - 시나리오 A / B 듀얼 오버레이 비교 차트 및 격차 분석.
   - Recharts 기반 인터랙티브 시각화 대시보드 & CSV 내보내기:
-    - 단일 시나리오 모드: 직관적인 누적 영역형 차트(AreaChart)로 고정 (불필요한 선형 토글 제거로 UX 단순화).
-    - 비교 모드: 두 시나리오 간 추이를 직관적으로 대조하는 멀티 라인 차트(LineChart) 유지.
-  - 입력 폼 사용성 및 디자인 통일:
-    - 4개 입력 항목(초기 원금, 정기 적립금, 목표 투자 기간, 연 예상 수익률) 모두 동일한 표준 대형 인풋 박스(`h-11`, 단위 심볼 포함)로 통일.
-    - 목표 투자 기간: `h-11` 인풋(`년`, 1~40년 바운더리 및 빈 값 허용) + 슬라이더 + 프리셋 4개 버튼(`5년`, `10년`, `20년`, `30년`).
-    - 연 예상 수익률: `h-11` 인풋(`%`, -5%~50% 바운더리 및 빈 값 허용) + 슬라이더(-5% ~ 50%) + 수식어 없는 순수 수치 프리셋 4개 버튼(`-3%`, `3.5%`, `8%`, `15%`).
-  - 레이아웃 및 헤더 정렬 규격:
-    - 좌측 사이드바 로고 영역과 우측 글로벌 헤더 영역의 높이를 `h-16 (64px)`로 동일하게 고정하여 하단 구분선(border-b)의 수평선 불일치 완벽 해소.
+    - 단일 시나리오 모드: 직관적인 누적 영역형 차트(`AreaChart`)로 고정 (불필요한 선형 토글 제거로 UX 단순화).
+    - 비교 모드: 두 시나리오 간 추이를 직관적으로 대조하는 멀티 라인 차트(`LineChart`) 유지.
+  - **입력 폼 사용성 및 필드 표준화 (`CalculatorForm.tsx`)**:
+    - 4개 입력 항목(초기 원금, 정기 적립금, 목표 투자 기간, 연 예상 수익률) 모두 동일한 풀 와이드 입력 필드 및 우측 단위 심볼(`원`, `년`, `%`) 적용.
+    - 목표 투자 기간: 직접 입력 필드(1~40년 유효범위, 백스페이스 빈 값 허용) + 정밀 슬라이더 + 4대 균등 프리셋 버튼(`5년`, `10년`, `20년`, `30년`).
+    - 연 예상 수익률: 직접 입력 필드(-5%~50% 유효범위, 백스페이스 빈 값 허용) + 정밀 슬라이더(-5%~50%) + 순수 수치 프리셋 4개 버튼(`-3%`, `3.5%`, `8%`, `15%`).
+    - `-3%` 버튼을 포함한 모든 프리셋 버튼에 차별 없는 동일한 선택 활성화 인터랙션 적용 (특정 프리셋의 개별 스타일 분기 배제).
+  - **결과 요약 카드 구조 (`SummaryCards.tsx`)**:
+    - 최종 수령액 메인 카드: 세후 최종 수령액 강조, 원금 대비 수익 배수 및 한글 단위 금액(예: `1억 5,000만 원`) 병기.
+    - 3단 서브 지표 카드(`총 투자원금`, `세후 순이자`, `이자 소득세`):
+      - 주요 3대 핵심 지표를 분리하여 표시.
+      - 단일 시나리오 모드에서는 3열 그리드로 배치하고, A/B 비교 모드에서는 좌우 비교 공간의 가독성을 위해 1열 세로 레이아웃으로 최적화.
+  - **투자 상식 및 유의사항 안내 (`CompoundInfoCard.tsx`)**:
+    - 72의 법칙, 복리의 마법, ISA 절세 계좌 팁, 금융소득종합과세 기준(연 2,000만원) 등 핵심 요약 제공 (컬러 이모지 배제).
 
-### 3.2 [생활/측정] 단위 변환기 (Unit Converter - 구현 완료)
+### 3.2 [생활/측정] 단위 변환기 (`UnitConverterApp` - 구현 완료)
 - **기능 요약**: 일상 생활, 부동산 거래, 직구 및 해외 규격에서 자주 쓰이는 단위를 실시간으로 상호 변환하고, 모든 관련 단위 결과를 한눈에 확인할 수 있는 올인원 변환기.
 - **주요 기능 명세**:
   - **카테고리별 1순위 대표 생활 프리셋 & 기본 도착 단위 자동 설정**:
@@ -184,14 +214,14 @@ src/
      - *한국형 추천 프리셋*: 종이컵 180mL, 생수병 500mL, 1리터, 1갤런
   5. **온도**:
      - 섭씨(℃), 화씨(℉), 켈빈(K)
-     - 비선형/오프셋 변환 공식 적용: \(℉ = ℃ \times 1.8 + 32\), \(K = ℃ + 273.15\)
+     - 비선형/오프셋 변환 공식 적용: (℉ = ℃ 	imes 1.8 + 32), (K = ℃ + 273.15)
      - *한국형 추천 프리셋*: 체온 36.5℃, 실온 20℃, 물 끓는점 100℃, 화씨 100℉
 
-### 3.3 [통화/글로벌] 환율 계산기 (Currency Exchange - 구현 단계)
+### 3.3 [통화/글로벌] 환율 계산기 (`ExchangeApp` - 구현 완료)
 - **기능 요약**: 글로벌 주요 6대 통화 간 금액을 기준 환율 및 은행 환전 수수료/우대율(Spread Discount)을 반영하여 즉시 상호 환산하는 계산기.
 - **오프라인 100% 동작 & 기준 환율 구조 (PWA 원칙)**:
   - 오프라인 무인터넷 환경에서도 100% 독립 동작하도록 최신 고시 매매기준율(USD, JPY, EUR, CNY, GBP 등)을 기본 내장.
-  - 네트워크 연결 시 최신 환율 갱신 기능(선택적) 및 사용자가 직접 원하는 기준 환율을 수정/입력할 수 있는 **'환율 직접 수정(커스텀 환율)'** 모드 지원.
+  - 네트워크 연결 시 최신 환율 비동기 갱신 및 5초 타임아웃(`AbortSignal.timeout(5000)`) 네트워크 안전망 적용.
 - **지원 통화 (6대 핵심 통화)**:
   1. `KRW`: 대한민국 원 (기본 기준 통화)
   2. `USD`: 미국 달러 (세계 기축 통화)
@@ -201,52 +231,41 @@ src/
   6. `GBP`: 영국 파운드
 - **도구 고유 기능 명세**:
   1. **은행 환전 수수료 및 우대율(스프레드) 시뮬레이터**:
-     - 거래 방식 선택:
-       - **매매기준율**: 수수료 없는 순수 시장 기준 환율
-       - **현찰 살 때 (살 때 환율)**: 여행/출국 전 외화 현찰을 살 때
-       - **현찰 팔 때 (팔 때 환율)**: 귀국 후 외화 현찰을 원화로 바꿀 때
-       - **송금 보낼 때 / 받을 때**: 전신환 기준
-     - **환전 우대율(Spread Discount) 프리셋 버튼**:
-       - `90% 우대 (주요 은행 모바일 앱 환전)`
-       - `80% 우대`
-       - `50% 우대`
-       - `0% 우대 (공항 환전소 등 기본 수수료 100% 적용)`
+     - 거래 방식 선택: 매매기준율, 현찰 살 때, 현찰 팔 때, 송금 보낼 때, 송금 받을 때 (shadcn `Tabs` 기반)
+     - 환전 우대율 프리셋: `90% 우대`, `80% 우대`, `50% 우대`, `0% 우대`
      - 절약된 환전 수수료(우대 혜택 금액)를 직관적으로 비교 표시.
-  2. **자주 찾는 여행/직구 퀵 프리셋 칩(Quick Preset Chips)**:
-     - `USD $100` (여행 비상금)
-     - `USD $200` (해외 직구 면세 한도)
-     - `JPY 10,000엔` (일본 1만엔 지폐)
-     - `EUR 100유로`
-     - `KRW 100만원`
-  3. **전체 통화 일괄 실시간 환산 그리드 (Multi-Currency Grid)**:
-     - 현재 입력된 금액 기준으로 나머지 5개 통화가 각각 얼마인지 한눈에 일목요연하게 비교 카드 형태로 실시간 표시.
-  4. **환전 상식 및 면세 유의사항 안내 카드**:
-     - 공항 환전 vs 모바일 앱 환전 팁, 미국 여행 면세 기준 등 유용한 팁 제공 (문구에 컬러 이모지 배제).
-  5. **환율 기준일 표시 및 자동 최신화 (Auto-Sync & Stale-While-Revalidate)**:
-     - 페이지 진입 시 신뢰도 높은 글로벌 기준 매매 환율(open.er-api.com / Frankfurter)을 백그라운드에서 자동 비동기 패치하여 최신화.
-     - 듀얼 카드 상단에 **고시 기준일(예: `기준일: 2026.09.07 11:00`)** 표시.
-     - 오프라인 환경에서는 저장된 캐시 및 기본 고시 환율로 100% 정상 작동.
-  6. **데이터 출처 및 환율 유의사항 고지 안내 (Disclaimer)**:
-     - "본 계산기의 환율은 글로벌 공시 매매기준율을 바탕으로 산출된 참고용 정보이며, 실제 은행별 환전 시점, 거래 지점, 모바일 앱 우대 조건 및 환율 변동에 따라 실제 적용 금액과 차이가 발생할 수 있습니다." 명시.
+  2. **자주 찾는 여행/직구 퀵 프리셋 칩**: `USD $100`, `USD $200`, `JPY 10,000엔`, `EUR 100유로`, `KRW 100만원`.
+  3. **전체 통화 일괄 실시간 환산 그리드**: 입력 즉시 나머지 5개 통화 환산액 실시간 노출.
+  4. **환율 기준일 표시 및 자동 최신화**: 고시 기준일(예: `기준일: YYYY.MM.DD HH:mm`) 표시.
+  5. **환전 상식 및 유의사항 면책 고지 안내**: 공항 vs 모바일 앱 환전 팁 및 면책 안내 (`ExchangeInfoCard.tsx`).
 
-### 3.4 [금융/투자 - 추천 계산기 라인업]
-1. **대출 이자 및 상환 계산기 (Loan Calculator)**:
-   - 원리금균등, 원금균등, 만기일시상환 3대 상환 방식을 한눈에 비교.
-   - 대출금, 금리, 기간, 거치기간 입력 시 월 상환액과 총 대출이자 계산.
-2. **배당금 및 월 현금흐름 계산기 (Dividend Calculator)**:
-   - 보유 주식수, 주당 배당금, 배당 주기(월/분기/연) 입력.
-   - 월별 배당 캘린더 및 배당소득세(15.4%) 차감 후 실수령액 계산.
-3. **목표 자산 달성 역산 계산기 (Goal Planner)**:
-   - "N년 후 1억/5억/10억을 모으려면 매월 얼마씩 투자해야 할까?" 역산.
+### 3.4 [금융/투자] 대출 이자 및 상환방식 비교 계산기 (`LoanApp` - 구현 완료)
+- **기능 요약**: 대한민국 금융 소비자들이 주택담보대출, 전세대출, 신용대출 이용 시 가장 크게 고민하는 **3대 상환방식(원리금균등, 원금균등, 만기일시)** 간의 총 이자비용 격차와 월별 현금흐름 부담을 한눈에 명확하게 비교하고 시뮬레이션할 수 있도록 지원.
+- **주요 기능 명세**:
+  1. **3대 상환방식 동시 시뮬레이션**:
+     - 원리금균등분할상환: 매월 동일한 상환액(원금+이자) 납부, 마지막 달 단수 차액 0원 정밀 보정.
+     - 원금균등분할상환: 매월 동일한 원금 분할 상환 + 대출 잔액에 따른 월이자 납입 (점진적 상환액 감소).
+     - 만기일시상환: 대출 기간 동안 매월 이자만 납부하고 만기일에 대출원금 전액 일괄 상환.
+  2. **거치 기간 (Grace Period) 지원**: 0개월 ~ 대출 기간 미만 설정 시 거치 기간 동안 이자만 납입 처리.
+  3. **중도상환 시뮬레이터 (선택 토글)**:
+     - 실행 N개월 후 조기상환 원금 및 수수료율(기본 1.2%) 입력 지원.
+     - 3년(36개월) 슬라이딩 감면 공식 적용: $\text{수수료} = \text{상환금} \times \frac{\text{수수료율}}{100} \times \frac{\max(0, 36-m)}{36}$ (3년 경과 시 0원 전액 면제).
+     - 중도상환 이후 대출 잔액 즉시 차감 및 잔여 기간 이자 절약액, 순 혜택 자동 계산.
+  4. **시각화 대시보드 및 스케줄표**:
+     - Recharts 기반 잔액 감소 곡선 vs 누적 납입(원금/이자) 영역 차트.
+     - 월별 상세 스케줄표 및 엑셀 호환 UTF-8 BOM CSV 내보내기.
+  5. **대출 상식 및 팁 안내 (`LoanInfoCard.tsx`)**:
+     - DSR/DTI/LTV 한 줄 핵심 요약, 상환방식 가이드, 중도상환수수료 3년 면제 및 금리인하요구권 팁.
 
-### 3.4 향후 확장 예정 모듈 (Roadmap)
-- 대출 이자 계산기 (원리금균등, 원금균등, 만기일시상환 비교)
-- 예·적금 만기 수령액 계산기
-- 연봉 실수령액 계산기
+### 3.5 향후 확장 예정 모듈 (Roadmap)
+- **배당금 및 월 배당 달력 계산기 (`dividend`)**: 배당주 포트폴리오의 월별 배당금 캘린더 및 배당소득세(15.4%) 차감 후 실수령액 계산.
+- **목표 자산 역산 계산기 (`goal`)**: "N년 후 1억/5억/10억을 모으려면 매월 얼마씩 투자해야 할까?" 역산 시뮬레이터.
+- **예·적금 만기 수령액 계산기**: 단리/복리, 세금우대, 만기 이자 지급 방식별 실수령액 계산.
+- **연봉 실수령액 계산기**: 4대 보험 및 근로소득세 간이세액표 기반 월 실수령액 계산.
 
 ---
 
-## 4. 데이터 모델
+## 4. 데이터 모델 (Data Models)
 
 ### 4.0 사이트 전역 설정 모델 (`src/config/site.ts`)
 사이트 전반에서 일관된 브랜딩, 타이틀, 카피라이트 및 메타데이터를 유지하기 위한 단일 진실 공급원(Single Source of Truth) 설정:
@@ -259,8 +278,7 @@ export interface SiteConfig {
   description: string;    // 사이트 대표 설명
   company: string;        // 'sosoFactory'
   copyright: string;      // '© sosoFactory'
-  version: string;        // '1.5.0'
-  url?: string;
+  version: string;        // '1.8.12'
   links: {
     github?: string;
   };
@@ -268,21 +286,84 @@ export interface SiteConfig {
 }
 ```
 
-### 4.1 글로벌 네비게이션 타입
+### 4.1 글로벌 네비게이션 모델 (`src/types/navigation.ts`)
 ```typescript
-export type CalculatorType = 'compound' | 'unit' | 'exchange';
+export type CalculatorId =
+  | 'compound'
+  | 'unit'
+  | 'exchange'
+  | 'loan'
+  | 'dividend'
+  | 'goal';
 
-export interface CalculatorMeta {
-  id: CalculatorType;
-  title: string;
-  shortTitle: string;
+export type CalculatorCategory = 'finance' | 'lifestyle' | 'global';
+
+export interface CalculatorItem {
+  id: CalculatorId;
+  name: string;
+  shortName: string;
   description: string;
-  iconName: string;
+  category: CalculatorCategory;
   badge?: string;
+  status: 'active' | 'coming-soon';
 }
 ```
 
-### 4.2 단위 변환 데이터 모델
+### 4.2 연복리 계산 데이터 모델 (`src/types/calculator.ts`)
+```typescript
+export type TaxType = 'normal' | 'exempt' | 'isa' | 'custom';
+export type CompoundingFrequency = 'annual' | 'quarterly' | 'monthly' | 'daily';
+export type ContributionFrequency = 'monthly' | 'annual' | 'none';
+
+export interface ScenarioInput {
+  name: string;
+  principal: number;                          // 초기 원금 (원)
+  regularContribution: number;                // 정기 납입액 (원)
+  contributionFrequency: ContributionFrequency; // 납입 주기
+  years: number;                              // 투자 기간 (년, 1~40)
+  annualRate: number;                         // 연 수익률 (%, -5~50)
+  compoundingFrequency: CompoundingFrequency; // 복리 주기
+  taxType: TaxType;                           // 과세 유형
+  customTaxRate?: number;                     // 직접 입력 세율 (%)
+}
+
+export interface YearlyBreakdown {
+  year: number;
+  totalPrincipal: number;                     // 누적 원금
+  grossInterestYear: number;                  // 당해 연도 세전 이자
+  grossInterestTotal: number;                 // 누적 세전 이자
+  taxAmount: number;                          // 누적 소득세
+  netInterestTotal: number;                   // 누적 세후 이자
+  futureValuePreTax: number;                  // 세전 총 자산
+  futureValuePostTax: number;                 // 세후 총 자산
+  returnRate: number;                         // 원금 대비 세후 수익률 (%)
+}
+
+export interface CalculationResult {
+  totalPrincipal: number;                     // 총 납입 원금
+  grossInterest: number;                      // 세전 총 이자
+  taxAmount: number;                          // 총 이자 과세액
+  netInterest: number;                        // 세후 총 이자
+  futureValuePreTax: number;                  // 세전 최종 금액
+  futureValuePostTax: number;                 // 세후 최종 수령액
+  netReturnRate: number;                      // 세후 원금 대비 수익률 (%)
+  principalMultiple: number;                  // 원금 대비 배수
+  breakdown: YearlyBreakdown[];               // 연도별 데이터
+}
+
+export interface ScenarioComparison {
+  scenarioA: ScenarioInput;
+  scenarioB: ScenarioInput;
+  resultA: CalculationResult;
+  resultB: CalculationResult;
+  diffPrincipal: number;                      // B - A 원금 차이
+  diffPostTax: number;                        // B - A 최종 수령액 차이
+  diffNetInterest: number;                    // B - A 세후 이자 차이
+  diffReturnRate: number;                     // B - A 수익률 차이
+}
+```
+
+### 4.3 단위 변환 데이터 모델 (`src/types/unit.ts`)
 ```typescript
 export type UnitCategory = 'area' | 'length' | 'weight' | 'volume' | 'temperature';
 
@@ -293,6 +374,7 @@ export interface UnitDefinition {
   category: UnitCategory;
   ratioToBase: number; // 카테고리 기준 단위 대비 1단위의 비율 (단, 온도는 별도 공식 사용)
   description?: string;// 예: '아파트 전용면적 기준', '순금 1돈 = 3.75g'
+  isPopular?: boolean;
 }
 
 export interface UnitConversionResult {
@@ -307,10 +389,13 @@ export interface QuickPreset {
   unitId: string;
   value: number;
   badge?: string;
+  description?: string;
 }
+
+export type DecimalPrecision = 0 | 2 | 4 | 6;
 ```
 
-### 4.3 환율 계산 데이터 모델 (`src/types/exchange.ts`)
+### 4.4 환율 계산 데이터 모델 (`src/types/exchange.ts`)
 ```typescript
 export type CurrencyCode = 'KRW' | 'USD' | 'JPY' | 'EUR' | 'CNY' | 'GBP';
 
@@ -344,6 +429,67 @@ export interface ExchangeResult {
 }
 ```
 
+### 4.5 대출 이자 계산 데이터 모델 (`src/types/loan.ts`)
+```typescript
+export type RepaymentMethod = 'equal_payment' | 'equal_principal' | 'bullet';
+
+export interface EarlyRepaymentOption {
+  enabled: boolean;
+  afterMonths: number;                        // 대출 실행 N개월 후 상환 (예: 12, 24, 36)
+  amount: number;                             // 중도상환 원금
+  feeRate: number;                            // 중도상환 수수료율 (%, 기본 1.2)
+}
+
+export interface EarlyRepaymentResult {
+  feeAmount: number;                          // 납부할 중도상환 수수료 (3년 슬라이딩 감면 반영)
+  savedInterest: number;                      // 중도상환으로 절약된 총이자
+  netBenefit: number;                         // 순 절감 혜택 (절약이자 - 수수료)
+}
+
+export interface LoanInput {
+  loanAmount: number;                         // 대출 원금 (원 단위, 예: 300,000,000)
+  annualRate: number;                         // 연이율 (%, 예: 4.2)
+  loanTermYears: number;                      // 대출 기간 (연 단위, 예: 30)
+  gracePeriodMonths: number;                  // 거치 기간 (개월 단위, 0 = 거치 없음)
+  repaymentMethod: RepaymentMethod;           // 기본 선택 상환방식
+  earlyRepayment?: EarlyRepaymentOption;      // 중도상환 옵션
+}
+
+export interface MonthlyRepayment {
+  month: number;                              // 회차 (1 ~ 총 개월수)
+  year: number;                               // 연차 (1 ~ 기간)
+  monthInYear: number;                        // 연차 내 월 (1 ~ 12)
+  isGracePeriod: boolean;                     // 거치 기간 여부
+  isEarlyRepaymentMonth?: boolean;            // 중도상환 실행 회차 여부
+  earlyRepaymentAmount?: number;              // 해당 월 추가 상환된 원금
+  principalPayment: number;                   // 납입 원금 (원)
+  interestPayment: number;                    // 납입 이자 (원)
+  totalPayment: number;                       // 월 상환액 (원금 + 이자)
+  remainingBalance: number;                   // 대출 잔액 (원)
+}
+
+export interface RepaymentCalculationResult {
+  method: RepaymentMethod;
+  totalRepayment: number;                     // 총 상환금액 (원금 + 총이자)
+  totalInterest: number;                      // 총 대출이자
+  firstMonthPayment: number;                  // 1회차 상환액
+  lastMonthPayment: number;                   // 최종 회차 상환액
+  monthlyAveragePayment: number;              // 월평균 상환액
+  maxMonthlyPayment: number;                  // 최대 월 상환액
+  minMonthlyPayment: number;                  // 최소 월 상환액
+  schedule: MonthlyRepayment[];               // 월별 상세 스케줄표
+  earlyRepayment?: EarlyRepaymentResult;      // 중도상환 적용 시 결과
+}
+
+export interface LoanComparisonSummary {
+  equalPayment: RepaymentCalculationResult;
+  equalPrincipal: RepaymentCalculationResult;
+  bullet: RepaymentCalculationResult;
+  lowestInterestMethod: RepaymentMethod;
+  interestSavingsVsEqualPayment: number;      // 원금균등 선택 시 원리금균등 대비 절약되는 이자액
+}
+```
+
 ---
 
 ## 5. 기술 스택 및 아키텍처
@@ -357,25 +503,16 @@ export interface ExchangeResult {
 - **라우팅**: [React Router v6](https://reactrouter.com/) (`react-router-dom`)
   - 클린 URL 구조: `/compound` (연복리), `/unit` (단위변환), `/exchange` (환율), `/loan` (대출이자)
   - 브라우저 히스토리(뒤로가기/앞으로가기) 네이티브 지원 및 딥링크 공유
-- **디자인 시스템 & UI**: [shadcn/ui](https://ui.shadcn.com/) (Ghost Design System 기반 표준 토큰 구조화)
-  - `ghost.design.md` 사양 전면 채택:
-    - **Eyebrow 배지 & 포인트 컬러**: Electric Lime (`#d1ff19`) - 섹션 상단 12px uppercase 볼드 아이브로우 및 뱃지 포인트로 제한적/절제된 사용
-    - **배경 및 캔버스**: Warm White (`#ffffff`), Ink Base (`#15171a`), Slate Hairlines (`#e5e7eb`, `#1f2937`)
-    - **버튼 및 인터랙션**: Near-black Pill/Rounded CTA (`#15171a`, text `#ffffff`), 6px/8px 반경, 39px 규격
-    - **카드 및 서피스**: 24px 대형 둥근 모서리(`rounded-3xl` / `24px`), 플랫 헤어라인 테두리 (`border-[#e5e7eb]`, 그림자 배제 원칙)
-  - shadcn 컴포넌트: 버튼(Button), 카드(Card), 입력창(Input), 슬라이더(Slider), 시트(Sheet/Drawer), 배지(Badge), 테이블(Table), 툴팁(Tooltip), **셀렉트(Select)**
-    - `@radix-ui/react-select` 기반 모듈형 드롭다운 컴포넌트 구축 (`src/components/ui/select.tsx`)
-    - 기존 브라우저 기본 `<select>` 태그를 shadcn `Select`로 전면 교체:
-      - 단위 변환기(`DualConverterCard.tsx`): 출발 단위(From) 및 도착 단위(To) 선택
-      - 연복리 계산기(`CalculatorForm.tsx`): 복리 주기(월복리/연복리 등) 및 과세 체계(일반/비과세/ISA 등) 선택
-    - Ghost 다크 테마 패널 및 라이트 테마 패널 양방향 완벽 호환 스타일링 지원
-- **스타일링**: Tailwind CSS + CSS 토큰 변수 (`src/index.css`)
-- **타이포그래피 & 수직 정렬 최적화**:
-  - [Pretendard Variable](https://github.com/orioncactus/pretendard) 전면 유지 (숫자 및 한글 가독성 극대화)
-  - **한글 수직 중앙(Vertical Center) 정렬 보정**: 한글 글리프 특성상 `leading-none` 적용 시 영문 대비 상단으로 치우쳐(들떠) 보이는 문제를 해결하기 위해, 버튼/배지/탭/타이틀 요소에 균형 잡힌 라인하이트(`leading-normal`, `leading-snug`) 및 정밀 베이스라인 정렬 적용
-  - **문구 작성 원칙 (컬러 이모지 배제)**: 서비스 UI 및 안내 문구 전반에 알록달록한 컬러 이모지(💡, ✨ 등)를 절대 넣지 않음.
-  - **페이지 타이틀 및 국문 네이밍 규칙**: 개별 계산기 및 도구의 국문 타이틀에는 불필요한 '스마트' 수식어를 배제하고 본래의 명칭(예: '단위 변환기', '연복리 & 자산성장 계산기')으로 통일함. 단, 세련된 글로벌 프로덕트 인상을 위해 영문 브랜드 표기(`Smart Calculator Hub`, `Smart Calculator`)는 유지함.
-- **차트**: Recharts (Ghost 테마: Near-black 베이스, Slate-400 원금선, Electric Lime / Lavender 포인트 라인)
+- **디자인 시스템**: Ghost 디자인 시스템 (`ghost.design.md` 사양 전면 채택)
+- **UI 컴포넌트 라이브러리**: shadcn/ui 기반 표준 컴포넌트 구축 (Ghost 디자인 토큰 정렬)
+  - 표준 컴포넌트: 버튼(Button), 카드(Card), 입력창(Input), 슬라이더(Slider), 탭(Tabs), 배지(Badge), 테이블(Table), 툴팁(Tooltip), 드롭다운(Select)
+  - 기존 브라우저 기본 `<select>` 태그를 Radix UI 기반 모듈형 Select로 전면 교체하여 일관된 인터랙션 확보.
+- **스타일링 프레임워크**: Tailwind CSS
+- **타이포그래피**: Pretendard Variable (고정폭 숫자 `tabular-nums` 및 한글 가독성 최적화)
+- **문구 및 표기 원칙**:
+  - 서비스 UI 및 안내 문구 전반에 컬러 이모지 배제 및 단정한 텍스트/표준 라인 아이콘 사용.
+  - 개별 계산기 및 도구의 국문 타이틀에는 불필요한 수식어를 배제하고 본래 명칭(예: '단위 변환기', '연복리 & 자산성장 계산기')으로 통일.
+- **차트 시각화**: Recharts (누적 영역형 차트, 멀티 라인 비교 차트, 대출 잔액 감소 곡선)
 - **아이콘**: Lucide React
 - **상태 관리**: React State + 커스텀 훅 + LocalStorage
 - **코드 스플리팅**: 각 계산기 모듈별 동적 임포트(`React.lazy`) 적용으로 초기 로딩 경량화 유지
@@ -495,8 +632,8 @@ export interface ExchangeResult {
 - **배경**: 연복리, 단위 변환, 환율 계산기의 대형 숫자 입력 필드에 스크린 리더가 식별할 수 있는 접근 가능한 이름이 누락되어 음성 낭독 시 "텍스트 편집창"으로만 안내됨.
 - **해결 방안**:
   - `CalculatorForm.tsx`: 초기 투자 원금, 정기 추가 적립금, 목표 투자 기간(슬라이더), 예상 수익률 인풋에 `id` 및 `aria-label` 부여.
-  - `DualConverterCard.tsx`: 출발 단위 입력 필드에 `aria-label={`${fromUnit.name} 변환할 수치 입력`}` 연결.
-  - `DualExchangeCard.tsx`: 출발 통화 입력 필드에 `aria-label={`${fromCurr.name} 환전할 금액 입력`}` 연결.
+  - `DualConverterCard.tsx`: 출발 단위 입력 필드에 `aria-label=`${fromUnit.name} 변환할 수치 입력`` 연결.
+  - `DualExchangeCard.tsx`: 출발 통화 입력 필드에 `aria-label=`${fromCurr.name} 환전할 금액 입력`` 연결.
 
 ### 10.3 아코디언 트리거의 키보드 접근성 및 ARIA 상태 표기 (WCAG 2.1.1 & 4.1.2)
 - **배경**: `DataTable.tsx`의 연도별 흐름표 헤더가 일반 `<div>`에 클릭 핸들러만 달려 있어 키보드(Tab/Enter/Space) 조작이 불가능하고 확장 여부(`aria-expanded`)를 알 수 없음.
@@ -508,309 +645,114 @@ export interface ExchangeResult {
 
 ---
 
-## 11. 폼 UI 요소 shadcn/ui 컴포넌트 전면 표준화 규격 (Form UI Component Standardization)
+## 11. 공통 폼 및 인터랙션 컴포넌트 표준 규격
 
-### 11.1 Input 컴포넌트 전면 표준화 (`src/components/ui/input.tsx`)
-- **배경**: 인라인 `<input>` 태그를 shadcn `Input`으로 통일하여 디자인 시스템의 포커스 링, 다크 모드 토큰, 기본 상태를 단일 컴포넌트 수준에서 중앙 집중 관리.
+모든 공통 폼 및 인터랙션 요소는 Ghost 디자인 시스템(`ghost.design.md`)의 절제된 미니멀리즘과 일관된 조작감을 계승하여 구현합니다.
+
+### 11.1 Input 컴포넌트 (`src/components/ui/input.tsx`)
+- **도입 목적**: 전 계산기 모듈의 입력 필드를 단일 표준 컴포넌트로 일원화하여 포커스 상태, 유효성 검증, 테마 호환성을 일관되게 관리.
 - **적용 대상**:
-  - `CalculatorForm.tsx`: 초기 투자 원금, 정기 추가 적립금, 연 예상 수익률 직접 입력창
-  - `DualConverterCard.tsx`: 출발(From) 단위 대형 수치 입력창
-  - `DualExchangeCard.tsx`: 출발(From) 통화 대형 금액 입력창
-- **구현 원칙**: `className` 오버라이딩을 통해 기존의 대형 폰트(`text-2xl sm:text-3xl`), 우측 정렬(`text-right`), 투명 배경 및 테두리 스타일을 100% 동일하게 유지.
+  - `CalculatorForm.tsx`: 초기 투자 원금, 정기 추가 적립금, 목표 투자 기간, 연 예상 수익률
+  - `LoanForm.tsx`: 대출 원금, 연이율, 중도상환 원금 및 수수료율
+  - `DualConverterCard.tsx`: 출발(From) 단위 수치 입력창
+  - `DualExchangeCard.tsx`: 출발(From) 통화 금액 입력창
+- **연복리 4대 입력 항목 공통 UI/UX 사양**:
+  - 동일한 풀 와이드 입력 필드 형태, 우측 단위 심볼(`원`, `년`, `%`) 표기.
+  - 백스페이스 입력 시 즉시 0으로 치환되지 않고 빈 값(`''`) 입력을 허용하여 재입력 편의성 제공.
+  - 포커스 아웃(`onBlur`) 시 허용 유효 범위(투자 기간 1~40년, 수익률 -5%~50%)로 자동 보정.
 
-### 11.2 Slider 컴포넌트 전면 표준화 (`src/components/ui/slider.tsx`)
-- **배경**: 브라우저별로 상이하게 렌더링되던 네이티브 `<input type="range">`를 shadcn `<Slider>`로 전면 교체.
+### 11.2 Slider 컴포넌트 (`src/components/ui/slider.tsx`)
+- **도입 목적**: 브라우저별 렌더링 파편화를 해소하고 직관적인 터치 드래그와 정밀 키보드 제어를 지원하는 슬라이더 컴포넌트 표준화.
+- **주요 인터랙션 사양**:
+  - 터치 및 마우스 드래그를 통한 부드러운 값 증감.
+  - 키보드 방향키(좌/우/상/하) 조작을 통한 1단위 정밀 조절 지원.
+  - 연계된 입력 필드와의 실시간 양방향 값 동기화.
 - **적용 대상**:
-  - `CalculatorForm.tsx`: 목표 투자 기간 슬라이더, 연 예상 수익률 슬라이더
-- **구현 원칙**:
-  - Ghost 디자인 시스템의 시그니처 Electric Lime(`#d1ff19`) 썸(Thumb) 및 활성 트랙(Range) 적용.
-  - 키보드 방향키(좌/우/상/하)를 통한 정밀한 증감 제어 및 부드러운 터치 드래그 지원.
-  - `value={[scenario.years]}` 및 `onValueChange={([val]) => ...}` 규격 연동.
+  - `CalculatorForm.tsx`: 목표 투자 기간(1~40년), 연 예상 수익률(-5%~50%)
+  - `LoanForm.tsx`: 대출 기간(1~40년)
 
-### 11.3 Button 컴포넌트 전면 표준화 (`src/components/ui/button.tsx`)
-- **배경**: 인라인 `<button>` 태그를 shadcn `Button` (`variant="outline"`, `variant="ghost"`, `variant="default"`)으로 전면 일원화하여 통일된 호버 트랜지션, 포커스 링 및 접근성 지원.
+### 11.3 Button 컴포넌트 (`src/components/ui/button.tsx`)
+- **도입 목적**: 버튼 요소의 상태 변화(기본, 호버, 활성화, 비활성화)와 키보드 탐색 접근성을 전역 일원화.
+- **인터랙션 사양**:
+  - 마우스 오버 및 터치 시 명확한 시각적 반응(명도 변화)을 일관되게 제공하여 조작감 향상.
+  - 키보드 포커스 탐색 시 가시성 높은 포커스 링 표시로 접근성 보장.
+
+### 11.4 Tabs 컴포넌트 (`src/components/ui/tabs.tsx`)
+- **도입 목적**: WAI-ARIA 표준 탭 구조(`role="tablist"`, `role="tab"`, `role="tabpanel"`)를 준수하여 스크린 리더 및 키보드 화살표 탐색을 완벽히 지원.
+- **컴포넌트 구성 및 인터랙션**:
+  - `Tabs`: 탭 상태 제어 루트
+  - `TabsList`: 탭 버튼 컨테이너 (고정 높이 강제를 배제하고 내부 버튼 높이에 맞춰 유동 적응)
+  - `TabsTrigger`: 개별 탭 버튼 (선택 시 활성화 상태 전환 및 키보드 좌우 화살표 전환 지원)
+  - `TabsContent`: 탭 패널 컨테이너
 - **적용 대상**:
-  - `LoanForm.tsx`: 상환 방식 탭 버튼, 거치 기간 프리셋 칩, 중도상환 토글
-  - `LoanComparisonCard.tsx`: 3대 상환방식 선택 카드 버튼
-  - `LoanChartDashboard.tsx`: 차트 뷰 전환 버튼 (잔액 감소 vs 누적 납입)
-  - `CalculatorForm.tsx`: 적립 주기 탭, 기간 프리셋 칩, 수익률 프리셋 칩
-  - `CompoundInterestApp.tsx`: 시뮬레이션 비교 모드 ON/OFF 버튼, 모바일 시나리오 탭 버튼
-  - `QuickAmountButtons.tsx`: 금액 증감 칩 및 정정 버튼
-  - `UnitCategoryTabs.tsx`: 단위 변환기 5대 카테고리 탭 버튼
-  - `QuickPresetChips.tsx`: 단위 변환기 생활 밀착 프리셋 칩
-  - `ExchangePresetChips.tsx`: 환율 계산기 여행/직구 프리셋 칩
-  - `DualExchangeCard.tsx`: 환전 거래 유형 탭 및 스프레드 우대율 칩, 통화 맞바꾸기(Swap) 버튼
-  - `DataTable.tsx`: 연도별 아코디언 토글 헤더 및 더보기 버튼
-  - `SidebarDrawer.tsx`: 네비게이션 메뉴 아이템 버튼
-  - `PlaceholderView.tsx`: 이전으로 돌아가기 버튼
-- **구현 원칙 및 변형(Variants) 매핑 규격**:
-  - **탭 및 세그먼트 컨트롤러**: `variant="ghost"` + 활성화 시 배경/글자색 반전(`bg-[#15171a] dark:bg-white text-white dark:text-[#112220]`) 적용
-  - **선택(Active) 버튼 호버 인터랙션 표준 (방안 A)**:
-    - 선택된 버튼(탭/칩/카드)에 마우스 오버 시 정적 고정되지 않고 미세 명도 피드백을 일관되게 제공.
-    - 라이트 모드: `bg-[#15171a] hover:bg-[#2e3238] text-white hover:text-white`
-    - 다크 모드: `dark:bg-white dark:hover:bg-slate-100 dark:text-[#112220] dark:hover:text-[#112220]` (또는 다크 배경 세그먼트의 경우 `dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-white`)
-  - **프리셋 칩 및 보조 조작 버튼**: `variant="outline"` + `size="sm"` + 간결한 패딩(`h-7 px-2.5 text-xs`) 적용
-  - **카드형 인터랙션 버튼**: `variant="ghost"` 또는 `variant="outline"` + `w-full h-auto p-3.5 text-left`로 카드 전체를 버튼화하여 키보드 Tab 및 Enter 인터랙션 보장
-  - **웹 접근성 및 포커스 링**: shadcn Button의 기본 `focus-visible:ring-2 focus-visible:ring-[#15171a] dark:focus-visible:ring-[#d1ff19]` 포커스 링을 통해 키보드 사용자 탐색성 100% 보장
-  - **디자인 보존**: `className` 오버라이드를 통해 기존 `ghost.design.md`의 라운드, 패딩, 폰트 웨이트, 모노크롬 다크모드 스타일을 100% 동일하게 유지
+  - 단위 변환기 5대 카테고리 탭 (`UnitCategoryTabs.tsx`)
+  - 환율 계산기 환전 방식 3분할 탭 (`DualExchangeCard.tsx`)
+  - 대출 시각화 차트 뷰 전환 탭 (`LoanChartDashboard.tsx`)
 
-### 11.4 공통 인터랙션 컴포넌트 추상화 규격 (`SelectableChip`, `SegmentedControl`)
-- **목적**: 2회 이상 중복되는 인터랙션 버튼의 상태 로직(Active/Hover)과 스타일을 공통 컴포넌트로 일원화하여 유지보수성 향상.
-- **신규 컴포넌트 구성**:
-  1. **`SelectableChip` (`src/components/ui/selectable-chip.tsx`)**:
-     - 금리, 기간, 거치기간, 수익률, 우대율 등 선택형 프리셋 칩 표준 컴포넌트.
-     - 주요 속성: `isSelected: boolean`, `children`, `onClick`
-  2. **`SegmentedControl` (`src/components/ui/segmented-control.tsx`)**:
-     - 상환방식, 적립주기, 환전방식, 차트 뷰 등 2~4분할 세그먼트 탭 표준 컴포넌트.
-     - 주요 속성: `options: { id, label }[]`, `value`, `onChange`
-- **적용 대상**: `LoanForm`, `LoanChartDashboard`, `DualExchangeCard`, `DualConverterCard`, `CalculatorForm`, `CompoundInterestApp`
+### 11.5 Badge 컴포넌트 (`src/components/ui/badge.tsx`)
+- **도입 목적**: 카드의 메타 정보, 상태 표시, 카테고리 태그의 시각적 위계를 정리.
+- **용도별 사양**:
+  - **헤더 서브 뱃지**: 카드 타이틀 옆에 부가 상태나 회차 정보(예: "스마트 비교", "총 360회차")를 컴팩트하게 표기.
+  - **아웃라인 뱃지**: 투명 배경을 유지하여 다크 패널 내부에서도 텍스트 가독성을 온전히 보존.
+  - **시그니처 배지**: 주요 추천 항목이나 핵심 라벨 강조에 사용.
+
+### 11.6 Select 컴포넌트 (`src/components/ui/select.tsx`)
+- **도입 목적**: 브라우저 기본 드롭다운을 모듈형 컴포넌트로 전면 교체하여 일관된 개폐 인터랙션 및 테마 호환성 제공.
+- **적용 대상**: 단위 변환기 단위 선택, 연복리 복리주기/과세유형 선택, 대출 거치기간 선택.
+
+### 11.7 공통 인터랙션 컴포넌트 (`SelectableChip`, `SegmentedControl`)
+- **`SelectableChip` (`src/components/ui/selectable-chip.tsx`)**:
+  - 금리, 기간, 거치기간, 수익률, 우대율 등 단일 선택형 프리셋 칩 표준.
+  - 연복리 예상 수익률 `-3%` 프리셋을 포함한 모든 칩에 차별 없는 동일한 선택 활성화 인터랙션 적용.
+- **`SegmentedControl` (`src/components/ui/segmented-control.tsx`)**:
+  - 상환방식, 적립주기 등 2~3분할 인라인 세그먼트 전환 컨트롤러.
 
 ---
 
-## 12. 연복리 계산기 투자 상식 및 유의사항 안내 규격 (`CompoundInfoCard`)
+## 12. 모바일 퍼스트 및 반응형 리플로우 전역 규격
 
-### 12.1 목적 및 배경
-- 환율 계산기(`ExchangeInfoCard`) 및 단위 변환기(`대한민국 부동산 및 일상 단위 안내`)와 마찬가지로, 연복리 계산기 하단에도 금융 상식 및 절세 팁을 제공하여 페이지 간 UI/UX 일관성을 완성하고 실질적인 금융 의사결정에 도움을 제공함.
+### 12.1 목적 및 설계 원칙
+- **유동적 흐름(Fluid Content) 원칙**:
+  - 텍스트와 카드를 인위적인 고정 박스에 가두지 않고 가용 공간에 따라 자연스럽게 흐르도록 구성.
+  - 컨테이너의 가용 폭에 따라 카드 배열이 3열, 2열, 1열로 자동 적응하는 유동 리플로우 전면 적용.
 
-### 12.2 핵심 콘텐츠 구성 (압축형)
-모바일 화면에서도 한눈에 파악할 수 있도록 불필요한 서술을 제거하고 핵심 요점만 간결하게 압축 제공:
-1. **72의 법칙**: 원금이 2배가 되는 시간 ≈ `72 ÷ 연수익률(%)` (예: 연 7% 시 약 10년)
-2. **복리의 마법**: 원금뿐 아니라 늘어난 이자에도 이자가 재투자되어 시간이 지날수록 자산이 기하급수적으로 증가
-3. **절세 계좌 활용**: 일반과세(15.4%) 대비 ISA(9.9% 분리과세) 등 절세 계좌 활용 시 세금 이연으로 복리 극대화
-4. **금융소득 종합과세**: 연간 이자·배당소득 합계 2,000만 원 초과 시 종합과세 합산 대상
-5. **시뮬레이션 고지**: 고정 수익률을 가정한 계산 결과이며, 실제 투자 시 원금 손실 위험 및 물가상승률(인플레이션)에 유의
-
-### 12.3 디자인 및 배치 규격
-- **배치 위치**: `CompoundInterestApp.tsx` 우측(모바일에서는 하단) 연도별 자산 흐름표(`DataTable`) 하단
-- **스타일 톤앤매너**: `p-4 rounded-2xl bg-slate-50 dark:bg-[#1e293b] border border-[#e5e7eb] dark:border-slate-800 text-xs text-[#64748b] dark:text-slate-300 shadow-2xs`
-- **시각 요소**: 상단 `Info` 아이콘(Electric Lime 포인트) + 볼드 헤더 + 구분선
-
----
-
-## 13. 대출 이자 및 상환방식 비교 계산기 규격 (`LoanApp`)
-
-### 13.1 개발 배경 및 목표
-- 대한민국 금융 소비자들이 주택담보대출, 전세대출, 신용대출 이용 시 가장 크게 고민하는 **3대 상환방식(원리금균등, 원금균등, 만기일시)** 간의 총 이자비용 격차와 월별 현금흐름 부담을 한눈에 명확하게 비교하고 시뮬레이션할 수 있도록 지원함.
-
-### 13.2 데이터 모델 (`src/types/loan.ts`)
-```typescript
-export type RepaymentMethod = 'equal_payment' | 'equal_principal' | 'bullet';
-
-export interface LoanInput {
-  loanAmount: number;         // 대출 원금 (원 단위, 예: 300,000,000)
-  annualRate: number;         // 연이율 (%, 예: 4.2)
-  loanTermYears: number;      // 대출 기간 (연 단위, 예: 30)
-  gracePeriodMonths: number;  // 거치 기간 (개월 단위, 0 = 거치 없음)
-  repaymentMethod: RepaymentMethod; // 기본 선택 상환방식
-}
-
-export interface MonthlyRepayment {
-  month: number;              // 회차 (1 ~ 총 개월수)
-  year: number;               // 연차 (1 ~ 기간)
-  monthInYear: number;        // 연차 내 월 (1 ~ 12)
-  isGracePeriod: boolean;     // 거치 기간 여부
-  principalPayment: number;   // 납입 원금 (원)
-  interestPayment: number;    // 납입 이자 (원)
-  totalPayment: number;       // 월 상환액 (원금 + 이자)
-  remainingBalance: number;   // 대출 잔액 (원)
-}
-
-export interface RepaymentCalculationResult {
-  method: RepaymentMethod;
-  totalRepayment: number;     // 총 상환금액 (원금 + 총이자)
-  totalInterest: number;      // 총 대출이자
-  firstMonthPayment: number;  // 1회차 상환액
-  lastMonthPayment: number;   // 최종 회차 상환액
-  monthlyAveragePayment: number; // 월평균 상환액
-  maxMonthlyPayment: number;  // 최대 월 상환액
-  minMonthlyPayment: number;  // 최소 월 상환액
-export interface EarlyRepaymentOption {
-  enabled: boolean;
-  afterMonths: number;        // 대출 실행 N개월 후 상환 (예: 12, 24, 36)
-  amount: number;             // 중도상환 원금
-  feeRate: number;            // 중도상환 수수료율 (%, 기본 1.2)
-}
-
-export interface EarlyRepaymentResult {
-  feeAmount: number;          // 납부할 중도상환 수수료 (3년 슬라이딩 감면 반영)
-  savedInterest: number;      // 중도상환으로 절약된 총이자
-  netBenefit: number;         // 순 절감 혜택 (절약이자 - 수수료)
-}
-
-export interface RepaymentCalculationResult {
-  method: RepaymentMethod;
-  totalRepayment: number;     // 총 상환금액 (원금 + 총이자)
-  totalInterest: number;      // 총 대출이자
-  firstMonthPayment: number;  // 1회차 상환액
-  lastMonthPayment: number;   // 최종 회차 상환액
-  monthlyAveragePayment: number; // 월평균 상환액
-  maxMonthlyPayment: number;  // 최대 월 상환액
-  minMonthlyPayment: number;  // 최소 월 상환액
-  schedule: MonthlyRepayment[]; // 월별 상세 스케줄표
-  earlyRepayment?: EarlyRepaymentResult; // 중도상환 적용 시 결과
-}
-
-export interface LoanComparisonSummary {
-  equalPayment: RepaymentCalculationResult;
-  equalPrincipal: RepaymentCalculationResult;
-  bullet: RepaymentCalculationResult;
-  lowestInterestMethod: RepaymentMethod;
-  interestSavingsVsEqualPayment: number; // 원금균등 선택 시 원리금균등 대비 절약되는 이자액
-}
-```
-
-### 13.3 금융 수학 연산 규칙 (`src/utils/loanCalculator.ts`)
-1. **월이율 산출**: $i = \frac{r}{100 \times 12}$ (연이율 $r\%$ 기준)
-2. **거치 기간 처리**: 거치 기간 $G$개월 동안은 원금 상환 $0$원, 월이자 $P \times i$만 납입. 대출 잔액 유지.
-3. **원리금균등상환 (Equal Payment)**:
-   - 상환 개월수 $M = N - G$ 동안 균등 분할 상환액 $PMT = P \times \frac{i(1+i)^M}{(1+i)^M - 1}$
-   - 매월 이자 = $\text{직전 잔액} \times i$, 매월 원금 = $PMT - \text{이자}$
-   - 마지막 $N$회차 잔액을 정확히 $0$원으로 보정 (소수점 단수 오차 제거).
-4. **원금균등상환 (Equal Principal)**:
-   - 매월 균등 원금 = $\frac{P}{M}$
-   - 매월 이자 = $\text{직전 잔액} \times i$, 매월 상환액 = 매월 균등 원금 + 매월 이자
-5. **만기일시상환 (Bullet)**:
-   - $1 \dots N-1$회차: 매월 원금 $0$원, 월이자 $P \times i$ 납입
-   - 마지막 $N$회차: 원금 전액 $P$ + 최종월 이자 일괄 상환
-6. **중도상환 수수료 및 조기상환 효과**:
-   - 수수료 감면율: 대출 실행 후 경과월수 $m$ 기준, $\text{수수료} = \text{상환금액} \times \frac{\text{수수료율}}{100} \times \frac{\max(0, 36 - m)}{36}$ (3년/36개월 경과 시 $0$원 전액 면제)
-   - 조기상환 시점 이후 대출 잔액이 즉각 차감되어 이후 잔여 개월 동안의 누적 이자 절감액 및 순 편익(절감이자 - 수수료) 자동 산출
-
-### 13.4 UI 및 사용자 경험 (Mobile-First & Ghost Design)
-- **대출 조건 입력 폼 (`LoanForm.tsx`)**:
-  - 대출 금액: 한글 단위 실시간 환산(`3억 5,000만 원`), 빠른 증감 칩(`+1,000만`, `+5,000만`, `+1억`, `정정`), shadcn `Input`
-  - 대출 금리: 0.1% 단위 증감 인풋 + 시장 대표 금리 칩(`3.2% 특판`, `3.8% 주담대`, `4.5% 전세`, `5.5% 신용`)
-  - 대출 기간: 1년 ~ 40년 슬라이더 + 빠른 칩(`1년`, `3년`, `5년`, `10년`, `20년`, `30년`, `40년`)
-  - 거치 기간: 0개월 ~ 대출기간 미만 선택 칩 및 셀렉트
-  - 상환 방식 탭: 원리금균등, 원금균등, 만기일시 3대 탭
-  - **중도상환 시뮬레이터 (선택 토글)**: 스위치 활성화 시 상환 시점(1년/2년/3년), 상환 금액, 수수료율(기본 1.2%) 입력창 노출
-- **요약 카드 (`LoanSummaryCards.tsx`)**: 총 대출원금, 총 대출이자, 총 상환금액, 1회차/마지막회차 월상환액, 월평균 상환액 및 중도상환 시 순 절약 혜택 표시
-- **3대 상환방식 동시 비교 뷰 (`LoanComparisonCard.tsx`)**:
-  - 원리금균등 vs 원금균등 vs 만기일시 총이자, 첫달/마지막달 상환액 나란히 카드 비교
-  - "원금균등 방식 선택 시 원리금균등 대비 000만 원 이자 절감" 하이라이트 안내
-- **시각화 대시보드 (`LoanChartDashboard.tsx`)**:
-  - Recharts 기반 연도별/월별 상환 누적 추이 (납입원금 vs 대출이자 영역 차트) 및 남은 대출잔액 감소 곡선
-- **월별 상환 상세 스케줄표 (`LoanScheduleTable.tsx`)**:
-  - 회차, 납입원금, 대출이자, 월상환금, 대출잔액 표 (중도상환 회차 뱃지 하이라이트)
-  - 엑셀 호환 UTF-8 BOM CSV 다운로드 기능
-- **대출 상식 및 유의사항 안내 카드 (`LoanInfoCard.tsx`)**:
-  - DSR / DTI / LTV 한 줄 핵심 요약
-  - 상환방식 선택 가이드 (소득 안정성 vs 총이자 절감)
-  - 중도상환수수료(통상 3년 경과 후 면제) 및 금리인하요구권 팁
-  - 변동금리 및 금융기관별 실제 청구액 차이 안내 고지
-- **상태 영속화**: `useLocalStorage`를 통해 마지막 입력값 자동 보관 및 헤더 초기화 연동
-
----
-
-## 14. 모바일 퍼스트 및 전 화면 반응형(Responsive) 최적화 전역 표준 규격
-
-### 14.1 목적 및 원칙
-- **유동적 흐름(Fluid Flow)과 탈(脫) 미디어 쿼리 원칙**:
-  - 텍스트를 인위적인 고정 높이(`min-h`), 강제 말줄임(`line-clamp`), 강제 한 줄(`whitespace-nowrap`) 박스에 억지로 가두지 않고, 내용물과 가용 공간에 따라 자연스럽게 흐르도록(Fluid Content) 구성합니다.
-  - 화면 전체 뷰포트 기준의 경직된 미디어 쿼리(`@media`, `md:`, `lg:`)에만 의존하지 않고, **컴포넌트가 담긴 부모 컨테이너의 실제 가용 폭을 기준으로 유연하게 적응하는 유동 그리드(Fluid Auto-fit Grid)** 및 컨테이너 인식 레이아웃을 전면 적용합니다.
-
-### 14.2 컴포넌트별 모바일 & 반응형 상세 사양
-
+### 12.2 주요 컴포넌트별 반응형 UX 사양
 1. **대출 조건 입력 폼 (`LoanForm.tsx`)**:
-   - **1024px 가용 폭 헤더 타이틀 보존**: `대출 조건 입력` 제목과 `스마트 비교` 뱃지에 `whitespace-nowrap flex items-center gap-2 shrink-0`을 적용하여 1024px 2열 레이아웃의 300px 가용 폭에서도 글자 단위(`입/력`, `비/교`)로 쪼개지지 않도록 방지.
-   - **프리셋 칩 유동 흐름 (`flex-wrap`)**: 거치 기간, 중도상환 시점, 대출 금리 칩을 인위적인 4분할(`grid-cols-4`)로 억지 압축하지 않고, 칩 내부 텍스트 길이에 맞춰 `flex flex-wrap gap-2`로 자연스럽게 흐르도록 배치하여 어떤 가용 폭에서도 텍스트가 찌그러지지 않도록 보장.
-   - **스위치 토글 인터랙션**: 마우스 오버 시 트랙 배경 가시성을 명확히 유지.
-
+   - 좁은 가용 폭에서도 헤더 타이틀이 글자 단위로 쪼개지지 않도록 정돈.
+   - 프리셋 칩들은 텍스트 길이에 맞춰 자연스럽게 다음 줄로 흐르도록 배치하여 찌그러짐 방지.
 2. **대출 요약 카드 (`LoanSummaryCards.tsx`)**:
-   - **1024px 가용 폭 대응 리플로우 (`grid-cols-1 sm:grid-cols-3 lg:grid-cols-1 xl:grid-cols-3`)**:
-     - 1024px 뷰포트에서 사이드바 오픈 시 우측 패널(약 420px)에서 3열 강제로 인해 카드가 130px로 찌그러지고 타이틀이 말줄임(`총...`)되는 현상을 해결하기 위해, 패널 폭에 맞추어 유연하게 1열 또는 유동 그리드로 리플로우되도록 구성.
-
+   - 우측 패널 가용 폭에 따라 1열 또는 유동 그리드로 자동 재배치.
 3. **3대 상환방식 동시 비교 카드 (`LoanComparisonCard.tsx`)**:
-   - **컨테이너 기반 유동 그리드 (`repeat(auto-fit, minmax(200px, 1fr))`)**:
-     - 뷰포트 기준의 경직된 `grid-cols-3`를 배제하고, 우측 패널의 실제 폭에 따라 카드가 3열, 2열, 1열로 자연스럽게 리플로우(Reflow)되는 유동 그리드 적용.
-     - 1024px 화면에서도 카드가 최소 200px 이상의 너비를 유지하여 뱃지 잘림 및 숫자 줄바꿈 쪼개짐 원천 방지.
-   - **설명 문구 가두기 제거 및 자연스러운 흐름**:
-     - 인위적인 고정 높이(`min-h-[32px]`)와 말줄임(`line-clamp-2`)을 제거하고, 텍스트가 자연스럽게 줄바꿈되며 카드 전체가 유연하게 높이를 맞추도록 구성.
-   - **하단 시맨틱 수치 영역 1열(세로) 배치**:
-     - 좁은 카드 폭에서 라벨과 금액을 좌우 2열로 억지 압축하여 금액 끝자리("원")가 잘리던 문제를 근본적으로 해결하기 위해, `<dl>` 내부의 각 항목을 **세로 1열(`flex flex-col` / 블록: 위 라벨 `<dt>`, 아래 금액 `<dd>`)**로 배치하여 9자리 큰 금액도 가로 폭 제약 없이 100% 시원하게 렌더링되도록 보장.
-
-3. **연복리 계산기 요약 지표 (`SummaryCards.tsx`)**:
-   - **하단 3단 서브 카드 (투자원금 / 순이자 / 소득세)**:
-     - 360px 화면에서 3열(`grid-cols-3`) 강제 시 긴 한글 금액(예: `1억 5,000만 원`)이 잘리거나 `truncate`되어 보이지 않는 문제 해결.
-     - 모바일 초협소 화면(390px 미만)에서는 `grid-cols-1 xs:grid-cols-3 sm:grid-cols-3` 또는 폰트 크기/단위 표시 레이아웃 가변 조정.
-
-4. **듀얼 카드 (`DualExchangeCard.tsx`, `DualConverterCard.tsx`)**:
-   - **헤더 컨트롤 영역**: 모바일(가용 폭 280px 이하)에서 드롭다운 셀렉트 트리거(`w-28 sm:w-36 lg:w-44`)와 복사 버튼, 라벨 텍스트의 가로 간격을 완벽하게 보장하여 줄바꿈이나 잘림 원천 차단.
-   - **입력 인풋 폰트**: 큰 수치 입력 시 컨테이너를 뚫고 나가지 않도록 반응형 폰트 크기(`text-xl sm:text-2xl lg:text-3xl`) 및 `tabular-nums` 적용.
+   - 가용 폭에 따라 카드가 1~3열로 자동 적응하며 최소 가독 너비 유지.
+   - 하단 수치 영역은 라벨과 금액을 상하 세로 1열로 배치하여 큰 금액도 잘림 없이 온전히 표시.
+4. **연복리 요약 카드 (`SummaryCards.tsx`)**:
+   - 최종 수령액 메인 카드를 최상단에 강조 배치하고, 하단 3단 서브 카드는 단일 모드 시 3열 / 비교 모드 시 1열 세로 배치로 화면 분할 시에도 정보 가독성 보장.
+5. **대형 듀얼 카드 (`DualExchangeCard.tsx`, `DualConverterCard.tsx`)**:
+   - 모바일 좁은 화면에서 드롭다운 셀렉트와 복사 버튼, 라벨이 겹치거나 넘치지 않도록 가변 폭 최적화.
 
 ---
 
-## 15. shadcn UI 기반 표준 탭(Tabs) 컴포넌트 표준 규격 및 전역 적용
+## 13. 금융 및 생활 상식 안내 카드 규격 (`InfoCard`)
 
-### 15.1 도입 배경 및 목적
-- 기존에는 단위 변환기(`UnitCategoryTabs.tsx`)가 네이티브 `<button>` 리스트로 개별 구현되어 있고, 환율 계산기(`DualExchangeCard.tsx`)와 대출 차트 대시보드(`LoanChartDashboard.tsx`) 등은 폼용 `SegmentedControl`을 탭 대용으로 사용하여 시맨틱 마크업(`role="tablist"`, `role="tab"`) 및 WAI-ARIA 키보드 접근성(화살표 키 탭 이동)이 파편화되어 있었습니다.
-- 이미 프로젝트에 설치된 `@radix-ui/react-tabs`를 기반으로, shadcn UI 표준을 준수하는 **`Tabs` 공통 컴포넌트 (`src/components/ui/tabs.tsx`)**를 구현하고, 단위 변환기 및 환율 계산기 등의 탭 UI를 표준 컴포넌트로 일원화하여 완성도와 접근성을 극대화합니다.
+### 13.1 목적 및 공통 설계 사양
+- 각 계산기 하단에 유용한 상식, 계산 공식, 세무 및 금융 유의사항을 압축 요약 제공하여 서비스 신뢰도와 검색엔진 SEO 가치를 동시에 확보.
+- 가독성 높은 카드 형태 배치, 단정한 텍스트 및 표준 라인 아이콘 적용, 컬러 이모지 배제.
 
-### 15.2 컴포넌트 구조 및 스타일 사양 (`src/components/ui/tabs.tsx`)
-- **컴포넌트 구성**:
-  - `Tabs`: `@radix-ui/react-tabs`의 `Root` 래퍼 (제어형 `value`/`onValueChange` 및 비제어형 `defaultValue` 지원)
-  - `TabsList`: 탭 버튼 컨테이너 (스크롤 가능 여부, `variant`, `size` 지원)
-    - `variant="default"`: 은은한 슬레이트 배경(`bg-slate-100/80 dark:bg-[#1e293b] rounded-xl border border-slate-200/80 dark:border-slate-800 p-1`)
-    - `variant="dark-solid"`: 다크 알약형 배경(`bg-[#15171a] dark:bg-slate-900 rounded-xl p-1 text-white`)
-    - `variant="slate-solid"`: 플랫 슬레이트 배경(`border border-[#e5e7eb] dark:border-slate-800 p-1`)
-    - `size="auto"`: 고정 높이 강제를 배제하고 내부 버튼 높이에 맞춰 유동적으로 감싸는 규격 (`h-auto`, 반응형 높이 충돌 방지)
-  - `TabsTrigger`: 개별 탭 버튼 (`role="tab"`)
-    - `size="auto"`: 36~37px 높이 표준 버튼 패딩 (`px-3.5 py-2 text-xs gap-2`)
-    - `data-[state=active]` 상태:
-      - `default` 변형: 활성 시 `bg-white dark:bg-slate-800 text-[#112220] dark:text-slate-100 shadow-xs`
-      - `dark-solid` 변형: 활성 시 `bg-white dark:bg-[#1e293b] text-[#112220] dark:text-[#d1ff19] shadow-xs`
-      - `slate-solid` 변형: 활성 시 `bg-[#15171a] text-white border-[#e5e7eb] dark:border-slate-700 shadow-xs`
-    - 포커스 링(`focus-visible:ring-2 focus-visible:ring-[#15171a] dark:focus-visible:ring-[#d1ff19]`) 및 키보드 좌우 화살표 탐색 지원
-  - `TabsContent`: 탭 패널 컨테이너 (`role="tabpanel"`)
-
-### 15.3 적용 대상 및 범위
-1. **단위 변환기 (`UnitCategoryTabs.tsx`)**:
-   - 커스텀 버튼 목록을 shadcn `Tabs` 및 `TabsList`, `TabsTrigger`로 마이그레이션.
-   - `size="auto"`를 적용하여 기존 원본 디자인(상하 4px 패딩, 37px 버튼 높이, 총 47px 컨테이너 높이, 1px 보더 라인)을 1픽셀의 오차도 없이 100% 동일하게 유지.
-   - 모바일 가로 스크롤(`overflow-x-auto`)을 유지하면서도 표준 WAI-ARIA 탭 접근성 및 활성 인디케이터 연동.
-2. **환율 계산기 (`DualExchangeCard.tsx`)**:
-   - 환전 방식(`매매기준율` | `현찰 살 때` | `현찰 팔 때`) 세그먼트를 shadcn `Tabs`로 마이그레이션하여 모바일 3분할 꽉 찬 탭 레이아웃 제공.
-3. **대출 시각화 대시보드 (`LoanChartDashboard.tsx`)**:
-   - 차트 유형(`대출 잔액 감소` | `누적 납입(원금/이자)`) 전환 탭을 shadcn `Tabs`로 전환.
-4. **테스트 및 검증**:
-   - `tabs.test.tsx` 단위 테스트를 작성하여 마운트, 키보드 인터랙션, 활성 상태 전환을 검증하고 기존 52개 테스트와의 회귀 검증 완료.
-
----
-
-## 16. 카드 헤더 서브 뱃지(Header Meta Badge) 공통 표준화
-
-### 16.1 문제 정의 및 도입 배경
-- 카드 헤더 타이틀 옆에 부가 상태나 메타 정보를 표시하는 뱃지들이 컴포넌트별로 인라인 스타일로 파편화되어 있음:
-  - `LoanForm.tsx` ("스마트 비교"): `text-[10px] px-1.5 py-0 h-4 border-slate-300 dark:border-slate-700 whitespace-nowrap shrink-0` (높이 16px)
-  - `LoanScheduleTable.tsx` ("총 360회차"): `text-[10px] font-bold text-slate-500 border-slate-300 dark:border-slate-700` (높이 약 22px, 패딩 및 폰트 색상 상이)
-- 동일한 카드 헤더 레벨에서 라벨의 높이, 여백, 모서리 라운드, 텍스트 색상이 제각각 렌더링되는 시각적 비대칭을 해소하고, shadcn UI `Badge` 컴포넌트의 표준 크기 변형(`size="sm"`)으로 통합하여 재사용성과 시각적 통일성을 확보합니다.
-
-### 16.2 컴포넌트 규격 사양 (`src/components/ui/badge.tsx`)
-- **`badgeVariants`의 `size` 변형 추가**:
-  - `size="default"`: `px-2 py-0.5 text-xs` (기본 뱃지 규격, 약 22px 높이)
-  - `size="sm"`: `px-1.5 py-0.5 text-[10px] font-semibold leading-tight shrink-0 whitespace-nowrap rounded-md` (헤더 메타 서브 뱃지 표준, 균형 잡힌 약 18px 높이)
-- **`variant="outline"` 스타일 정밀화**:
-  - 테두리: `border-[#e5e7eb] dark:border-slate-700` (플랫 헤어라인 일원화)
-  - 배경: `bg-slate-50/70 dark:bg-slate-800/60` (카드 본문 위에서 깔끔하게 정돈된 서피스 감각)
-  - 텍스트: `text-[#475569] dark:text-slate-300 font-semibold`
-
-### 16.3 적용 대상 및 범위
-1. **대출 조건 입력 (`LoanForm.tsx`)**:
-   - 기존의 파편화된 인라인 스타일을 제거하고 `<Badge variant="outline" size="sm">스마트 비교</Badge>`로 일원화.
-2. **월별 상환 스케줄 상세표 (`LoanScheduleTable.tsx`)**:
-   - 기존의 파편화된 인라인 스타일을 제거하고 `<Badge variant="outline" size="sm">총 {schedule.length}회차</Badge>`로 일원화.
-3. **타이틀과의 수직 정렬 규격**:
-   - `flex items-center gap-2` 내에서 타이틀 텍스트의 베이스라인 및 수직 중앙 밸런스를 완벽히 유지.
-4. **단위 테스트**:
-   - `src/components/ui/card-and-badge.test.tsx`에 `Badge`의 `size="sm"` 렌더링 검증 테스트 케이스 추가.
-
-
-
-
-
-
-
-
-
-
-
+### 13.2 모듈별 핵심 콘텐츠 요약
+1. **연복리 계산기 (`CompoundInfoCard.tsx`)**:
+   - 72의 법칙: 원금이 2배가 되는 시간 ≈ `72 ÷ 연수익률(%)` (예: 연 7% 시 약 10년)
+   - 복리의 마법: 이자에 이자가 붙어 시간이 지날수록 자산이 기하급수적으로 증식
+   - 절세 계좌 활용: 일반과세(15.4%) 대비 ISA(9.9% 분리과세) 등 세금 이연 효과
+   - 금융소득 종합과세: 연간 이자·배당소득 합계 2,000만 원 초과 시 종합과세 합산
+2. **단위 변환기 (`UnitInfoCard.tsx`)**:
+   - 넓이 상식: 국민평형 84㎡(약 25.4평)의 유래 및 1평(3.305785㎡) 기준
+   - 무게 상식: 순금 1돈(3.75g, 10돈=1냥), 고기 1근(600g, 채소 1근=400g 또는 375g)
+   - 부피 및 길이 상식: US 액량 갤런(3.785L), 1인치(2.54cm), 1척/자(30.3cm)
+3. **환율 계산기 (`ExchangeInfoCard.tsx`)**:
+   - 환전 수수료 구조: 매매기준율 vs 현찰 살때/팔때 스프레드
+   - 환전 팁: 주요 은행 모바일 앱 환전(최대 90% 우대) vs 공항 환전소(수수료 100%)
+   - 여행자 면세 한도: 기본 면세 범위 $800, 술 2병(합산 $400 이하, 2L 이하), 담배 1보루, 향수 100mL
+4. **대출 이자 계산기 (`LoanInfoCard.tsx`)**:
+   - 대출 핵심 규제 용어: DSR(총부채원리금상환비율), DTI(총부채상환비율), LTV(주택담보대출비율) 한 줄 요약
+   - 상환방식 선택 가이드: 초기 상환 부담이 적은 방식(원리금균등) vs 총 이자를 최소화하는 방식(원금균등)
+   - 중도상환수수료 및 팁: 대출 실행 3년 경과 시 수수료 전액 면제, 신용도 개선 시 금리인하요구권 적극 활용
