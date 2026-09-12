@@ -3,6 +3,18 @@
 모든 주요 변경 사항은 본 문서에 기록됩니다.
 버전 체계는 [Semantic Versioning (SemVer)](https://semver.org/)을 준수합니다.
 
+## [1.9.11] - 2026-09-12
+
+### 에이전트 확장 스킬셋 5종 설치 및 구성 (Customization)
+- **외부 공식/커뮤니티 스킬셋 도입 (`.agents/skills/`)**:
+  - `frontend-design` (`anthropics/skills`): UI/UX 차별화 및 시각적 디자인 가이드라인.
+  - `seo` (`addyosmani/web-quality-skills`): 웹 검색 엔진 최적화 및 메타데이터 가이드.
+  - `tdd` (`mattpocock/skills`): 테스트 주도 개발(TDD) 워크플로 및 검증 절차.
+  - `seo-audit` (`coreyhaines31/marketingskills`): 검색 엔진 최적화 진단 및 기술적 감사.
+  - `code-review` (`mattpocock/skills`): 코드 표준 및 명세 정합성 병렬 검토.
+- **의존성 잠금 및 버전 관리**:
+  - `skills-lock.json` 신규 생성 및 패키지 무결성 확보.
+
 ## [1.9.10] - 2026-09-12
 
 ### 에이전트 실행 프로토콜(GEMINI.md) 및 프로젝트 규칙(rules) 파일셋 구축 (Documentation & Governance)
