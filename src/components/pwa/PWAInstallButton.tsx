@@ -10,6 +10,12 @@ interface PWAInstallButtonProps {
   className?: string;
 }
 
+/**
+ * PWA 원클릭 설치 유도 버튼 컴포넌트
+ * - 헤더(Header) 및 사이드바(Sidebar) 듀얼 스타일 지원
+ * - standalone 구동 시 자동 숨김
+ * - 네이티브 설치 미지원 브라우저 클릭 시 가이드 모달 연결
+ */
 export const PWAInstallButton: React.FC<PWAInstallButtonProps> = ({
   variant = 'header',
   className = '',
@@ -27,8 +33,9 @@ export const PWAInstallButton: React.FC<PWAInstallButtonProps> = ({
         <Button
           type="button"
           variant="outline"
+          aria-label="스마트 계산기 앱 설치"
           onClick={install}
-          className={`w-full flex items-center justify-center gap-2 h-9 px-3 rounded-md bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 text-xs font-semibold text-[#112220] dark:text-slate-100 border border-[#e5e7eb] dark:border-slate-700 transition-colors ${className}`}
+          className={`w-full flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 text-xs font-semibold text-[#112220] dark:text-slate-100 border border-[#e5e7eb] dark:border-slate-700 transition-colors ${className}`}
         >
           <Download className="w-4 h-4 text-[#112220] dark:text-slate-100 shrink-0" />
           <span className="truncate">스마트 계산기 앱 설치</span>
@@ -47,6 +54,7 @@ export const PWAInstallButton: React.FC<PWAInstallButtonProps> = ({
           type="button"
           variant="outline"
           size="sm"
+          aria-label="스마트 계산기 앱 설치"
           onClick={install}
           className="hidden sm:inline-flex items-center gap-1.5 h-9 px-3 text-xs font-semibold rounded-md border-[#e5e7eb] dark:border-slate-700 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 text-[#112220] dark:text-slate-100 transition-colors"
         >

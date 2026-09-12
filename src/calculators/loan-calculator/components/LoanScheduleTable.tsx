@@ -11,6 +11,7 @@ import {
   TableHead,
   TableCell,
 } from '../../../components/ui/table';
+import { downloadCSV } from '../../../utils/csvDownloader';
 
 interface LoanScheduleTableProps {
   schedule: MonthlyRepayment[];
@@ -19,8 +20,12 @@ interface LoanScheduleTableProps {
 export const LoanScheduleTable: React.FC<LoanScheduleTableProps> = ({ schedule }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 12; // 1년(12개월) 단위 페이지네이션
-  const totalPages = Math.ceil(schedule.length / pageSize);
 
+  if (!schedule || schedule.length === 0) {
+    return null;
+  }
+
+  const totalPages = Math.ceil(schedule.length / pageSize);
   const paginatedSchedule = schedule.slice(
     (currentPage - 1) * pageSize,
     currentPage * pageSize
@@ -43,17 +48,7 @@ export const LoanScheduleTable: React.FC<LoanScheduleTableProps> = ({ schedule }
       s.remainingBalance,
     ]);
 
-    const csvContent =
-      '\uFEFF' + [headers.join(','), ...rows.map((e) => e.join(','))].join('\n');
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.setAttribute('download', `대출상환스케줄표_${new Date().toISOString().slice(0, 10)}.csv`);
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
+    downloadCSV(`대출상환스케줄표_${new Date().toISOString().slice(0, 10)}.csv`, headers, rows);
   };
 
   return (

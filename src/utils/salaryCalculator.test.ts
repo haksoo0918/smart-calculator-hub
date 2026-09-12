@@ -70,9 +70,11 @@ describe('salaryCalculator Tests', () => {
       expect(taxNoChild.incomeTax).toBeGreaterThan(taxWithChildren.incomeTax);
     });
 
-    it('지방소득세는 근로소득세의 약 10% 수준이어야 한다', () => {
+    it('지방소득세는 근로소득세의 10%를 10원 미만 절사하여 산출해야 한다', () => {
+      // 월 과세 4,000,000원 기준 근로소득세 203,620원 -> 지방소득세 20,360원 (독립 검증 수치)
       const tax = calculateMonthlyIncomeTax(4_000_000, 1, 0);
-      expect(tax.localIncomeTax).toBe(floorToTens(tax.incomeTax * 0.1));
+      expect(tax.incomeTax).toBe(203_620);
+      expect(tax.localIncomeTax).toBe(20_360);
     });
   });
 
@@ -89,24 +91,30 @@ describe('salaryCalculator Tests', () => {
 
       const result = calculateSalary(input);
 
-      // 월 세전 급여: 50,000,000 / 12 = 4,166,667원
+      // 1. 월 세전 급여 및 과세 대상 검증
+      // 50,000,000 / 12 = 4,166,667원 (원단위 반올림)
       expect(result.grossMonthlySalary).toBe(4_166_667);
       expect(result.nonTaxableMonthly).toBe(200_000);
-      // 월 과세 대상: 4,166,667 - 200,000 = 3,966,667원
+      // 4,166,667 - 200,000 = 3,966,667원
       expect(result.taxableMonthlySalary).toBe(3_966_667);
 
-      // 4대 보험 검증
-      expect(result.nationalPension).toBe(floorToTens(3_966_667 * 0.045));
-      expect(result.healthInsurance).toBe(floorToTens(3_966_667 * 0.03545));
-      expect(result.employmentInsurance).toBe(floorToTens(3_966_667 * 0.009));
+      // 2. 4대 사회보험료 독립 기댓값 검증 (국민연금, 건강, 장기요양, 고용)
+      expect(result.nationalPension).toBe(178_500);
+      expect(result.healthInsurance).toBe(140_610);
+      expect(result.longTermCare).toBe(18_200);
+      expect(result.employmentInsurance).toBe(35_700);
 
-      // 실수령액 = 세전 월급 - 총 공제액
-      expect(result.netMonthlySalary).toBe(
-        result.grossMonthlySalary - result.totalMonthlyDeduction
-      );
-      // 실수령 비율은 약 80~90% 사이여야 함
-      expect(result.takeHomeRatio).toBeGreaterThan(80);
-      expect(result.takeHomeRatio).toBeLessThan(95);
+      // 3. 근로소득세 및 지방소득세 독립 기댓값 검증
+      expect(result.incomeTax).toBe(199_100);
+      expect(result.localIncomeTax).toBe(19_910);
+
+      // 4. 총 공제액 및 실수령액 최종 검증
+      expect(result.totalMonthlyDeduction).toBe(592_020);
+      expect(result.netMonthlySalary).toBe(3_574_647);
+      expect(result.netAnnualSalary).toBe(42_895_764);
+
+      // 실수령 비율은 약 85.8%
+      expect(result.takeHomeRatio).toBe(85.8);
 
       // 공제 항목 배열이 6개 항목을 정확히 포함해야 함
       expect(result.deductionItems.length).toBe(6);

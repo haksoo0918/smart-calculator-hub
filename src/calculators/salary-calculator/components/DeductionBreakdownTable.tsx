@@ -36,22 +36,27 @@ export const DeductionBreakdownTable: React.FC<DeductionBreakdownTableProps> = (
 
   const totalAnnual = totalMonthly * 12;
 
+  // 공제 비중 포맷터 헬퍼
+  const formatRatio = (monthly: number, gross: number, itemRatio: number) => {
+    if (monthly <= 0 || gross <= 0) return '-';
+    if (isEmployee) return `${itemRatio}%`;
+    return `${((monthly / gross) * 100).toFixed(2)}%`;
+  };
+
   return (
     <div className="@container bg-white dark:bg-[#1e293b] p-5 sm:p-6 rounded-[24px] border border-[#e5e7eb] dark:border-slate-800 shadow-sm transition-colors space-y-4">
-      <div className="flex flex-col @lg:flex-row @lg:items-center justify-between gap-3 pb-3 border-b border-[#e5e7eb] dark:border-slate-800">
+      {/* 헤더: 타이틀 & 근로자/회사 탭 */}
+      <div className="flex flex-col @lg:flex-row @lg:items-center justify-between gap-3 pb-2 border-b border-[#e5e7eb] dark:border-slate-800/80">
         <div>
-          <h3 className="text-sm sm:text-base font-bold text-[#112220] dark:text-slate-100 tracking-tight whitespace-nowrap">
+          <h3 className="text-base font-bold text-[#112220] dark:text-slate-100">
             공제 항목별 세부 명세표
           </h3>
-          <p className="text-xs text-[#64748b] dark:text-slate-400 mt-0.5 break-keep">
-            {isEmployee
-              ? '월급에서 원천징수되는 4대 보험 및 세금 항목별 상세 금액입니다'
-              : '회사(사업주)가 근로자를 위해 법적으로 지원 납부하는 4대 보험 내역입니다'}
+          <p className="text-xs text-[#64748b] dark:text-slate-400 mt-0.5">
+            4대 사회보험료 및 국세청 간이세액표 기준 세금 공제액
           </p>
         </div>
 
-        {/* 근로자 부담 vs 회사 지원 탭 */}
-        <div className="w-full @lg:w-auto shrink-0">
+        <div className="w-full @lg:w-auto">
           <SegmentedControl
             value={payerMode}
             options={PAYER_OPTIONS}
@@ -63,78 +68,73 @@ export const DeductionBreakdownTable: React.FC<DeductionBreakdownTableProps> = (
         </div>
       </div>
 
-      {/* 표준 명세 테이블 */}
-      <Table className="min-w-[480px]">
-        <TableHeader>
-          <TableRow>
-            <TableHead className="whitespace-nowrap">공제 항목</TableHead>
-            <TableHead className="whitespace-nowrap">산출 기준 및 요율</TableHead>
-            <TableHead className="text-right whitespace-nowrap">월 부담액</TableHead>
-            <TableHead className="text-right whitespace-nowrap">연간 누적</TableHead>
-            <TableHead className="text-right whitespace-nowrap">비중</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {result.deductionItems.map((item) => {
-            const monthly = isEmployee
-              ? item.employeeMonthlyAmount
-              : item.employerMonthlyAmount;
+      {/* 표준 명세 테이블 래퍼 (모바일 음수 마진 -mx-5 및 엣지 투 엣지 스와이프 보장 - PRD 12.6 명세) */}
+      <div className="-mx-5 sm:mx-0 overflow-x-auto px-5 sm:px-0">
+        <Table className="min-w-[480px]">
+          <TableHeader>
+            <TableRow>
+              <TableHead className="whitespace-nowrap">공제 항목</TableHead>
+              <TableHead className="whitespace-nowrap">산출 기준 및 요율</TableHead>
+              <TableHead className="text-right whitespace-nowrap">월 부담액</TableHead>
+              <TableHead className="text-right whitespace-nowrap">연간 누적</TableHead>
+              <TableHead className="text-right whitespace-nowrap">비중</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {result.deductionItems.map((item) => {
+              const monthly = isEmployee
+                ? item.employeeMonthlyAmount
+                : item.employerMonthlyAmount;
 
-            const isTaxItem =
-              item.id === 'income_tax' || item.id === 'local_income_tax';
+              const isTaxItem =
+                item.id === 'income_tax' || item.id === 'local_income_tax';
 
-            return (
-              <TableRow key={item.id}>
-                <TableCell className="font-bold text-[#112220] dark:text-slate-100 whitespace-nowrap">
-                  {item.name}
-                </TableCell>
-                <TableCell className="text-[#64748b] dark:text-slate-400">
-                  {isTaxItem && !isEmployee
-                    ? '해당 없음 (근로자 본인 납부)'
-                    : item.description}
-                </TableCell>
-                <TableCell className="font-bold text-right text-[#112220] dark:text-slate-100 tabular-nums whitespace-nowrap">
-                  {monthly > 0 ? formatNumberWithWon(monthly) : '-'}
-                </TableCell>
-                <TableCell className="text-right text-[#64748b] dark:text-slate-400 tabular-nums whitespace-nowrap">
-                  {monthly > 0 ? formatNumberWithWon(monthly * 12) : '-'}
-                </TableCell>
-                <TableCell className="text-right text-[#64748b] dark:text-slate-400 tabular-nums whitespace-nowrap">
-                  {isEmployee && monthly > 0
-                    ? `${item.percentageOfGross}%`
-                    : !isEmployee && monthly > 0 && result.grossMonthlySalary > 0
-                    ? `${(
-                        (monthly / result.grossMonthlySalary) *
-                        100
-                      ).toFixed(2)}%`
-                    : '-'}
-                </TableCell>
-              </TableRow>
-            );
-          })}
-        </TableBody>
-        <TableFooter>
-          <TableRow>
-            <TableCell className="font-bold text-[#112220] dark:text-slate-100 whitespace-nowrap">총 합계</TableCell>
-            <TableCell className="text-[#64748b] dark:text-slate-400 font-normal">
-              {isEmployee ? '4대 보험 + 세금 합산' : '4대 보험 회사 지원 합산'}
-            </TableCell>
-            <TableCell className="text-right text-[#112220] dark:text-slate-100 tabular-nums text-sm font-bold whitespace-nowrap">
-              {formatNumberWithWon(totalMonthly)}
-            </TableCell>
-            <TableCell className="text-right text-[#64748b] dark:text-slate-400 tabular-nums text-sm font-bold whitespace-nowrap">
-              {formatNumberWithWon(totalAnnual)}
-            </TableCell>
-            <TableCell className="text-right text-[#112220] dark:text-slate-100 tabular-nums font-bold whitespace-nowrap">
-              {result.grossMonthlySalary > 0
-                ? `${((totalMonthly / result.grossMonthlySalary) * 100).toFixed(
-                    1
-                  )}%`
-                : '0%'}
-            </TableCell>
-          </TableRow>
-        </TableFooter>
-      </Table>
+              return (
+                <TableRow key={item.id}>
+                  <TableCell className="font-bold text-[#112220] dark:text-slate-100 whitespace-nowrap">
+                    {item.name}
+                  </TableCell>
+                  <TableCell className="text-[#64748b] dark:text-slate-400">
+                    {isTaxItem && !isEmployee
+                      ? '해당 없음 (근로자 본인 납부)'
+                      : item.description}
+                  </TableCell>
+                  <TableCell className="font-bold text-right text-[#112220] dark:text-slate-100 tabular-nums whitespace-nowrap">
+                    {monthly > 0 ? formatNumberWithWon(monthly) : '-'}
+                  </TableCell>
+                  <TableCell className="text-right text-[#64748b] dark:text-slate-400 tabular-nums whitespace-nowrap">
+                    {monthly > 0 ? formatNumberWithWon(monthly * 12) : '-'}
+                  </TableCell>
+                  <TableCell className="text-right text-[#64748b] dark:text-slate-400 tabular-nums whitespace-nowrap">
+                    {formatRatio(monthly, result.grossMonthlySalary, item.percentageOfGross)}
+                  </TableCell>
+                </TableRow>
+              );
+            })}
+          </TableBody>
+          <TableFooter>
+            <TableRow>
+              <TableCell className="font-bold text-[#112220] dark:text-slate-100 whitespace-nowrap">총 합계</TableCell>
+              <TableCell className="text-[#64748b] dark:text-slate-400 font-normal">
+                {isEmployee ? '4대 보험 + 세금 합산' : '4대 보험 회사 지원 합산'}
+              </TableCell>
+              <TableCell className="text-right text-[#112220] dark:text-slate-100 tabular-nums text-sm font-bold whitespace-nowrap">
+                {formatNumberWithWon(totalMonthly)}
+              </TableCell>
+              <TableCell className="text-right text-[#64748b] dark:text-slate-400 tabular-nums text-sm font-bold whitespace-nowrap">
+                {formatNumberWithWon(totalAnnual)}
+              </TableCell>
+              <TableCell className="text-right text-[#112220] dark:text-slate-100 tabular-nums font-bold whitespace-nowrap">
+                {result.grossMonthlySalary > 0
+                  ? `${((totalMonthly / result.grossMonthlySalary) * 100).toFixed(
+                      1
+                    )}%`
+                  : '0%'}
+              </TableCell>
+            </TableRow>
+          </TableFooter>
+        </Table>
+      </div>
     </div>
   );
 };

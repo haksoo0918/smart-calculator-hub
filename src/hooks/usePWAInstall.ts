@@ -5,6 +5,12 @@ interface BeforeInstallPromptEvent extends Event {
   userChoice: Promise<{ outcome: 'accepted' | 'dismissed' }>;
 }
 
+/**
+ * PWA 설치 이벤트 관리 및 설치 유도 모달 제어를 위한 커스텀 훅
+ * - standalone(기존 설치 실행) 여부 감지
+ * - beforeinstallprompt 네이티브 이벤트 캡처
+ * - 네이티브 미지원 플랫폼(iOS 등) 대응 설치 가이드 모달 상태 제공
+ */
 export function usePWAInstall() {
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const [isInstallable, setIsInstallable] = useState(false);

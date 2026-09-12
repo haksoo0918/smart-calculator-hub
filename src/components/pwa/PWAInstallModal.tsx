@@ -7,6 +7,11 @@ interface PWAInstallModalProps {
   onClose: () => void;
 }
 
+/**
+ * PWA 설치 가이드 모달 컴포넌트
+ * - 네이티브 설치 프롬프트 미지원(iOS Safari, 데스크톱 사파리 등) 환경에서 단계별 가이드 안내
+ * - iOS Safari의 '홈 화면에 추가' 및 데스크톱 브라우저 설치 방법 시각화
+ */
 export const PWAInstallModal: React.FC<PWAInstallModalProps> = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
 

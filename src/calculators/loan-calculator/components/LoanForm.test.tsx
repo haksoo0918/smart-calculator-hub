@@ -25,8 +25,8 @@ const MOCK_INPUT_ON: LoanInput = {
   },
 };
 
-describe('Seam: LoanForm Early Repayment Switch Toggle Position', () => {
-  it('스위치 버튼은 justify-start 속성을 가져 썸이 중앙에 뜨지 않고 왼쪽 끝에서 시작해야 한다', () => {
+describe('Seam: LoanForm Early Repayment Switch Toggle Interaction', () => {
+  it('OFF 상태일 때 switch는 aria-checked=false이고 중도상환 세부 설정 필드가 숨겨져야 한다', () => {
     const handleChange = vi.fn();
     const handleReset = vi.fn();
 
@@ -40,15 +40,13 @@ describe('Seam: LoanForm Early Repayment Switch Toggle Position', () => {
 
     const switchBtn = screen.getByRole('switch', { name: '중도상환 시뮬레이션 토글' });
     expect(switchBtn).toBeInTheDocument();
-    
-    // 버튼 기본의 justify-center를 덮어쓰고 justify-start로 정렬되어야 썸이 왼쪽 끝에 위치함
-    expect(switchBtn.className).toContain('justify-start');
+    expect(switchBtn).toHaveAttribute('aria-checked', 'false');
 
-    // 마우스 오버 시 트랙 배경이 투명하게 사라지지 않아야 함 (오류 1 방지)
-    expect(switchBtn.className).not.toContain('hover:bg-transparent');
+    // OFF 상태에서는 중도상환 상세 설정 영역이 노출되지 않아야 함
+    expect(screen.queryByText('중도상환 시점')).not.toBeInTheDocument();
   });
 
-  it('OFF 상태일 때 썸은 translate-x-0이어야 하고, ON 상태일 때 translate-x-5로 이동해야 한다', () => {
+  it('토글 클릭 시 상태 변경 핸들러가 호출되고, ON 상태에서는 aria-checked=true 및 상세 필드가 노출되어야 한다', () => {
     const handleChange = vi.fn();
     const handleReset = vi.fn();
 
@@ -60,10 +58,9 @@ describe('Seam: LoanForm Early Repayment Switch Toggle Position', () => {
       />
     );
 
-    let switchBtn = screen.getByRole('switch', { name: '중도상환 시뮬레이션 토글' });
-    let thumb = switchBtn.firstElementChild;
-    expect(thumb?.className).toContain('translate-x-0');
-    expect(thumb?.className).not.toContain('translate-x-5');
+    const switchBtn = screen.getByRole('switch', { name: '중도상환 시뮬레이션 토글' });
+    switchBtn.click();
+    expect(handleChange).toHaveBeenCalled();
 
     // ON 상태로 리렌더링
     rerender(
@@ -74,8 +71,8 @@ describe('Seam: LoanForm Early Repayment Switch Toggle Position', () => {
       />
     );
 
-    switchBtn = screen.getByRole('switch', { name: '중도상환 시뮬레이션 토글' });
-    thumb = switchBtn.firstElementChild;
-    expect(thumb?.className).toContain('translate-x-5');
+    const updatedSwitchBtn = screen.getByRole('switch', { name: '중도상환 시뮬레이션 토글' });
+    expect(updatedSwitchBtn).toHaveAttribute('aria-checked', 'true');
+    expect(screen.getByText('중도상환 시점')).toBeInTheDocument();
   });
 });

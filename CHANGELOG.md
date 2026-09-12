@@ -3,6 +3,23 @@
 모든 주요 변경 사항은 본 문서에 기록됩니다.
 버전 체계는 [Semantic Versioning (SemVer)](https://semver.org/)을 준수합니다.
 
+## [1.9.12] - 2026-09-12
+
+### 코드 리뷰 기반 TDD 안티패턴 개선 및 PRD 명세 정합성 확보 (Refactoring & Quality)
+- **TDD 안티패턴 척결 및 테스트 스위트 강화 (19개 파일 89개 테스트 100% 통과)**:
+  - `LoanForm.test.tsx`: CSS 클래스명 단언 제거, 시맨틱 접근성 속성(`role="switch"`, `aria-checked`) 및 하위 입력 폼 가시성 검증으로 전환.
+  - `LoanComparisonCard.test.tsx`: DOM 태그명(`DT`, `DD`) 및 CSS 클래스 단언 제거, 3대 상환방식 뱃지·금융 수치 노출 및 클릭 인터랙션 검증으로 리팩토링.
+  - `PWAInstallButton.test.tsx`: 임의 인덱스 선택자 제거, 시맨틱 네임 쿼리(`getByRole('button', { name: /앱 설치/i })`) 및 모달/프롬프트 분기 상태 검증.
+  - `salaryCalculator.test.ts` & `loanCalculator.test.ts`: 항등식 및 연산자 재계산 단언을 국세청 간이세액표 및 은행 대출 시뮬레이션 기준의 독립 기댓값(Known Ground-Truth Literals)으로 전면 교체.
+- **아키텍처 및 코드 스멜 개선 (Fowler Smells)**:
+  - `csvDownloader.ts` 신규 분리: `LoanScheduleTable.tsx`에서 CSV 생성, UTF-8 BOM 인코딩, Blob 다운로드 로직을 분리하여 관심사 분리(SRP) 및 Feature Envy 제거.
+  - `DeductionBreakdownTable.tsx`: JSX 내 인라인 비율 연산을 포맷터 헬퍼 함수로 정리하고, 모바일 엣지 투 엣지 스와이프를 위한 음수 마진(`-mx-5 sm:mx-0`) 복원.
+  - PWA 관련 훅 및 컴포넌트(`usePWAInstall`, `PWAInstallButton`, `PWAInstallModal`)에 한국어 JSDoc 주석 보강.
+- **PRD 명세 및 UI/에셋 정합성 일치**:
+  - `SidebarDrawer.tsx`: PWA 설치 버튼을 메뉴 목록 하단이자 카피라이트 푸터 상단으로 재배치하고 와이드 버튼(`w-full py-2.5 text-xs rounded-xl`) 스타일 규격화.
+  - `PRD.md`: 버전 헤더 `v1.9.12` 최신화 및 파비콘 명세(`/logo.svg`) 일치.
+  - `public/Smart Calculator Logo.svg`: 미사용 중복 파일 제거.
+
 ## [1.9.11] - 2026-09-12
 
 ### 에이전트 확장 스킬셋 5종 설치 및 구성 (Customization)

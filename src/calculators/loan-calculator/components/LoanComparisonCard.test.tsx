@@ -41,8 +41,8 @@ const MOCK_COMPARISON: LoanComparisonSummary = {
   interestSavingsVsEqualPayment: 44157623,
 };
 
-describe('Seam: LoanComparisonCard Header and Alignment', () => {
-  it('모든 비교 카드의 뱃지는 타이틀과 동일한 행에서 찌그러짐 없이 일관된 레이아웃을 가져야 한다', () => {
+describe('Seam: LoanComparisonCard Presentation and Interaction', () => {
+  it('3대 상환방식의 뱃지와 계산된 총이자 수치가 정확히 노출되어야 한다', () => {
     const handleSelect = vi.fn();
     render(
       <LoanComparisonCard
@@ -52,27 +52,39 @@ describe('Seam: LoanComparisonCard Header and Alignment', () => {
       />
     );
 
-    // 3개 뱃지 모두 렌더링 확인
+    // 1. 3대 방식 대표 뱃지 렌더링 검증
     expect(screen.getByText('가장 대중적')).toBeInTheDocument();
     expect(screen.getByText('최저 총이자')).toBeInTheDocument();
     expect(screen.getByText('초기부담 최소')).toBeInTheDocument();
 
-    // 설명 문구 한글 단어 보존(break-keep) 확인
-    const descElements = screen.getAllByText(/상환액이 일정하여|이자가 줄어들어|이자만 납입하므로/);
-    expect(descElements).toHaveLength(3);
-    descElements.forEach((el) => {
-      expect(el).toHaveClass('break-keep');
-    });
+    // 2. 방식별 설명 문구 노출 검증
+    expect(screen.getByText(/상환액이 일정하여 자금 계획 수립/)).toBeInTheDocument();
+    expect(screen.getByText(/이자가 줄어들어.*총이자 부담이 가장 적음/)).toBeInTheDocument();
+    expect(screen.getByText(/이자만 납입하므로 초기 현금흐름/)).toBeInTheDocument();
 
-    // 선택 체크 아이콘이 제거되어 타이틀 대칭성이 보존되었는지 확인 (방법 1)
-    expect(screen.queryByTestId('check-circle')).toBeNull();
+    // 3. 계산된 금융 수치 노출 검증
+    expect(screen.getByText(/247,220,123/)).toBeInTheDocument();
+    expect(screen.getByText(/203,062,500/)).toBeInTheDocument();
+    expect(screen.getByText(/405,000,000/)).toBeInTheDocument();
 
-    // 시맨틱 dl dt dd 마크업 확인 (방법 3)
-    const dtElements = screen.getAllByText('총 대출이자');
-    expect(dtElements).toHaveLength(3);
-    expect(dtElements[0].tagName).toBe('DT');
-    const ddElements = screen.getAllByText(/247,220,123원|203,062,500원|405,000,000원/);
-    expect(ddElements).toHaveLength(3);
-    expect(ddElements[0].tagName).toBe('DD');
+    // 4. 최저 이자 추천 배너 안내 노출 검증
+    expect(screen.getByText(/원금균등 선택 시 약.*절약/)).toBeInTheDocument();
+  });
+
+  it('다른 상환방식 카드를 클릭하면 해당 방식 ID와 함께 onSelectMethod가 호출되어야 한다', () => {
+    const handleSelect = vi.fn();
+    render(
+      <LoanComparisonCard
+        comparison={MOCK_COMPARISON}
+        activeMethod="equal_payment"
+        onSelectMethod={handleSelect}
+      />
+    );
+
+    // 원금균등 카드의 버튼 선택 및 클릭
+    const principalBtn = screen.getByText('원금균등').closest('button');
+    expect(principalBtn).not.toBeNull();
+    principalBtn?.click();
+    expect(handleSelect).toHaveBeenCalledWith('equal_principal');
   });
 });

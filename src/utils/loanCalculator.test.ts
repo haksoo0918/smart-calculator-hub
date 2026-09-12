@@ -44,7 +44,12 @@ describe('loanCalculator Tests', () => {
       expect(result.schedule.length).toBe(120);
       const last = result.schedule[result.schedule.length - 1];
       expect(last.remainingBalance).toBe(0);
-      expect(result.totalRepayment).toBe(result.totalInterest + baseInput.loanAmount);
+
+      // 금융 시뮬레이션 독립 기댓값 검증 (수식 복제 항등식 제거)
+      expect(result.totalInterest).toBe(25_792_994);
+      expect(result.totalRepayment).toBe(145_792_994);
+      expect(result.firstMonthPayment).toBe(1_214_942);
+
       // 120회차 동안 매월 상환액이 균등하게 유지되는지 (마지막 회차 원단위 절사/단수 보정 오차 100원 미만)
       expect(Math.abs(result.firstMonthPayment - result.lastMonthPayment)).toBeLessThan(100);
       expect(result.firstMonthPayment).toBe(result.schedule[1].totalPayment);
@@ -84,8 +89,9 @@ describe('loanCalculator Tests', () => {
       // 마지막 회차에는 원금 전액 1억2천 납입 및 잔액 0원
       expect(bulletResult.schedule[119].principalPayment).toBe(baseInput.loanAmount);
       expect(bulletResult.schedule[119].remainingBalance).toBe(0);
-      // 만기일시의 총이자가 3가지 중 가장 커야 함
-      expect(bulletResult.totalInterest).toBe(Math.round(baseInput.loanAmount * 0.04 * 10));
+      // 만기일시의 총이자가 3가지 중 가장 큼 (독립 기댓값 검증: 1억2천 * 4% * 10년 = 4,800만 원)
+      expect(bulletResult.totalInterest).toBe(48_000_000);
+      expect(bulletResult.totalRepayment).toBe(168_000_000);
     });
 
     it('거치 기간(gracePeriodMonths) 동안은 이자만 납입되어야 한다', () => {
