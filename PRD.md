@@ -1,6 +1,6 @@
 # [PRD] 모바일 우선 스마트 멀티 계산기 플랫폼 (Smart Calculator Hub)
 
-> **버전**: v1.9.6  
+> **버전**: v1.9.7  
 > **최종 갱신일**: 2026-09-12  
 > **제작 및 브랜딩**: © sosoFactory  
 > **기본 원칙**: Ghost 디자인 시스템 원칙 준수, 전역 프리텐다드(Pretendard Variable) 단일 폰트 원칙, 모바일 퍼스트(Mobile-First), 일관된 UI/UX, 100% 오프라인 동작(PWA), WCAG 웹 접근성 준수
@@ -722,6 +722,32 @@ export interface SalaryCalculationResult {
   - `apple-mobile-web-app-title`: `스마트 계산기`
   - `apple-touch-icon`: 192x192 PNG 포맷(`/pwa-192x192.png`) 지정하여 iOS 사파리 홈 화면 추가 시 선명한 앱 아이콘 제공.
 
+### 8.2 PWA 인앱 설치 버튼 규격 (`PWAInstallButton` & `usePWAInstall`)
+- **도입 목적**:
+  - 브라우저 기본 설치 팝업에 의존하지 않고, 사용자가 계산기 이용 중 언제든 원클릭으로 홈 화면이나 데스크톱에 앱을 설치할 수 있도록 접근성 제공.
+- **인터랙션 및 동작 원칙**:
+  - 브라우저의 `beforeinstallprompt` 이벤트를 가로채어 안전하게 보관(`deferredPrompt`).
+  - 설치 가능 상태(`isInstallable === true`)일 때만 UI에 버튼이 나타나며, 클릭 시 네이티브 설치 확인 대화상자(`prompt()`)를 즉시 실행.
+  - 설치 완료(`appinstalled` 이벤트 발생) 또는 이미 설치되어 실행 중인 독립 실행 모드(`display-mode: standalone`)에서는 버튼을 자동 숨김 처리하여 불필요한 시각적 잡음 배제.
+- **배치 위치 (헤더 & 사이드바 듀얼 지원)**:
+  1. **상단 글로벌 헤더 (`GlobalHeader`)**:
+     - 테마 전환 스위치 좌측에 배치.
+     - 데스크톱: 다운로드 아이콘(`Download`) + "앱 설치" 텍스트 (`h-9 px-3 text-xs`).
+     - 모바일: 화면 가용 폭을 고려하여 다운로드 아이콘 단독 툴팁 버튼 (`h-9 w-9 p-0`).
+  2. **사이드바 및 모바일 드로어 (`SidebarDrawer`)**:
+     - 메뉴 목록 하단, 카피라이트 푸터 상단에 와이드 버튼(`w-full py-2 text-xs rounded-xl`) 형태로 배치하여 모바일 메뉴 탐색 시에도 즉시 설치 유도.
+
+### 8.3 PWA 신규 버전 업데이트 알림 및 자동 갱신 규격 (TODO 4.2)
+- **도입 목적**:
+  - 서비스 워커가 백그라운드에서 신규 배포 코드를 내려받은 후 대기(`waiting`) 상태에 머물 때 발생하는 브라우저 캐시 불일치 문제를 방지하고, 최신 계산 로직과 UI를 즉시 제공.
+- **기술 스펙 및 인터랙션**:
+  - `vite-plugin-pwa/react`의 `useRegisterSW` 훅을 연동하여 `needRefresh` 상태 실시간 감지.
+  - 새 버전 감지 시 **shadcn/ui Toast**를 통해 화면 하단에 플로팅 알림 배너 자동 노출:
+    - 타이틀: *"새로운 버전이 준비되었습니다"*
+    - 설명: *"최신 계산 기능과 최적화가 적용되었습니다."*
+    - 액션 버튼: **[지금 업데이트]** (`updateServiceWorker(true)` 호출하여 새 서비스 워커 활성화 및 즉시 리로드)
+    - 닫기 버튼: 사용자가 작업 중단 없이 현재 계산을 이어갈 수 있도록 배너 닫기 지원.
+
 ---
 
 ## 9. 품질 안정화 및 환경 표준화 규격 (Quality & Environment Standardization)
@@ -850,6 +876,14 @@ export interface SalaryCalculationResult {
   - `SalaryForm.tsx`: 세전 급여 금액 입력 필드 ('원')
   - `LoanForm.tsx`: 대출 원금 ('원'), 연 대출 금리 ('%')
   - `CalculatorForm.tsx`: 초기 투자 원금 ('원'), 정기 추가 적립금 ('원')
+
+### 11.9 shadcn/ui Toast 컴포넌트 표준 규격 (`toast.tsx`, `toaster.tsx`, `use-toast.ts`)
+- **도입 목적**:
+  - `@radix-ui/react-toast` 기반 shadcn/ui 표준 토스트 아키텍처를 도입하여 시스템 알림, PWA 버전 업데이트, 향후 클립보드 복사 피드백 등에 일관된 피드백 UX 제공.
+- **주요 UI/UX 사양**:
+  - **위치 및 애니메이션**: 화면 우하단(모바일: 하단 중앙), 부드러운 슬라이드 인/아웃 트랜지션.
+  - **Ghost 디자인 시스템 호환**: 다크 모노크롬 베이스(`bg-[#15171a] dark:bg-slate-900`), 시그니처 쉐도우(`shadow-xl`), 테두리(`border border-[#e5e7eb] dark:border-slate-800`), 액션 버튼에 Electric Lime 포인트 또는 반전 버튼 적용.
+  - **웹 접근성(WCAG)**: WAI-ARIA `role="status"` 및 `aria-live="polite"` 준수.
 
 ---
 

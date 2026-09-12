@@ -3,6 +3,25 @@
 모든 주요 변경 사항은 본 문서에 기록됩니다.
 버전 체계는 [Semantic Versioning (SemVer)](https://semver.org/)을 준수합니다.
 
+## [1.9.7] - 2026-09-12
+
+### 신규 브랜드 로고 적용, PWA 원클릭 설치 버튼 및 shadcn/ui 업데이트 알림 토스트 구축 (Feature)
+- **사용자 제공 신규 브랜드 로고 벡터/래스터 전면 적용**:
+  - `public/logo.svg`를 파비콘 및 사이드바 헤더 로고로 공식 연동.
+  - 고품질 PWA 아이콘(`pwa-192x192.svg`, `pwa-512x512.svg`, `pwa-192x192.png`, `pwa-512x512.png`)을 신규 로고 기반으로 재생성하여 홈 화면 추가 및 설치 시 선명한 앱 아이콘 제공.
+  - 사이드바/모바일 드로어 상단 브랜드 로고 영역을 신규 로고 이미지로 교체.
+- **PWA 인앱 원클릭 설치 버튼 (`PWAInstallButton`, `usePWAInstall`)**:
+  - `beforeinstallprompt` 이벤트를 가로채어 설치 가능한 브라우저(크롬, 엣지, 안드로이드)에서만 지능적으로 노출되는 설치 훅 및 컴포넌트 신설.
+  - 글로벌 헤더(`GlobalHeader`): 테마 토글 좌측에 데스크톱(아이콘+텍스트) 및 모바일(아이콘 툴팁) 설치 버튼 배치.
+  - 사이드바/드로어(`SidebarDrawer`): 카피라이트 푸터 상단에 `[스마트 계산기 앱 설치]` 와이드 버튼 배치.
+  - 이미 설치된 환경(`standalone` 모드) 및 미지원 브라우저에서는 자동 숨김 처리.
+- **PWA 신규 버전 알림 shadcn/ui Toast 구축 (`PWAUpdateToast` - TODO 4.2)**:
+  - `@radix-ui/react-toast` 기반 shadcn/ui Toast 컴포넌트(`toast.tsx`, `toaster.tsx`, `use-toast.ts`) 신규 구축.
+  - 서비스 워커 대기(`needRefresh`) 상태 감지 시 화면 하단에 *"새로운 버전이 준비되었습니다"* Ghost 스타일 알림 토스트 자동 팝업 및 **[지금 업데이트]** 원클릭 즉각 새로고침 지원.
+- **테스트 및 문서 동기화**:
+  - `toast.test.tsx`, `PWAInstallButton.test.tsx` 단위 테스트 4개 신설 (전체 19개 파일 88개 테스트 100% 통과).
+  - `PRD.md` Section 8.2, 8.3, 11.9 명세 반영, `TODO.md` 4.2 완료 갱신, `package.json` 버전 `v1.9.7` 동기화.
+
 ## [1.9.6] - 2026-09-12
 
 ### PWA 표준 규격 강화 및 정적 자산·아이콘·테마 정합성 보완 (Fix & Feature)

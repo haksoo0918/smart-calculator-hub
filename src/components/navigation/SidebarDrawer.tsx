@@ -19,6 +19,7 @@ import { Sheet, SheetContent, SheetTitle } from '../ui/sheet';
 import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
 import { siteConfig } from '../../config/site';
+import { PWAInstallButton } from '../pwa/PWAInstallButton';
 
 interface SidebarDrawerProps {
   activeId: CalculatorId;
@@ -62,8 +63,8 @@ export const SidebarDrawer: React.FC<SidebarDrawerProps> = ({
       {/* 헤더 로고 영역 (h-16 고정 및 수직 중앙 정렬 완벽 보정) */}
       <div className="h-16 px-4 border-b border-[#e5e7eb] dark:border-slate-800 flex items-center shrink-0">
         <div className="flex items-center gap-2.5 min-w-0">
-          <div className="w-9 h-9 rounded-md bg-[#15171a] dark:bg-slate-800 border dark:border-slate-700 text-white flex items-center justify-center shrink-0">
-            <Calculator className="w-5 h-5 text-white dark:text-[#d1ff19]" />
+          <div className="w-9 h-9 rounded-xl overflow-hidden flex items-center justify-center shrink-0 shadow-sm border border-[#e5e7eb] dark:border-slate-800 bg-slate-50 dark:bg-slate-900/60 p-1">
+            <img src="/logo.svg" alt="스마트 계산기 허브 로고" className="w-full h-full object-contain" />
           </div>
           <div className="flex flex-col justify-center min-w-0">
             <span className="font-bold text-[15px] tracking-tight text-[#112220] dark:text-slate-100 block leading-snug truncate pt-[1px]">
@@ -138,8 +139,9 @@ export const SidebarDrawer: React.FC<SidebarDrawerProps> = ({
         })}
       </nav>
 
-      {/* 하단 버전 및 카피라이트 푸터 */}
-      <footer className="p-3 border-t border-[#e5e7eb] dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/40 text-center">
+      {/* 하단 버전 및 카피라이트 푸터 (PWA 설치 버튼 포함) */}
+      <footer className="p-3 border-t border-[#e5e7eb] dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/40 text-center space-y-2.5">
+        <PWAInstallButton variant="sidebar" />
         <p className="text-[11px] text-[#94a3b8] dark:text-slate-500 font-medium">
           {siteConfig.copyright} • {siteConfig.shortName} v{siteConfig.version}
         </p>

@@ -9,6 +9,7 @@ import {
   TooltipTrigger,
 } from '../ui/tooltip';
 import { ThemeToggle } from './ThemeToggle';
+import { PWAInstallButton } from '../pwa/PWAInstallButton';
 import { siteConfig } from '../../config/site';
 
 interface GlobalHeaderProps {
@@ -65,9 +66,10 @@ export const GlobalHeader: React.FC<GlobalHeaderProps> = ({
           </div>
         </div>
 
-        {/* 우측: 커스텀 액션 및 테마 토글 스위치 */}
-        <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+        {/* 우측: 커스텀 액션, PWA 앱 설치 버튼 및 테마 토글 스위치 */}
+        <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
           {headerActions}
+          <PWAInstallButton variant="header" />
           <ThemeToggle />
         </div>
       </div>

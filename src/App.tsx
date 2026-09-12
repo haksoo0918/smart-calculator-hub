@@ -6,6 +6,8 @@ import { GlobalHeader } from './components/navigation/GlobalHeader';
 import { PlaceholderView } from './components/common/PlaceholderView';
 import { TooltipProvider } from './components/ui/tooltip';
 import { ThemeProvider } from './context/ThemeContext';
+import { Toaster } from './components/ui/toaster';
+import { PWAUpdateToast } from './components/pwa/PWAUpdateToast';
 
 const CompoundInterestApp = lazy(() =>
   import('./calculators/compound-interest/CompoundInterestApp').then((m) => ({ default: m.CompoundInterestApp }))
@@ -103,6 +105,8 @@ export const App: React.FC = () => {
           </div>
         </main>
       </div>
+      <PWAUpdateToast />
+      <Toaster />
     </div>
       </TooltipProvider>
     </ThemeProvider>
