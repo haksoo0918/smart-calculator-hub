@@ -32,7 +32,6 @@ export const CALCULATORS_LIST: CalculatorItem[] = [
     shortName: '연복리 계산기',
     description: '적립식 복리, 세금 공제, 하락장 손실, 시나리오 A/B 비교',
     category: 'finance',
-    badge: '인기',
     status: 'active',
   },
   {
@@ -41,7 +40,6 @@ export const CALCULATORS_LIST: CalculatorItem[] = [
     shortName: '단위 변환기',
     description: '아파트 평(坪)↔㎡, 길이, 무게, 부피, 온도 실시간 멀티 변환',
     category: 'lifestyle',
-    badge: 'NEW',
     status: 'active',
   },
   {
@@ -50,7 +48,6 @@ export const CALCULATORS_LIST: CalculatorItem[] = [
     shortName: '환율 계산기',
     description: '주요 통화(USD, JPY, EUR 등) 환산 및 은행 우대율 시뮬레이션',
     category: 'global',
-    badge: 'NEW',
     status: 'active',
   },
   {
@@ -59,7 +56,6 @@ export const CALCULATORS_LIST: CalculatorItem[] = [
     shortName: '대출이자 계산기',
     description: '원리금균등 vs 원금균등 vs 만기일시 3대 상환방식 한눈에 비교',
     category: 'finance',
-    badge: 'NEW',
     status: 'active',
   },
   {
@@ -68,7 +64,6 @@ export const CALCULATORS_LIST: CalculatorItem[] = [
     shortName: '연봉 계산기',
     description: '2026년 4대 보험 및 간이세액표 기반 월/연 실수령액 & 세부 공제',
     category: 'finance',
-    badge: 'NEW',
     status: 'active',
   },
   {
@@ -77,7 +72,6 @@ export const CALCULATORS_LIST: CalculatorItem[] = [
     shortName: '배당금 계산기',
     description: '미국/한국 배당주 월별 현금흐름 및 세후 실수령액 계산',
     category: 'finance',
-    badge: '추천',
     status: 'coming-soon',
   },
   {

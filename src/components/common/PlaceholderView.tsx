@@ -20,7 +20,7 @@ export const PlaceholderView: React.FC<PlaceholderViewProps> = ({
 
       <div className="inline-block mb-3">
         <span className="text-[11px] font-bold px-2 py-0.5 rounded-sm bg-[#d1ff19] text-[#112220] uppercase tracking-widest">
-          {calculator.badge || 'COMING SOON'}
+          COMING SOON
         </span>
       </div>
 

@@ -2,7 +2,6 @@ import React from 'react';
 import { CalculatorItem } from '../../types/navigation';
 import { Menu } from 'lucide-react';
 import { Button } from '../ui/button';
-import { Badge } from '../ui/badge';
 import {
   Tooltip,
   TooltipContent,
@@ -53,15 +52,10 @@ export const GlobalHeader: React.FC<GlobalHeaderProps> = ({
               <span className="pt-[0.5px] truncate">{siteConfig.nameEn}</span>
             </div>
 
-            <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
+            <div className="flex items-center min-w-0">
               <h1 className="text-sm sm:text-base md:text-lg font-bold text-[#112220] dark:text-slate-100 truncate tracking-tight leading-tight">
                 {currentCalculator.name}
               </h1>
-              {currentCalculator.badge && (
-                <Badge variant={currentCalculator.badge === 'NEW' ? 'eyebrow' : 'default'} className="text-[10px] px-1.5 py-0 shrink-0">
-                  {currentCalculator.badge}
-                </Badge>
-              )}
             </div>
           </div>
         </div>

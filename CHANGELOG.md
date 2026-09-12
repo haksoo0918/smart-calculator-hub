@@ -3,6 +3,17 @@
 모든 주요 변경 사항은 본 문서에 기록됩니다.
 버전 체계는 [Semantic Versioning (SemVer)](https://semver.org/)을 준수합니다.
 
+## [1.9.13] - 2026-09-12
+
+### 네비게이션 및 헤더 타이틀 라벨(NEW, 인기 등) 전면 제거 (UI/UX Refactoring)
+- **미니멀 네비게이션 및 타이틀 표준 확립**:
+  - 좌측 사이드바 및 모바일 드로어(`SidebarDrawer`)의 메뉴 항목 우측 뱃지(`NEW`, `인기`, `추천`) 전면 제거.
+  - 상단 글로벌 헤더(`GlobalHeader`)의 페이지 타이틀(`h1`) 옆 뱃지 전면 제거 및 미사용 컴포넌트 import 정리.
+  - 네비게이션 데이터 모델(`navigation.ts`) 내 `CALCULATORS_LIST`의 `badge` 속성 일괄 제거.
+  - 미출시 준비 중 페이지(`PlaceholderView`)의 상태 뱃지를 고정 텍스트 `'COMING SOON'`으로 통일.
+- **문서 동기화**:
+  - `PRD.md` Section 2.1에 미니멀 네비게이션 및 타이틀 원칙 명문화 및 버전 `v1.9.13` 갱신.
+
 ## [1.9.12] - 2026-09-12
 
 ### 코드 리뷰 기반 TDD 안티패턴 개선 및 PRD 명세 정합성 확보 (Refactoring & Quality)

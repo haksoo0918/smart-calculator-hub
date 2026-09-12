@@ -16,7 +16,6 @@ import {
   Wallet,
 } from 'lucide-react';
 import { Sheet, SheetContent, SheetTitle } from '../ui/sheet';
-import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
 import { siteConfig } from '../../config/site';
 import { PWAInstallButton } from '../pwa/PWAInstallButton';
@@ -116,21 +115,6 @@ export const SidebarDrawer: React.FC<SidebarDrawerProps> = ({
                         {item.shortName}
                       </span>
                     </div>
-
-                    {item.badge && (
-                      <Badge
-                        variant={
-                          item.badge === 'NEW'
-                            ? 'eyebrow'
-                            : item.badge === '추천'
-                            ? 'default'
-                            : 'secondary'
-                        }
-                        className="text-[10px] px-1.5 py-0 shrink-0 ml-1.5"
-                      >
-                        {item.badge}
-                      </Badge>
-                    )}
                   </Button>
                 );
               })}
