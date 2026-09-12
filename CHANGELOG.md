@@ -3,6 +3,19 @@
 모든 주요 변경 사항은 본 문서에 기록됩니다.
 버전 체계는 [Semantic Versioning (SemVer)](https://semver.org/)을 준수합니다.
 
+## [1.9.9] - 2026-09-12
+
+### 전역 데이터 테이블 컴포넌트 표준화 및 Ghost 디자인 시스템 정합성 확보 (UI/UX Refactoring)
+- **공통 테이블 컴포넌트(`ui/table.tsx`) 기준 정립 (SSOT)**:
+  - 헤더(`bg-slate-50/80 dark:bg-slate-900/60`, `h-10 px-3.5`), 본문 셀 패딩(`py-2.5 px-3.5`), 구분선(`border-[#e5e7eb]/80 dark:border-slate-800/80`), 호버 음영 규격화.
+  - 푸터(`TableFooter`)를 표준 시맨틱 요소(`border-t-2 border-[#e5e7eb] dark:border-slate-700 bg-slate-50/90 dark:bg-slate-900/70`)로 통일.
+- **계산기별 테이블 전면 통일**:
+  - **대출이자 계산기 (`LoanScheduleTable`)**: raw `<table>` 제거 ➔ 공통 `<Table>` 컴포넌트로 전면 교체, 수치 컬럼 `tabular-nums` 적용.
+  - **연봉 실수령액 계산기 (`DeductionBreakdownTable`)**: raw `<table>` 제거 ➔ 공통 `<Table>`, `<TableFooter>`로 전면 교체, 일관된 패딩 적용.
+  - **연복리 계산기 (`DataTable`)**: 수치 셀 `tabular-nums` 및 줄바꿈 방지 적용.
+- **문서 동기화**:
+  - `PRD.md` Section 2.3 및 2.4에 전역 테이블 컴포넌트 표준화 원칙 공식 반영.
+
 ## [1.9.8] - 2026-09-12
 
 ### PWA 인앱 설치 버튼 상시 노출 및 플랫폼별 스마트 설치 가이드 모달 구축 (UX Enhancement)

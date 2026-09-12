@@ -111,6 +111,9 @@
   - **고정폭 숫자(`tabular-nums`) 결합**: 금액, 환율, 변환 수치 등 모든 금융/측정 데이터에 Pretendard의 고정폭 숫자 속성을 적용하여 수치 변경 시 자릿수 흔들림 없는 완벽한 가독성 보장.
 - **숫자 판독성 강화**: 금액, 환율, 변환 수치 등 모든 금융/측정 데이터에 고정폭 숫자(Tabular Numbers)를 적용하여 수치 변동 시 자리 흔들림 방지.
 - **컬러 이모지 전면 배제**: UI 레이아웃 및 팁 안내 문구에 알록달록한 컬러 이모지를 넣지 않고, 단정한 텍스트 및 표준 라인 아이콘(Lucide React)으로 전문적이고 신뢰감 있는 톤앤매너 유지.
+- **전역 테이블 컴포넌트 표준화 (`ui/table.tsx`)**:
+  - 모든 계산기의 상세 표(복리 연도별 흐름표, 대출 상환 스케줄표, 연봉 공제 명세표 등)는 `src/components/ui/table.tsx` 공통 컴포넌트(Table, TableHeader, TableBody, TableFooter, TableRow, TableHead, TableCell)를 단일 진실 공급원(SSOT)으로 사용.
+  - 헤더(`bg-slate-50/80 dark:bg-slate-900/60`, `h-10 px-3.5`), 셀 패딩(`py-2.5 px-3.5`), 구분선(`border-[#e5e7eb] dark:border-slate-800`), 호버 음영, 고정폭 숫자(`tabular-nums`)를 전역 단일 규격으로 강제 적용.
 - **입력 유효성 실시간 피드백**: 잘못된 수치 입력이나 음수/범위 초과 시 사용자 입력을 즉시 보정하거나 직관적으로 안내.
 
 ### 2.4 모듈형 컴포넌트 아키텍처
@@ -118,9 +121,9 @@
 src/
 ├── calculators/
 │   ├── loan-calculator/             # 대출이자 & 상환방식 비교 모듈
-│   │   ├── components/              # LoanForm, LoanComparisonCard, LoanChartDashboard 등
+│   │   ├── components/              # LoanForm, LoanComparisonCard, LoanScheduleTable 등
 │   │   └── LoanApp.tsx              # 대출 계산기 메인 뷰
-│   └── salary-calculator/           # 연봉 실수령액 계산 모듈 (신규 기획)
+│   └── salary-calculator/           # 연봉 실수령액 계산 모듈
 │       ├── components/              # SalaryForm, SalarySummaryCards, DeductionBreakdownTable 등
 │       └── SalaryApp.tsx            # 연봉 계산기 메인 뷰
 ├── components/
@@ -132,6 +135,7 @@ src/
 │   │   ├── segmented-control.tsx    # SegmentedControl (세그먼트 탭)
 │   │   ├── select.tsx               # Radix Select 기반 드롭다운
 │   │   ├── slider.tsx               # Radix Slider (정밀 슬라이더 제어)
+│   │   ├── table.tsx                # Table (전역 표준 데이터 테이블 SSOT)
 │   │   ├── tabs.tsx                 # Radix Tabs 기반 표준 WAI-ARIA 탭
 │   │   └── tooltip.tsx              # 툴팁 안내
 │   ├── CalculatorForm.tsx           # 연복리 입력 폼 (표준 풀 와이드 인풋, 프리셋 4개화)

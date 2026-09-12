@@ -139,22 +139,22 @@ export const DataTable: React.FC<DataTableProps> = ({
             <TableBody>
               {result.breakdown.map((row) => (
                 <TableRow key={row.year}>
-                  <TableCell className="font-bold text-center text-slate-900 dark:text-slate-100 bg-slate-50/40 dark:bg-slate-900/40">
+                  <TableCell className="font-bold text-center text-slate-900 dark:text-slate-100 bg-slate-50/40 dark:bg-slate-900/40 whitespace-nowrap tabular-nums">
                     {row.year}년
                   </TableCell>
-                  <TableCell className="text-right text-slate-600 dark:text-slate-300">
+                  <TableCell className="text-right text-slate-600 dark:text-slate-300 whitespace-nowrap tabular-nums">
                     {formatCurrency(row.totalPrincipal)}
                   </TableCell>
-                  <TableCell className="text-right text-slate-500 dark:text-slate-400">
+                  <TableCell className="text-right text-slate-500 dark:text-slate-400 whitespace-nowrap tabular-nums">
                     +{formatCurrency(row.grossInterestYear)}
                   </TableCell>
-                  <TableCell className="text-right font-semibold text-emerald-600 dark:text-emerald-400">
+                  <TableCell className="text-right font-semibold text-emerald-600 dark:text-emerald-400 whitespace-nowrap tabular-nums">
                     +{formatCurrency(row.netInterestTotal)}
                   </TableCell>
-                  <TableCell className="text-right font-bold text-slate-900 dark:text-slate-100">
+                  <TableCell className="text-right font-bold text-slate-900 dark:text-slate-100 whitespace-nowrap tabular-nums">
                     {formatCurrency(row.futureValuePostTax)}
                   </TableCell>
-                  <TableCell className="text-right font-semibold text-teal-700 dark:text-teal-400">
+                  <TableCell className="text-right font-semibold text-teal-700 dark:text-teal-400 whitespace-nowrap tabular-nums">
                     +{formatPercent(row.returnRate)}
                   </TableCell>
                 </TableRow>

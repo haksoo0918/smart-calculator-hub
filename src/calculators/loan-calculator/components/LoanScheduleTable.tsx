@@ -3,6 +3,14 @@ import { MonthlyRepayment } from '../../../types/loan';
 import { Download, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from '../../../components/ui/button';
 import { Badge } from '../../../components/ui/badge';
+import {
+  Table,
+  TableHeader,
+  TableBody,
+  TableRow,
+  TableHead,
+  TableCell,
+} from '../../../components/ui/table';
 
 interface LoanScheduleTableProps {
   schedule: MonthlyRepayment[];
@@ -76,67 +84,65 @@ export const LoanScheduleTable: React.FC<LoanScheduleTableProps> = ({ schedule }
         </Button>
       </div>
 
-      {/* 테이블 */}
-      <div className="overflow-x-auto -mx-4 sm:mx-0">
-        <table className="w-full text-xs text-left border-collapse">
-          <thead>
-            <tr className="border-b border-[#e5e7eb] dark:border-slate-800 bg-slate-50/75 dark:bg-slate-900/50 text-[#64748b] dark:text-slate-400 font-bold uppercase">
-              <th className="py-2.5 px-3 whitespace-nowrap">회차</th>
-              <th className="py-2.5 px-3 whitespace-nowrap text-right">납입 원금</th>
-              <th className="py-2.5 px-3 whitespace-nowrap text-right">대출 이자</th>
-              <th className="py-2.5 px-3 whitespace-nowrap text-right">월 상환액</th>
-              <th className="py-2.5 px-3 whitespace-nowrap text-right">대출 잔액</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-[#e5e7eb] dark:divide-slate-800/60 font-medium">
-            {paginatedSchedule.map((row) => (
-              <tr
-                key={row.month}
-                className={`hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors ${
-                  row.isEarlyRepaymentMonth
-                    ? 'bg-amber-50/40 dark:bg-amber-950/20'
-                    : row.isGracePeriod
-                    ? 'bg-slate-50/30 dark:bg-slate-900/20'
-                    : ''
-                }`}
-              >
-                <td className="py-2 px-3 whitespace-nowrap">
-                  <div className="flex items-center gap-1.5">
-                    <span className="font-bold text-[#112220] dark:text-slate-200">
-                      {row.month}회
+      {/* 표준 테이블 컴포넌트 */}
+      <Table className="min-w-[560px]">
+        <TableHeader>
+          <TableRow>
+            <TableHead className="whitespace-nowrap">회차</TableHead>
+            <TableHead className="whitespace-nowrap text-right">납입 원금</TableHead>
+            <TableHead className="whitespace-nowrap text-right">대출 이자</TableHead>
+            <TableHead className="whitespace-nowrap text-right">월 상환액</TableHead>
+            <TableHead className="whitespace-nowrap text-right">대출 잔액</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody className="divide-y divide-[#e5e7eb] dark:divide-slate-800/60 font-medium">
+          {paginatedSchedule.map((row) => (
+            <TableRow
+              key={row.month}
+              className={
+                row.isEarlyRepaymentMonth
+                  ? 'bg-amber-50/40 dark:bg-amber-950/20'
+                  : row.isGracePeriod
+                  ? 'bg-slate-50/30 dark:bg-slate-900/20'
+                  : undefined
+              }
+            >
+              <TableCell className="whitespace-nowrap">
+                <div className="flex items-center gap-1.5">
+                  <span className="font-bold text-[#112220] dark:text-slate-200 tabular-nums">
+                    {row.month}회
+                  </span>
+                  <span className="text-[10px] text-slate-400 tabular-nums">
+                    ({row.year}년차 {row.monthInYear}월)
+                  </span>
+                  {row.isEarlyRepaymentMonth && (
+                    <span className="text-[10px] font-bold px-1.5 py-0.2 rounded bg-amber-500 text-white">
+                      중도상환
                     </span>
-                    <span className="text-[10px] text-slate-400">
-                      ({row.year}년차 {row.monthInYear}월)
+                  )}
+                  {row.isGracePeriod && !row.isEarlyRepaymentMonth && (
+                    <span className="text-[10px] font-bold px-1 py-0.2 rounded bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400">
+                      거치
                     </span>
-                    {row.isEarlyRepaymentMonth && (
-                      <span className="text-[10px] font-bold px-1.5 py-0.2 rounded bg-amber-500 text-white">
-                        중도상환
-                      </span>
-                    )}
-                    {row.isGracePeriod && !row.isEarlyRepaymentMonth && (
-                      <span className="text-[10px] font-bold px-1 py-0.2 rounded bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400">
-                        거치
-                      </span>
-                    )}
-                  </div>
-                </td>
-                <td className="py-2 px-3 text-right font-bold text-sky-600 dark:text-sky-400 whitespace-nowrap">
-                  {row.principalPayment.toLocaleString('ko-KR')}원
-                </td>
-                <td className="py-2 px-3 text-right font-bold text-rose-600 dark:text-rose-400 whitespace-nowrap">
-                  {row.interestPayment.toLocaleString('ko-KR')}원
-                </td>
-                <td className="py-2 px-3 text-right font-extrabold text-[#112220] dark:text-slate-100 whitespace-nowrap">
-                  {row.totalPayment.toLocaleString('ko-KR')}원
-                </td>
-                <td className="py-2 px-3 text-right text-slate-500 dark:text-slate-400 font-semibold whitespace-nowrap">
-                  {row.remainingBalance.toLocaleString('ko-KR')}원
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+                  )}
+                </div>
+              </TableCell>
+              <TableCell className="text-right font-bold text-sky-600 dark:text-sky-400 whitespace-nowrap tabular-nums">
+                {row.principalPayment.toLocaleString('ko-KR')}원
+              </TableCell>
+              <TableCell className="text-right font-bold text-rose-600 dark:text-rose-400 whitespace-nowrap tabular-nums">
+                {row.interestPayment.toLocaleString('ko-KR')}원
+              </TableCell>
+              <TableCell className="text-right font-extrabold text-[#112220] dark:text-slate-100 whitespace-nowrap tabular-nums">
+                {row.totalPayment.toLocaleString('ko-KR')}원
+              </TableCell>
+              <TableCell className="text-right text-slate-500 dark:text-slate-400 font-semibold whitespace-nowrap tabular-nums">
+                {row.remainingBalance.toLocaleString('ko-KR')}원
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
 
       {/* 페이지네이션 (1년 단위) */}
       {totalPages > 1 && (
