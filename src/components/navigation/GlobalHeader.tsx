@@ -27,7 +27,7 @@ export const GlobalHeader: React.FC<GlobalHeaderProps> = ({
     <header className="bg-white dark:bg-[#0b1120] border-b border-[#e5e7eb] dark:border-slate-800 sticky top-0 z-30 h-16 flex items-center shrink-0 transition-colors duration-200">
       <div className="w-full px-4 sm:px-6 flex items-center justify-between gap-2">
         {/* 좌측: 모바일 햄버거 메뉴 버튼 + 계산기 타이틀 */}
-        <div className="flex items-center gap-2.5 min-w-0">
+        <div className="flex items-center gap-2 sm:gap-2.5 min-w-0 flex-1 mr-2">
           <div className="lg:hidden shrink-0">
             <Tooltip>
               <TooltipTrigger asChild>
@@ -46,15 +46,15 @@ export const GlobalHeader: React.FC<GlobalHeaderProps> = ({
             </Tooltip>
           </div>
 
-          <div className="min-w-0">
+          <div className="min-w-0 flex-1">
             {/* Ghost Signature: 12px Uppercase Eyebrow */}
             <div className="text-[11px] font-bold text-[#112220] dark:text-slate-300 uppercase tracking-widest leading-normal mb-0.5 flex items-center gap-1.5">
               <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#d1ff19]" />
-              <span className="pt-[0.5px]">{siteConfig.nameEn}</span>
+              <span className="pt-[0.5px] truncate">{siteConfig.nameEn}</span>
             </div>
 
-            <div className="flex items-center gap-2 flex-wrap">
-              <h1 className="text-base sm:text-lg font-bold text-[#112220] dark:text-slate-100 truncate tracking-tight leading-tight">
+            <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
+              <h1 className="text-sm sm:text-base md:text-lg font-bold text-[#112220] dark:text-slate-100 truncate tracking-tight leading-tight">
                 {currentCalculator.name}
               </h1>
               {currentCalculator.badge && (

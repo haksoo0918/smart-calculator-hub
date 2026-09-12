@@ -9,6 +9,7 @@ export function usePWAInstall() {
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const [isInstallable, setIsInstallable] = useState(false);
   const [isInstalled, setIsInstalled] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     // 1. 이미 standalone 모드인지 확인
@@ -33,6 +34,7 @@ export function usePWAInstall() {
       setIsInstalled(true);
       setIsInstallable(false);
       setDeferredPrompt(null);
+      setIsModalOpen(false);
     };
 
     window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
@@ -45,23 +47,32 @@ export function usePWAInstall() {
   }, []);
 
   const install = async () => {
-    if (!deferredPrompt) return;
-    try {
-      await deferredPrompt.prompt();
-      const choiceResult = await deferredPrompt.userChoice;
-      if (choiceResult.outcome === 'accepted') {
-        setIsInstallable(false);
+    // 브라우저 네이티브 설치 프롬프트가 지원되면 즉시 실행
+    if (deferredPrompt) {
+      try {
+        await deferredPrompt.prompt();
+        const choiceResult = await deferredPrompt.userChoice;
+        if (choiceResult.outcome === 'accepted') {
+          setIsInstallable(false);
+        }
+      } catch (err) {
+        console.error('Error during PWA prompt:', err);
+      } finally {
+        setDeferredPrompt(null);
       }
-    } catch (err) {
-      console.error('Error during PWA prompt:', err);
-    } finally {
-      setDeferredPrompt(null);
+      return;
     }
+
+    // 네이티브 프롬프트가 없는 환경(iOS Safari, 데스크톱 등)에서는 안내 모달 오픈
+    setIsModalOpen(true);
   };
 
   return {
     isInstallable,
     isInstalled,
+    isModalOpen,
+    openModal: () => setIsModalOpen(true),
+    closeModal: () => setIsModalOpen(false),
     install,
   };
 }

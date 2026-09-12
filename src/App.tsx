@@ -62,7 +62,7 @@ export const App: React.FC = () => {
       />
 
       {/* 2. 우측 메인 뷰포트 영역 */}
-      <div className="flex-1 flex flex-col min-w-0">
+      <div className="flex-1 flex flex-col min-w-0 overflow-x-hidden">
         {/* 글로벌 상단 헤더 */}
         <GlobalHeader
           currentCalculator={currentCalculator}
