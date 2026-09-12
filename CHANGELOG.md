@@ -3,6 +3,17 @@
 모든 주요 변경 사항은 본 문서에 기록됩니다.
 버전 체계는 [Semantic Versioning (SemVer)](https://semver.org/)을 준수합니다.
 
+## [1.9.10] - 2026-09-12
+
+### 에이전트 실행 프로토콜(GEMINI.md) 및 프로젝트 규칙(rules) 파일셋 구축 (Documentation & Governance)
+- **에이전트 실행 프로토콜 표준화 (`GEMINI.md`)**:
+  - AI 코딩 어시스턴트 실행 프로토콜 명시 (요청 분석, PRD 선행 업데이트, 사용자 승인, 구현 및 검증, 최종 검토 후 커밋).
+- **프로젝트 규칙 파일셋 복사 및 링크 연동 (`rules/`)**:
+  - `rules/frontend-mobile.md`: 모바일 반응형 및 UI/UX 검증 규칙.
+  - `rules/git-workflow.md`: 커밋 메시지 형식, 버전 동기화, 사용자 확인 규칙.
+  - `rules/language-markdown.md`: 한국어 조사 공백, 마크다운 링크 표기 규칙.
+  - `rules/security.md`: 민감 정보 및 파괴적 명령어 방지 규칙.
+
 ## [1.9.9] - 2026-09-12
 
 ### 전역 데이터 테이블 컴포넌트 표준화 및 Ghost 디자인 시스템 정합성 확보 (UI/UX Refactoring)
