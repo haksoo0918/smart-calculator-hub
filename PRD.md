@@ -1,6 +1,6 @@
 # [PRD] 모바일 우선 스마트 멀티 계산기 플랫폼 (Smart Calculator Hub)
 
-> **버전**: v1.9.5  
+> **버전**: v1.9.6  
 > **최종 갱신일**: 2026-09-12  
 > **제작 및 브랜딩**: © sosoFactory  
 > **기본 원칙**: Ghost 디자인 시스템 원칙 준수, 전역 프리텐다드(Pretendard Variable) 단일 폰트 원칙, 모바일 퍼스트(Mobile-First), 일관된 UI/UX, 100% 오프라인 동작(PWA), WCAG 웹 접근성 준수
@@ -701,18 +701,26 @@ export interface SalaryCalculationResult {
 - **홈 화면 추가(A2HS)**: 모바일(iOS 사파리 '홈 화면에 추가', 안드로이드 크롬 '설치' 배너/버튼) 및 데스크톱 PWA 설치 완벽 지원.
 - **오프라인 캐싱 (Service Worker)**:
   - `vite-plugin-pwa` 기반 Workbox 서비스 워커 자동 등록 (`generateSW`).
-  - 정적 자산(JS, CSS, HTML, 웹폰트, 아이콘) 프리캐싱을 통해 비행기 모드나 오프라인 환경에서도 모든 계산기 즉시 작동.
+  - 정적 자산(JS, CSS, HTML, 웹폰트, PNG/SVG 아이콘) 프리캐싱을 통해 비행기 모드나 오프라인 환경에서도 모든 계산기 즉시 작동.
 - **Web App Manifest**:
   - `name`: `스마트 계산기 허브 | Smart Calculator Hub`
   - `short_name`: `스마트 계산기`
-  - `theme_color`: `#0d9488` (Teal-600 브랜드 컬러)
+  - `description`: `연복리 시뮬레이터, 대출이자 상환비교, 연봉 실수령액, 아파트 평수 단위변환, 실시간 환율 계산기`
+  - `theme_color`: `#15171a` (Ghost 디자인 시스템 흑연 다크 테마 컬러 통일)
   - `background_color`: `#f8fafc` (Slate-50)
   - `display`: `standalone` (브라우저 주소창 제거, 네이티브 앱 느낌)
-  - `icons`: 192x192, 512x512 고해상도 SVG/PNG 아이콘 및 마스크블(maskable) 규격 적용.
-- **iOS 최적화**:
+  - `orientation`: `portrait`
+  - `lang`: `ko`
+  - `categories`: `['finance', 'utilities']`
+  - `icons`:
+    - 192x192, 512x512 고품질 PNG 래스터 아이콘 및 SVG 벡터 아이콘 듀얼 제공.
+    - `purpose: 'any maskable'` 규격을 명시하여 안드로이드 적응형 아이콘(Adaptive Icon) 및 데스크톱 PWA 설치 완벽 대응.
+- **파비콘 및 iOS 최적화**:
+  - `favicon`: `index.html` 파비콘으로 벡터 `/pwa-192x192.svg`를 지정하여 브라우저 탭 아이콘 404 원천 차단 및 선명한 렌더링 보장.
   - `apple-mobile-web-app-capable`: `yes`
   - `apple-mobile-web-app-status-bar-style`: `default`
-  - `apple-touch-icon`: 192x192 홈 아이콘 지정.
+  - `apple-mobile-web-app-title`: `스마트 계산기`
+  - `apple-touch-icon`: 192x192 PNG 포맷(`/pwa-192x192.png`) 지정하여 iOS 사파리 홈 화면 추가 시 선명한 앱 아이콘 제공.
 
 ---
 

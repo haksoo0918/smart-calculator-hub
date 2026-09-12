@@ -3,6 +3,21 @@
 모든 주요 변경 사항은 본 문서에 기록됩니다.
 버전 체계는 [Semantic Versioning (SemVer)](https://semver.org/)을 준수합니다.
 
+## [1.9.6] - 2026-09-12
+
+### PWA 표준 규격 강화 및 정적 자산·아이콘·테마 정합성 보완 (Fix & Feature)
+- **고해상도 PNG 래스터 아이콘 생성 및 매니페스트/iOS 호환성 확보**:
+  - `pwa-192x192.png`, `pwa-512x512.png` 래스터 아이콘을 신규 생성하여 안드로이드 PWA 설치 배너 요건 및 크롬 Lighthouse PWA 심사 기준 완벽 충족.
+  - `manifest.webmanifest`에 PNG 및 SVG 듀얼 아이콘(`any`, `maskable`) 등록.
+  - `index.html`의 `apple-touch-icon`을 PNG 포맷(`/pwa-192x192.png`)으로 변경하고, `apple-mobile-web-app-status-bar-style: default` 메타 태그 추가.
+- **파비콘 및 정적 자산 누락 해소**:
+  - `index.html`의 파비콘 링크를 유효한 벡터 아이콘(`/pwa-192x192.svg`)으로 교체하여 브라우저 탭 아이콘 404 요청 원천 차단.
+  - `vite.config.ts`의 `includeAssets` 목록에서 미존재 파일(`favicon.ico`, `vite.svg`)을 제거하고 실제 자산(`pwa-192x192.svg`, `pwa-512x512.svg`, `pwa-192x192.png`, `pwa-512x512.png`)으로 재구성.
+- **Ghost 디자인 시스템 테마 색상 및 메타데이터 일원화**:
+  - `manifest`의 `theme_color`를 구형 Teal(`#0d9488`)에서 Ghost 흑연 다크 테마 컬러인 `#15171a`로 통일하여 `index.html` 메타 태그와 일치.
+  - 매니페스트 `lang: 'ko'`, `categories: ['finance', 'utilities']`, `description` 보강.
+- **문서 및 버전 갱신**: `PRD.md` Section 8 및 `package.json` 버전 `v1.9.6` 동기화.
+
 ## [1.9.5] - 2026-09-12
 
 ### 연봉 계산기 1024px/모바일 반응형 레이아웃 결함 및 도넛 차트 툴팁 레이어링 개선 (Fix)
