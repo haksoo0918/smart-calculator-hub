@@ -3,6 +3,7 @@ export type CalculatorId =
   | 'unit'
   | 'exchange'
   | 'loan'
+  | 'salary'
   | 'dividend'
   | 'goal';
 
@@ -57,6 +58,15 @@ export const CALCULATORS_LIST: CalculatorItem[] = [
     name: '대출이자 & 상환방식 비교',
     shortName: '대출이자 계산기',
     description: '원리금균등 vs 원금균등 vs 만기일시 3대 상환방식 한눈에 비교',
+    category: 'finance',
+    badge: 'NEW',
+    status: 'active',
+  },
+  {
+    id: 'salary',
+    name: '연봉 실수령액 계산기',
+    shortName: '연봉 계산기',
+    description: '2026년 4대 보험 및 간이세액표 기반 월/연 실수령액 & 세부 공제',
     category: 'finance',
     badge: 'NEW',
     status: 'active',

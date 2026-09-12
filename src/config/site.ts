@@ -6,14 +6,14 @@ export const siteConfig = {
   shortNameEn: 'Smart Calculator',
   
   // 사이트 설명
-  description: '연복리, 단위 변환, 환율 등 일상과 금융 생활을 위한 스마트 멀티 계산기 플랫폼',
+  description: '연복리, 단위 변환, 환율, 대출이자, 연봉 실수령액 등 일상과 금융 생활을 위한 스마트 멀티 계산기 플랫폼',
   
   // 제작자 및 카피라이트
   company: 'sosoFactory',
   copyright: '© sosoFactory',
   
   // 버전 정보
-  version: '1.8.13',
+  version: '1.9.0',
   
   // 링크
   links: {

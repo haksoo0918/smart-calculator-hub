@@ -19,6 +19,9 @@ const ExchangeApp = lazy(() =>
 const LoanApp = lazy(() =>
   import('./calculators/loan-calculator/LoanApp').then((m) => ({ default: m.LoanApp }))
 );
+const SalaryApp = lazy(() =>
+  import('./calculators/salary-calculator/SalaryApp').then((m) => ({ default: m.SalaryApp }))
+);
 
 const CalculatorLoadingFallback = () => (
   <div className="w-full py-20 flex flex-col items-center justify-center space-y-3">
@@ -74,11 +77,12 @@ export const App: React.FC = () => {
                 <Route path="/unit" element={<UnitConverterApp />} />
                 <Route path="/exchange" element={<ExchangeApp />} />
                 <Route path="/loan" element={<LoanApp />} />
+                <Route path="/salary" element={<SalaryApp />} />
                 <Route
                   path="/dividend"
                   element={
                     <PlaceholderView
-                      calculator={CALCULATORS_LIST[4]}
+                      calculator={CALCULATORS_LIST.find((c) => c.id === 'dividend') ?? CALCULATORS_LIST[0]}
                       onGoToCompound={() => navigate('/compound')}
                     />
                   }
@@ -87,7 +91,7 @@ export const App: React.FC = () => {
                   path="/goal"
                   element={
                     <PlaceholderView
-                      calculator={CALCULATORS_LIST[5]}
+                      calculator={CALCULATORS_LIST.find((c) => c.id === 'goal') ?? CALCULATORS_LIST[0]}
                       onGoToCompound={() => navigate('/compound')}
                     />
                   }

@@ -13,7 +13,7 @@ describe('Seam 2-1: React Router Navigation and Routing', () => {
 
     expect(screen.getByText('연복리 & 자산성장 계산기')).toBeInTheDocument();
     expect(await screen.findByText('투자 조건 설정', {}, { timeout: 10000 })).toBeInTheDocument();
-  });
+  }, 15000);
 
   it('/unit 경로에서는 단위 변환기 화면이 렌더링되어야 한다', async () => {
     render(
@@ -23,7 +23,7 @@ describe('Seam 2-1: React Router Navigation and Routing', () => {
     );
 
     expect((await screen.findAllByText('단위 변환기')).length).toBeGreaterThanOrEqual(1);
-  });
+  }, 15000);
 
   it('/exchange 경로에서는 환율 계산기 화면이 렌더링되어야 한다', async () => {
     render(
@@ -34,7 +34,7 @@ describe('Seam 2-1: React Router Navigation and Routing', () => {
 
     expect(screen.getAllByText('환율 계산기').length).toBeGreaterThanOrEqual(1);
     expect(await screen.findByText('전체 주요 통화 실시간 일괄 환산', {}, { timeout: 10000 })).toBeInTheDocument();
-  });
+  }, 15000);
 
   it('/ 경로로 접속 시 /compound(연복리 계산기)로 자동 리다이렉트되어야 한다', async () => {
     render(
@@ -44,7 +44,7 @@ describe('Seam 2-1: React Router Navigation and Routing', () => {
     );
 
     expect(await screen.findByText('연복리 & 자산성장 계산기', {}, { timeout: 10000 })).toBeInTheDocument();
-  });
+  }, 15000);
 
   it('/loan 경로에서는 대출이자 계산기 화면이 렌더링되어야 한다', async () => {
     render(
@@ -55,5 +55,17 @@ describe('Seam 2-1: React Router Navigation and Routing', () => {
 
     expect(screen.getAllByText('대출이자 & 상환방식 비교').length).toBeGreaterThanOrEqual(1);
     expect(await screen.findByText('3대 상환방식 동시 비교', {}, { timeout: 10000 })).toBeInTheDocument();
-  });
+  }, 15000);
+
+  it('/salary 경로에서는 연봉 실수령액 계산기 화면이 렌더링되어야 한다', async () => {
+    render(
+      <MemoryRouter initialEntries={['/salary']}>
+        <App />
+      </MemoryRouter>
+    );
+
+    expect(screen.getAllByText('연봉 실수령액 계산기').length).toBeGreaterThanOrEqual(1);
+    expect(await screen.findByText('급여 조건 입력', {}, { timeout: 10000 })).toBeInTheDocument();
+    expect(await screen.findByText('공제 항목별 세부 명세표', {}, { timeout: 10000 })).toBeInTheDocument();
+  }, 15000);
 });

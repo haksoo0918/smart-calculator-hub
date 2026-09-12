@@ -1,7 +1,7 @@
 # [PRD] 모바일 우선 스마트 멀티 계산기 플랫폼 (Smart Calculator Hub)
 
-> **버전**: v1.8.13  
-> **최종 갱신일**: 2026-09-10  
+> **버전**: v1.9.0  
+> **최종 갱신일**: 2026-09-12  
 > **제작 및 브랜딩**: © sosoFactory  
 > **기본 원칙**: Ghost 디자인 시스템 원칙 준수, 모바일 퍼스트(Mobile-First), 일관된 UI/UX, 100% 오프라인 동작(PWA), WCAG 웹 접근성 준수
 
@@ -21,7 +21,8 @@
    - 3.2 [생활/측정] 단위 변환기 (`UnitConverterApp` - 구현 완료)
    - 3.3 [통화/글로벌] 환율 계산기 (`ExchangeApp` - 구현 완료)
    - 3.4 [금융/투자] 대출 이자 및 상환방식 비교 계산기 (`LoanApp` - 구현 완료)
-   - 3.5 향후 확장 예정 모듈 (Roadmap)
+   - 3.5 [금융/급여] 연봉 실수령액 계산기 (`SalaryApp` - 신규 기획)
+   - 3.6 향후 확장 예정 모듈 (Roadmap)
 4. [데이터 모델 (Data Models)](#4-데이터-모델-data-models)
    - 4.0 사이트 전역 설정 모델 (`src/config/site.ts`)
    - 4.1 글로벌 네비게이션 모델 (`src/types/navigation.ts`)
@@ -29,6 +30,7 @@
    - 4.3 단위 변환 데이터 모델 (`src/types/unit.ts`)
    - 4.4 환율 계산 데이터 모델 (`src/types/exchange.ts`)
    - 4.5 대출 이자 계산 데이터 모델 (`src/types/loan.ts`)
+   - 4.6 연봉 및 급여 계산 데이터 모델 (`src/types/salary.ts`)
 5. [기술 스택 및 아키텍처](#5-기술-스택-및-아키텍처)
 6. [비기능적 요구사항 및 품질 검증 기준](#6-비기능적-요구사항-및-품질-검증-기준)
 7. [검색엔진 최적화 (SEO) 전략 및 명세](#7-검색엔진-최적화-seo-전략-및-명세)
@@ -110,9 +112,12 @@
 ```text
 src/
 ├── calculators/
-│   └── loan-calculator/             # 대출이자 & 상환방식 비교 모듈
-│       ├── components/              # LoanForm, LoanComparisonCard, LoanChartDashboard 등
-│       └── LoanApp.tsx              # 대출 계산기 메인 뷰
+│   ├── loan-calculator/             # 대출이자 & 상환방식 비교 모듈
+│   │   ├── components/              # LoanForm, LoanComparisonCard, LoanChartDashboard 등
+│   │   └── LoanApp.tsx              # 대출 계산기 메인 뷰
+│   └── salary-calculator/           # 연봉 실수령액 계산 모듈 (신규 기획)
+│       ├── components/              # SalaryForm, SalarySummaryCards, DeductionBreakdownTable 등
+│       └── SalaryApp.tsx            # 연봉 계산기 메인 뷰
 ├── components/
 │   ├── ui/                          # shadcn/ui 기반 표준 토큰 컴포넌트
 │   │   ├── badge.tsx                # Badge (메타 정보 및 상태 뱃지)
@@ -140,12 +145,14 @@ src/
 │   ├── exchange.ts                  # 환율 계산 타입
 │   ├── loan.ts                      # 대출 이자 계산 타입
 │   ├── navigation.ts                # 네비게이션 및 메뉴 타입
+│   ├── salary.ts                    # 연봉 및 급여 계산 타입
 │   └── unit.ts                      # 단위 변환 타입
 └── utils/
     ├── calculator.ts                # 복리 연산 비즈니스 로직
     ├── exchangeCalculator.ts        # 환율 및 우대율 연산 로직
     ├── formatters.ts                # 통화, 한글 단위, 백분율 포매터
     ├── loanCalculator.ts            # 대출 3대 상환방식 및 중도상환 수학 로직
+    ├── salaryCalculator.ts          # 4대보험 및 근로소득 간이세액표 연산 로직
     └── unitConverter.ts             # 단위 환산 계수 및 비선형 온도 변환 로직
 ```
 
@@ -258,11 +265,62 @@ src/
   5. **대출 상식 및 팁 안내 (`LoanInfoCard.tsx`)**:
      - DSR/DTI/LTV 한 줄 핵심 요약, 상환방식 가이드, 중도상환수수료 3년 면제 및 금리인하요구권 팁.
 
-### 3.5 향후 확장 예정 모듈 (Roadmap)
+### 3.5 [금융/급여] 연봉 실수령액 계산기 (`SalaryApp` - 신규 기획)
+- **기능 요약**: 2026년 기준 대한민국 최신 4대 사회보험(국민연금, 건강보험, 노인장기요양보험, 고용보험) 요율 및 국세청 근로소득 간이세액표 누진세율을 기반으로, 세전 연봉 또는 월급에서 공제되는 6대 항목을 정밀하게 계산하여 실제 통장에 입금되는 월/연 예상 실수령액과 세부 공제 명세 대시보드를 제공하는 표준 급여 계산기.
+- **방향성 합의**: 사용자 선택에 따라 **표준 집중형(핵심 4대 보험 + 월 실수령액 & 세부 공제 대시보드)** 접근법을 채택하여, 과도한 부가 옵션 대신 대한민국 직장인이 가장 궁금해하는 핵심 수치(월 실수령액, 총 공제액, 항목별 공제액 및 비중)를 명확하고 직관적으로 제공.
+- **주요 기능 명세**:
+  1. **급여 형태 및 세전 금액 입력 (`SalaryForm.tsx`)**:
+     - **급여 지급 기준 토글**: 연봉(기본값) / 월급 기준 세그먼트 전환 (`SegmentedControl` 적용).
+       - 연봉 선택 시: 세전 연봉 입력 ➔ 12개월 균등 분할 월 환산액 자동 계산.
+       - 월급 선택 시: 세전 월급 입력 ➔ 12배 연간 총급여 자동 환산.
+     - **세전 금액 입력 필드**: 풀 와이드 입력 필드 및 우측 단위 심볼(`원`) 적용, 실시간 한글 금액 병기(예: `5,000만 원`, `416만 6,666원`).
+     - **한국형 연봉 퀵 프리셋 칩**: `3,000만`, `4,000만`, `5,000만`, `6,000만`, `7,000만`, `1억`의 6대 대표 연봉 원클릭 프리셋 제공 (`SelectableChip` 적용).
+     - **세전 금액 퀵 증감 칩**: `+100만`, `+500만`, `+1,000만`, `초기화` 지원으로 빠르고 편리한 수치 조절.
+     - **퇴직금 지급 방식 토글**: `별도 지급(기본)` vs `연봉 포함(1/13 분할)` 선택 지원.
+  2. **비과세 급여액 및 인적공제 설정**:
+     - **비과세 식대/수당**: 기본값 200,000원 (2023년 세법 개정 이후 식대 비과세 한도 20만 원 반영), 직접 입력 필드 지원.
+     - **부양가족 수 (본인 포함)**: 본인 1인 기본 (1~11명 조절 가능, 인당 연 150만 원 기본인적공제 연계).
+     - **20세 이하 자녀 수**: 0~10명 조절 가능 (자녀 세액공제 연계: 1명 15만 원, 2명 35만 원, 3명 이상 35만 + 초과 1인당 30만 원).
+  3. **2026년 기준 4대 보험 및 조세 산출 공식**:
+     - **국민연금 (4.5%)**: 기준소득월액 상한액(6,170,000원) 적용 시 월 최대 보험료 277,650원 한도 적용, 하한액(390,000원, 월 17,550원). 원단위 절사.
+     - **건강보험 (3.545%)**: 과세 대상 월 급여액의 3.545%. 10원 미만 절사.
+     - **노인장기요양보험 (건강보험료의 12.95%)**: 건강보험료의 12.95% (보수월액 기준 약 0.4590775%). 10원 미만 절사.
+     - **고용보험 (0.9%)**: 과세 대상 월 급여액의 0.9%. 10원 미만 절사.
+     - **근로소득세 (국세청 간이세액표 알고리즘)**:
+       - 월 과세 급여액 ➔ 연간 총급여액 환산.
+       - 근로소득공제 차감: 500만원 이하 70%, 1500만원 이하 40%, 4500만원 이하 15%, 1억원 이하 5%, 1억원 초과 2%.
+       - 기본공제(본인 및 부양가족 수 × 150만 원) 및 특별소득공제 기본 반영.
+       - 과세표준 구간별 8단계 누진세율(6% ~ 45%) 적용하여 산출세액 산출.
+       - 근로소득세액공제(산출세액 130만원 이하 55%, 초과분 30%, 총급여 구간별 한도) 차감.
+       - 20세 이하 자녀 세액공제 차감.
+       - 최종 연간 산출세액 ÷ 12 ➔ 월 근로소득세 산출 (10원 미만 절사, 0원 미만 시 0원).
+     - **지방소득세 (10%)**: 산출된 월 근로소득세의 10% (10원 미만 절사).
+  4. **결과 시각화 대시보드 (`SalarySummaryCards.tsx`, `SalaryChartDashboard.tsx`, `DeductionBreakdownTable.tsx`)**:
+     - **월 예상 실수령액 하이라이트 메인 카드**:
+       - 월 예상 실수령액 대형 타이포(`tabular-nums`) 표기 및 강조.
+       - 연간 환산 실수령액 합계 병기.
+       - 세전 대비 실수령 비율(`%`) 뱃지 표기 (예: `실수령 85.2%`).
+     - **3단 요약 카드**:
+       - `세전 월 환산액`: 과세 대상 급여 + 비과세 식대.
+       - `월 총 공제액`: 4대 보험 합계 + 소득세/지방소득세 합계.
+       - `총 공제율`: 세전 급여 대비 공제액 비율(%).
+     - **원형 공제 비중 차트 (`PieChart`)**:
+       - Recharts 기반 도넛 차트로 실수령액(Electric Lime), 4대 사회보험 합계(Slate/Zinc), 소득세·지방소득세(Rose/Amber) 시각화.
+     - **6대 공제 세부 내역 테이블 (`Table`)**:
+       - 국민연금, 건강보험, 노인장기요양보험, 고용보험, 소득세, 지방소득세 6개 항목별 월 공제액, 연간 납부액, 공제 비중(%) 정밀 표시.
+       - 탭 전환을 통해 근로자 본인 부담금과 회사(사업주) 부담금(4대보험 회사 지원분) 비교 조회 지원.
+     - **원클릭 클립보드 복사 및 피드백**:
+       - 세전 급여, 월 실수령액, 6대 공제 항목 요약 텍스트를 원클릭으로 클립보드에 복사하고 시각적 완료 피드백 제공.
+  5. **급여 및 세무 상식 카드 (`SalaryInfoCard.tsx`)**:
+     - 2026년 기준 4대 보험 최신 요율 요약표.
+     - 간이세액표와 연말정산의 관계 (매월 원천징수 후 연말정산을 통한 정산 원리).
+     - 비과세 식대 20만 원 상향 개정 효과 및 절세 팁.
+
+### 3.6 향후 확장 예정 모듈 (Roadmap)
 - **배당금 및 월 배당 달력 계산기 (`dividend`)**: 배당주 포트폴리오의 월별 배당금 캘린더 및 배당소득세(15.4%) 차감 후 실수령액 계산.
 - **목표 자산 역산 계산기 (`goal`)**: "N년 후 1억/5억/10억을 모으려면 매월 얼마씩 투자해야 할까?" 역산 시뮬레이터.
 - **예·적금 만기 수령액 계산기**: 단리/복리, 세금우대, 만기 이자 지급 방식별 실수령액 계산.
-- **연봉 실수령액 계산기**: 4대 보험 및 근로소득세 간이세액표 기반 월 실수령액 계산.
+- **대출 갈아타기 (대환대출) 비교 계산기**: 기존 대출과 신규 대출 간 중도상환수수료 및 금리 인하에 따른 총 절감 비용 비교.
 
 ---
 
@@ -294,6 +352,7 @@ export type CalculatorId =
   | 'unit'
   | 'exchange'
   | 'loan'
+  | 'salary'
   | 'dividend'
   | 'goal';
 
@@ -488,6 +547,61 @@ export interface LoanComparisonSummary {
   bullet: RepaymentCalculationResult;
   lowestInterestMethod: RepaymentMethod;
   interestSavingsVsEqualPayment: number;      // 원금균등 선택 시 원리금균등 대비 절약되는 이자액
+}
+```
+
+### 4.6 연봉 및 급여 계산 데이터 모델 (`src/types/salary.ts`)
+```typescript
+export type SalaryPaymentType = 'annual' | 'monthly';
+export type SeveranceType = 'separate' | 'included';
+
+export interface SalaryInput {
+  paymentType: SalaryPaymentType;             // 급여 형태: 'annual' (연봉) | 'monthly' (월급)
+  grossAmount: number;                        // 세전 금액 (원, 연봉 또는 월급)
+  severanceType: SeveranceType;               // 퇴직금: 'separate' (별도) | 'included' (연봉 포함, 1/13 분할)
+  nonTaxableAmount: number;                   // 월 비과세액 (기본 200,000원 - 식대 등)
+  familyCount: number;                        // 부양가족 수 (본인 포함, 1 ~ 11명)
+  childrenCount: number;                      // 20세 이하 자녀 수 (0 ~ 10명)
+}
+
+export interface DeductionItem {
+  id: string;                                 // 'national_pension', 'health_insurance', 'long_term_care', 'employment_insurance', 'income_tax', 'local_income_tax'
+  name: string;                               // 국문 명칭
+  description: string;                        // 항목 설명 및 요율
+  employeeMonthlyAmount: number;              // 근로자 부담 월 공제액
+  employerMonthlyAmount: number;              // 사업주(회사) 부담 월 지원액
+  employeeAnnualAmount: number;               // 근로자 연간 공제 누적액
+  percentageOfGross: number;                  // 세전 월 환산 급여 대비 공제 비중 (%)
+}
+
+export interface SalaryCalculationResult {
+  input: SalaryInput;
+  grossMonthlySalary: number;                 // 세전 월 환산 급여
+  grossAnnualSalary: number;                  // 세전 연 환산 급여
+  nonTaxableMonthly: number;                  // 월 비과세액
+  taxableMonthlySalary: number;               // 월 과세 대상 급여 (세전월급 - 비과세액)
+  
+  // 4대 보험 월 공제액 (근로자 부담분)
+  nationalPension: number;                    // 국민연금 (4.5%, 상한 277,650원)
+  healthInsurance: number;                    // 건강보험 (3.545%)
+  longTermCare: number;                       // 노인장기요양보험 (건보의 12.95%)
+  employmentInsurance: number;                // 고용보험 (0.9%)
+  totalFourMajorInsurances: number;           // 4대 보험 합계
+
+  // 세금 월 공제액
+  incomeTax: number;                          // 근로소득세 (간이세액표 누진세율 및 세액공제 반영)
+  localIncomeTax: number;                     // 지방소득세 (근로소득세의 10%)
+  totalTax: number;                           // 세금 합계
+
+  // 최종 요약 지표
+  totalMonthlyDeduction: number;              // 월 총 공제액 (4대보험 + 세금)
+  netMonthlySalary: number;                   // 월 예상 실수령액
+  netAnnualSalary: number;                    // 연 예상 실수령액
+  takeHomeRatio: number;                      // 실수령 비율 (%)
+  totalDeductionRatio: number;                // 총 공제 비율 (%)
+
+  // 세부 명세 목록 (테이블 & 차트용)
+  deductionItems: DeductionItem[];
 }
 ```
 
@@ -757,6 +871,10 @@ export interface LoanComparisonSummary {
    - 대출 핵심 규제 용어: DSR(총부채원리금상환비율), DTI(총부채상환비율), LTV(주택담보대출비율) 한 줄 요약
    - 상환방식 선택 가이드: 초기 상환 부담이 적은 방식(원리금균등) vs 총 이자를 최소화하는 방식(원금균등)
    - 중도상환수수료 및 팁: 대출 실행 3년 경과 시 수수료 전액 면제, 신용도 개선 시 금리인하요구권 적극 활용
+5. **연봉 실수령액 계산기 (`SalaryInfoCard.tsx`)**:
+   - 2026년 4대 사회보험 요율: 국민연금 4.5%(상한 277,650원), 건강보험 3.545%, 장기요양 건보의 12.95%, 고용보험 0.9%
+   - 간이세액표와 연말정산: 매월 공제되는 소득세는 표준적 추정치이며, 연말정산(공제 증빙)을 통해 최종 환급 또는 추가 납부 결정
+   - 비과세 식대 팁: 2023년부터 월 10만 원에서 20만 원으로 상향되어 연간 최대 240만 원의 소득세 및 4대보험 비과세 혜택 가능
 
 ---
 

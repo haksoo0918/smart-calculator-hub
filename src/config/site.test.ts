@@ -9,7 +9,7 @@ describe('siteConfig Tests', () => {
     expect(siteConfig.shortNameEn).toBe('Smart Calculator');
     expect(siteConfig.company).toBe('sosoFactory');
     expect(siteConfig.copyright).toBe('© sosoFactory');
-    expect(siteConfig.version).toBe('1.8.13');
+    expect(siteConfig.version).toBe('1.9.0');
   });
 
   it('getTitle 헬퍼가 페이지 제목을 일관된 포맷으로 반환해야 한다', () => {
