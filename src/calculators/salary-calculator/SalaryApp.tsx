@@ -43,7 +43,7 @@ export const SalaryApp: React.FC = () => {
       {/* 2컬럼 레이아웃: 좌측 폼 (5) / 우측 결과 및 시각화 (7) */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 items-start">
         {/* 좌측 입력 폼 */}
-        <div className="lg:col-span-5 w-full">
+        <div className="lg:col-span-5 w-full min-w-0">
           <SalaryForm
             input={input}
             onChange={setInput}
@@ -52,7 +52,7 @@ export const SalaryApp: React.FC = () => {
         </div>
 
         {/* 우측 결과 대시보드 */}
-        <div className="lg:col-span-7 space-y-4 sm:space-y-5 w-full">
+        <div className="lg:col-span-7 space-y-4 sm:space-y-5 w-full min-w-0">
           {/* 1. 월 실수령액 메인 카드 및 3단 서브 요약 지표 */}
           <SalarySummaryCards result={result} />
 

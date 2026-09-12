@@ -3,6 +3,22 @@
 모든 주요 변경 사항은 본 문서에 기록됩니다.
 버전 체계는 [Semantic Versioning (SemVer)](https://semver.org/)을 준수합니다.
 
+## [1.9.5] - 2026-09-12
+
+### 연봉 계산기 1024px/모바일 반응형 레이아웃 결함 및 도넛 차트 툴팁 레이어링 개선 (Fix)
+- **도넛 차트 마우스 호버 툴팁 가림 현상 원천 해결 (`SalaryChartDashboard.tsx`)**:
+  - 기존 차트 중앙 고정 텍스트("실수령 비율 OO%")가 DOM 순서 및 기본 쌓임 맥락으로 인해 Recharts 툴팁보다 상위에 위치하여 마우스 호버 시 툴팁을 가리던 결함 수정.
+  - 중앙 고정 텍스트를 DOM 앞단으로 재배치하고 `z-0` 및 `pointer-events-none` 부여.
+  - 차트 및 `<Tooltip>` 컨테이너를 `z-10`, Recharts 툴팁 래퍼에 `wrapperStyle={{ zIndex: 50, pointerEvents: 'none' }}`을 설정하여 어떤 위치에서도 툴팁이 최상단에 깨끗하게 플로팅되도록 해결.
+- **1024px 데스크톱 및 모바일 반응형 텍스트 줄바꿈 전면 최적화**:
+  - `@tailwindcss/container-queries` 기반 내부 리플로우 도입으로 1024px 화면(좌측 사이드바 256px 제외 시 폼 ~290px, 대시보드 ~406px)에서 텍스트 줄바꿈 및 수치 깨짐 방지.
+  - `SalaryChartDashboard.tsx`: 컨테이너 폭 576px 미만(`@xl` 미만) 시 도넛 상단, 범례 6대 항목 전폭 1열 단일 행(`whitespace-nowrap`) 정렬.
+  - `SalaryForm.tsx`: 인적공제 2개 카드를 `@md:grid-cols-2`로 적응(좁은 열 1열, 가용 폭 2열), 인원수 `whitespace-nowrap shrink-0` 적용. 금액 프리셋 3x2 그리드, 증감 버튼 4열 균등 그리드 정렬, 퇴직금 옵션명 간결화(`퇴직금 별도`, `퇴직금 포함 (1/13)`).
+  - `SalarySummaryCards.tsx`: 3단 서브 요약 카드 금액에 `whitespace-nowrap`, 수식 분리 방지 span 래핑.
+  - `DeductionBreakdownTable.tsx`: 카드 헤더 컨테이너 쿼리(`flex-col @lg:flex-row`) 적용 및 테이블 셀 패딩 반응형(`px-2.5 @md:px-4`), 수치 열 `whitespace-nowrap`.
+  - `SalaryApp.tsx`: 자식 컨테이너에 `min-w-0` 추가하여 CSS 그리드 트랙 오버플로우 방지.
+- **문서 및 버전 갱신**: `PRD.md` Section 12.2 및 `package.json` 버전 `v1.9.5` 동기화.
+
 ## [1.9.4] - 2026-09-12
 
 ### 연봉 계산기 모바일/태블릿(768)/데스크톱(1024) 3단계 반응형 규격 명문화 (Docs)

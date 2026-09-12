@@ -43,7 +43,7 @@ export const SalarySummaryCards: React.FC<SalarySummaryCardsProps> = ({ result }
   };
 
   return (
-    <div className="space-y-3">
+    <div className="@container space-y-3">
       {/* 1. 최상단 대형 메인 하이라이트 카드 (월 예상 실수령액) */}
       <div className="relative overflow-hidden rounded-2xl bg-[#15171a] dark:bg-[#1e293b] border border-[#15171a] dark:border-slate-800 text-white p-5 sm:p-6 shadow-sm">
         {/* 우측 상단 배경 장식 효과 */}
@@ -59,7 +59,7 @@ export const SalarySummaryCards: React.FC<SalarySummaryCardsProps> = ({ result }
               {result.takeHomeRatio > 0 && (
                 <Badge
                   variant="outline"
-                  className="text-[11px] font-semibold border-slate-700 text-slate-300 bg-slate-800/60"
+                  className="text-[11px] font-semibold border-slate-700 text-slate-300 bg-slate-800/60 whitespace-nowrap"
                 >
                   실수령 {result.takeHomeRatio}%
                 </Badge>
@@ -67,24 +67,24 @@ export const SalarySummaryCards: React.FC<SalarySummaryCardsProps> = ({ result }
             </div>
 
             <div className="flex flex-wrap items-baseline gap-2 pt-1">
-              <div className="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-[#d1ff19] tabular-nums">
+              <div className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#d1ff19] tabular-nums whitespace-nowrap">
                 {result.netMonthlySalary.toLocaleString('ko-KR')}
                 <span className="text-lg sm:text-xl font-medium text-slate-200 ml-1">
                   원
                 </span>
               </div>
-              <span className="text-xs sm:text-sm font-medium text-slate-400">
+              <span className="text-xs sm:text-sm font-medium text-slate-400 whitespace-nowrap">
                 ({formatKoreanUnit(result.netMonthlySalary)})
               </span>
             </div>
 
             <div className="text-xs text-slate-400 pt-1 flex flex-wrap items-center gap-x-2 gap-y-1">
-              <span>
+              <span className="break-keep">
                 연간 총 환산 수령액:{' '}
-                <strong className="text-white font-medium tabular-nums">
+                <strong className="text-white font-medium tabular-nums whitespace-nowrap">
                   {formatNumberWithWon(result.netAnnualSalary)}
                 </strong>
-                <span className="text-slate-400 ml-1">
+                <span className="text-slate-400 ml-1 whitespace-nowrap">
                   ({formatKoreanUnit(result.netAnnualSalary)})
                 </span>
               </span>
@@ -114,54 +114,55 @@ export const SalarySummaryCards: React.FC<SalarySummaryCardsProps> = ({ result }
       </div>
 
       {/* 2. 3단 서브 요약 카드 그리드 (세전 월 환산액, 월 총 공제액, 총 공제율) */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+      <div className="grid grid-cols-1 @sm:grid-cols-3 gap-2.5 sm:gap-3">
         {/* 세전 월 환산액 */}
         <div className="p-3.5 sm:p-4 rounded-2xl bg-white dark:bg-[#1e293b] border border-[#e5e7eb] dark:border-slate-800 shadow-2xs space-y-1">
           <div className="flex items-center justify-between text-[#64748b] dark:text-slate-400">
-            <span className="text-[11px] font-bold uppercase tracking-wider">
+            <span className="text-[11px] font-bold uppercase tracking-wider whitespace-nowrap">
               세전 월 환산액
             </span>
-            <Banknote className="w-4 h-4 text-slate-400 dark:text-slate-500" />
+            <Banknote className="w-4 h-4 text-slate-400 dark:text-slate-500 shrink-0" />
           </div>
-          <div className="text-lg font-bold tracking-tight text-[#112220] dark:text-slate-100 tabular-nums">
+          <div className="text-base @xs:text-lg font-bold tracking-tight text-[#112220] dark:text-slate-100 tabular-nums whitespace-nowrap">
             {formatNumberWithWon(result.grossMonthlySalary)}
           </div>
           <p className="text-[11px] text-[#64748b] dark:text-slate-400 leading-tight">
-            과세 {formatNumberWithWon(result.taxableMonthlySalary)} + 비과세{' '}
-            {formatNumberWithWon(result.nonTaxableMonthly)}
+            <span>과세 {formatNumberWithWon(result.taxableMonthlySalary)}</span>{' '}
+            <span className="whitespace-nowrap">+ 비과세 {formatNumberWithWon(result.nonTaxableMonthly)}</span>
           </p>
         </div>
 
         {/* 월 총 공제액 */}
         <div className="p-3.5 sm:p-4 rounded-2xl bg-white dark:bg-[#1e293b] border border-[#e5e7eb] dark:border-slate-800 shadow-2xs space-y-1">
           <div className="flex items-center justify-between text-[#64748b] dark:text-slate-400">
-            <span className="text-[11px] font-bold uppercase tracking-wider">
+            <span className="text-[11px] font-bold uppercase tracking-wider whitespace-nowrap">
               월 총 공제액
             </span>
-            <ShieldAlert className="w-4 h-4 text-rose-500" />
+            <ShieldAlert className="w-4 h-4 text-rose-500 shrink-0" />
           </div>
-          <div className="text-lg font-bold tracking-tight text-rose-500 tabular-nums">
+          <div className="text-base @xs:text-lg font-bold tracking-tight text-rose-500 tabular-nums whitespace-nowrap">
             -{formatNumberWithWon(result.totalMonthlyDeduction)}
           </div>
           <p className="text-[11px] text-[#64748b] dark:text-slate-400 leading-tight">
-            보험 {formatNumberWithWon(result.totalFourMajorInsurances)} + 세금{' '}
-            {formatNumberWithWon(result.totalTax)}
+            <span>보험 {formatNumberWithWon(result.totalFourMajorInsurances)}</span>{' '}
+            <span className="whitespace-nowrap">+ 세금 {formatNumberWithWon(result.totalTax)}</span>
           </p>
         </div>
 
         {/* 총 공제 비율 */}
         <div className="p-3.5 sm:p-4 rounded-2xl bg-white dark:bg-[#1e293b] border border-[#e5e7eb] dark:border-slate-800 shadow-2xs space-y-1">
           <div className="flex items-center justify-between text-[#64748b] dark:text-slate-400">
-            <span className="text-[11px] font-bold uppercase tracking-wider">
+            <span className="text-[11px] font-bold uppercase tracking-wider whitespace-nowrap">
               총 공제 비율
             </span>
-            <PieChart className="w-4 h-4 text-amber-500" />
+            <PieChart className="w-4 h-4 text-amber-500 shrink-0" />
           </div>
-          <div className="text-lg font-bold tracking-tight text-[#112220] dark:text-slate-100 tabular-nums">
+          <div className="text-base @xs:text-lg font-bold tracking-tight text-[#112220] dark:text-slate-100 tabular-nums whitespace-nowrap">
             {result.totalDeductionRatio}%
           </div>
           <p className="text-[11px] text-[#64748b] dark:text-slate-400 leading-tight">
-            연간 총 공제 {formatNumberWithWon(result.totalMonthlyDeduction * 12)}
+            <span className="whitespace-nowrap">연간 총 공제</span>{' '}
+            <span className="whitespace-nowrap">{formatNumberWithWon(result.totalMonthlyDeduction * 12)}</span>
           </p>
         </div>
       </div>
