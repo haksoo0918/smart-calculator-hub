@@ -50,6 +50,11 @@ export default {
           '"Malgun Gothic"',
           'sans-serif',
         ],
+        mono: [
+          '"Pretendard Variable"',
+          'Pretendard',
+          'sans-serif',
+        ],
       },
       keyframes: {
         'drawer-in': {

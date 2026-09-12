@@ -104,7 +104,7 @@ export const SalaryChartDashboard: React.FC<SalaryChartDashboardProps> = ({ resu
                           />
                           <span>{data.name}</span>
                         </div>
-                        <div className="font-mono text-slate-200">
+                        <div className="text-slate-200 tabular-nums">
                           {formatNumberWithWon(data.value)} ({data.percentage}%)
                         </div>
                       </div>
@@ -121,7 +121,7 @@ export const SalaryChartDashboard: React.FC<SalaryChartDashboardProps> = ({ resu
             <span className="text-[11px] font-bold text-[#64748b] dark:text-slate-400 uppercase tracking-wider">
               실수령 비율
             </span>
-            <span className="text-xl sm:text-2xl font-extrabold font-mono text-[#112220] dark:text-slate-100 tabular-nums">
+            <span className="text-xl sm:text-2xl font-extrabold text-[#112220] dark:text-slate-100 tabular-nums">
               {result.takeHomeRatio}%
             </span>
           </div>
@@ -143,7 +143,7 @@ export const SalaryChartDashboard: React.FC<SalaryChartDashboardProps> = ({ resu
                   {item.name}
                 </span>
               </div>
-              <div className="flex items-center gap-2 font-mono">
+              <div className="flex items-center gap-2">
                 <span className="text-slate-400 dark:text-slate-500 text-[11px]">
                   {item.percentage}%
                 </span>

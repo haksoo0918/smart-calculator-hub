@@ -298,7 +298,7 @@ export const SalaryForm: React.FC<SalaryFormProps> = ({
                 <Users className="w-3.5 h-3.5 text-slate-500" />
                 부양가족 수
               </span>
-              <span className="font-mono font-bold text-xs text-[#112220] dark:text-slate-100">
+              <span className="font-bold text-xs text-[#112220] dark:text-slate-100 tabular-nums">
                 {input.familyCount}명
               </span>
             </div>
@@ -340,7 +340,7 @@ export const SalaryForm: React.FC<SalaryFormProps> = ({
                 <Baby className="w-3.5 h-3.5 text-slate-500" />
                 20세 이하 자녀
               </span>
-              <span className="font-mono font-bold text-xs text-[#112220] dark:text-slate-100">
+              <span className="font-bold text-xs text-[#112220] dark:text-slate-100 tabular-nums">
                 {input.childrenCount}명
               </span>
             </div>

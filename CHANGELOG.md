@@ -3,6 +3,17 @@
 모든 주요 변경 사항은 본 문서에 기록됩니다.
 버전 체계는 [Semantic Versioning (SemVer)](https://semver.org/)을 준수합니다.
 
+## [1.9.3] - 2026-09-12
+
+### 연봉 계산기 페이지 폰트 전면 프리텐다드(Pretendard Variable) 단일화 (Refactor)
+- **연봉 계산기 전 컴포넌트 내 `font-mono` 잔여 제거 및 `tabular-nums` 전환**:
+  - `SalarySummaryCards.tsx`: 메인 실수령액 및 3단 서브 요약 카드에서 `font-mono` 제거, 고정폭 숫자(`tabular-nums`) 적용.
+  - `SalaryForm.tsx`: 부양가족 수 및 20세 이하 자녀 수 카운터에서 `font-mono` 제거.
+  - `SalaryChartDashboard.tsx`: 공제 비중 툴팁 및 중앙 텍스트, 범례 목록에서 `font-mono` 제거.
+  - `DeductionBreakdownTable.tsx`: 6대 공제 항목 테이블 수치 열 및 합계 행에서 `font-mono` 제거.
+- **Tailwind 폰트 패밀리 mono 단일화 (`tailwind.config.js`)**:
+  - `fontFamily.mono`를 `Pretendard Variable`로 매핑하여 의도치 않은 시스템 모노스페이스 서체 호출을 원천 방지.
+
 ## [1.9.2] - 2026-09-12
 
 ### 전역 프리텐다드(Pretendard Variable) 단일 서체 강제 원칙 및 PRD 표준화 (Docs)

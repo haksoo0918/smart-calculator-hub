@@ -59,7 +59,7 @@ export const SalarySummaryCards: React.FC<SalarySummaryCardsProps> = ({ result }
               {result.takeHomeRatio > 0 && (
                 <Badge
                   variant="outline"
-                  className="text-[11px] font-mono border-slate-700 text-slate-300 bg-slate-800/60"
+                  className="text-[11px] font-semibold border-slate-700 text-slate-300 bg-slate-800/60"
                 >
                   실수령 {result.takeHomeRatio}%
                 </Badge>
@@ -67,7 +67,7 @@ export const SalarySummaryCards: React.FC<SalarySummaryCardsProps> = ({ result }
             </div>
 
             <div className="flex flex-wrap items-baseline gap-2 pt-1">
-              <div className="text-2xl sm:text-3xl lg:text-4xl font-extrabold font-mono tracking-tight text-[#d1ff19] tabular-nums">
+              <div className="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-[#d1ff19] tabular-nums">
                 {result.netMonthlySalary.toLocaleString('ko-KR')}
                 <span className="text-lg sm:text-xl font-medium text-slate-200 ml-1">
                   원
@@ -81,7 +81,7 @@ export const SalarySummaryCards: React.FC<SalarySummaryCardsProps> = ({ result }
             <div className="text-xs text-slate-400 pt-1 flex flex-wrap items-center gap-x-2 gap-y-1">
               <span>
                 연간 총 환산 수령액:{' '}
-                <strong className="text-white font-mono font-medium">
+                <strong className="text-white font-medium tabular-nums">
                   {formatNumberWithWon(result.netAnnualSalary)}
                 </strong>
                 <span className="text-slate-400 ml-1">
@@ -123,7 +123,7 @@ export const SalarySummaryCards: React.FC<SalarySummaryCardsProps> = ({ result }
             </span>
             <Banknote className="w-4 h-4 text-slate-400 dark:text-slate-500" />
           </div>
-          <div className="text-lg font-bold font-mono tracking-tight text-[#112220] dark:text-slate-100 tabular-nums">
+          <div className="text-lg font-bold tracking-tight text-[#112220] dark:text-slate-100 tabular-nums">
             {formatNumberWithWon(result.grossMonthlySalary)}
           </div>
           <p className="text-[11px] text-[#64748b] dark:text-slate-400 leading-tight">
@@ -140,7 +140,7 @@ export const SalarySummaryCards: React.FC<SalarySummaryCardsProps> = ({ result }
             </span>
             <ShieldAlert className="w-4 h-4 text-rose-500" />
           </div>
-          <div className="text-lg font-bold font-mono tracking-tight text-rose-500 tabular-nums">
+          <div className="text-lg font-bold tracking-tight text-rose-500 tabular-nums">
             -{formatNumberWithWon(result.totalMonthlyDeduction)}
           </div>
           <p className="text-[11px] text-[#64748b] dark:text-slate-400 leading-tight">
@@ -157,7 +157,7 @@ export const SalarySummaryCards: React.FC<SalarySummaryCardsProps> = ({ result }
             </span>
             <PieChart className="w-4 h-4 text-amber-500" />
           </div>
-          <div className="text-lg font-bold font-mono tracking-tight text-[#112220] dark:text-slate-100 tabular-nums">
+          <div className="text-lg font-bold tracking-tight text-[#112220] dark:text-slate-100 tabular-nums">
             {result.totalDeductionRatio}%
           </div>
           <p className="text-[11px] text-[#64748b] dark:text-slate-400 leading-tight">

@@ -88,13 +88,13 @@ export const DeductionBreakdownTable: React.FC<DeductionBreakdownTableProps> = (
                       ? '해당 없음 (근로자 본인 납부)'
                       : item.description}
                   </td>
-                  <td className="py-2.5 px-4 font-mono font-bold text-right text-[#112220] dark:text-slate-100 tabular-nums">
+                  <td className="py-2.5 px-4 font-bold text-right text-[#112220] dark:text-slate-100 tabular-nums">
                     {monthly > 0 ? formatNumberWithWon(monthly) : '-'}
                   </td>
-                  <td className="py-2.5 px-4 font-mono text-right text-[#64748b] dark:text-slate-400 tabular-nums">
+                  <td className="py-2.5 px-4 text-right text-[#64748b] dark:text-slate-400 tabular-nums">
                     {monthly > 0 ? formatNumberWithWon(monthly * 12) : '-'}
                   </td>
-                  <td className="py-2.5 px-4 font-mono text-right text-[#64748b] dark:text-slate-400 tabular-nums">
+                  <td className="py-2.5 px-4 text-right text-[#64748b] dark:text-slate-400 tabular-nums">
                     {isEmployee && monthly > 0
                       ? `${item.percentageOfGross}%`
                       : !isEmployee && monthly > 0 && result.grossMonthlySalary > 0
@@ -114,13 +114,13 @@ export const DeductionBreakdownTable: React.FC<DeductionBreakdownTableProps> = (
               <td className="py-3 px-4 text-[#64748b] dark:text-slate-400">
                 {isEmployee ? '4대 보험 + 세금 합산' : '4대 보험 회사 지원 합산'}
               </td>
-              <td className="py-3 px-4 font-mono text-right text-[#112220] dark:text-slate-100 tabular-nums text-sm">
+              <td className="py-3 px-4 text-right text-[#112220] dark:text-slate-100 tabular-nums text-sm">
                 {formatNumberWithWon(totalMonthly)}
               </td>
-              <td className="py-3 px-4 font-mono text-right text-[#64748b] dark:text-slate-400 tabular-nums text-sm">
+              <td className="py-3 px-4 text-right text-[#64748b] dark:text-slate-400 tabular-nums text-sm">
                 {formatNumberWithWon(totalAnnual)}
               </td>
-              <td className="py-3 px-4 font-mono text-right text-[#112220] dark:text-slate-100 tabular-nums">
+              <td className="py-3 px-4 text-right text-[#112220] dark:text-slate-100 tabular-nums">
                 {result.grossMonthlySalary > 0
                   ? `${((totalMonthly / result.grossMonthlySalary) * 100).toFixed(
                       1
