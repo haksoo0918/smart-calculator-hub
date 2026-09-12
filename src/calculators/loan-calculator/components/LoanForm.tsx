@@ -2,6 +2,7 @@ import React from 'react';
 import { LoanInput, RepaymentMethod } from '../../../types/loan';
 import { formatKoreanLoanAmount } from '../../../utils/loanCalculator';
 import { Input } from '../../../components/ui/input';
+import { NumericInput } from '../../../components/ui/numeric-input';
 import { Slider } from '../../../components/ui/slider';
 import { Button } from '../../../components/ui/button';
 import { Badge } from '../../../components/ui/badge';
@@ -151,29 +152,20 @@ export const LoanForm: React.FC<LoanFormProps> = ({ input, onChange, onReset }) 
             {formatKoreanLoanAmount(input.loanAmount)}
           </span>
         </div>
-        <div className="relative">
-          <Input
-            id="loan-amount"
-            aria-label="대출 원금 입력"
-            type="text"
-            inputMode="numeric"
-            value={input.loanAmount ? input.loanAmount.toLocaleString('ko-KR') : ''}
-            placeholder="0"
-            onChange={(e) => {
-              const raw = e.target.value.replace(/[^0-9]/g, '');
-              updateField('loanAmount', raw ? parseInt(raw, 10) : 0);
-            }}
-            onBlur={() => {
-              if (!input.loanAmount) {
-                updateField('loanAmount', 10_000_000);
-              }
-            }}
-            className="w-full text-right font-bold text-[#112220] dark:text-slate-100 pl-3 pr-10 py-2 border border-[#e5e7eb] dark:border-slate-700 rounded-xl text-base sm:text-lg tracking-tight bg-slate-50/50 dark:bg-slate-900/60 focus-visible:ring-[#15171a] dark:focus-visible:ring-[#d1ff19] h-11"
-          />
-          <span className="absolute right-3.5 top-1/2 -translate-y-1/2 text-sm font-medium text-slate-400 dark:text-slate-500 pointer-events-none select-none">
-            원
-          </span>
-        </div>
+        <NumericInput
+          id="loan-amount"
+          aria-label="대출 원금 입력"
+          value={input.loanAmount}
+          placeholder="0"
+          thousandSeparator
+          suffix="원"
+          onNumberChange={(val) => updateField('loanAmount', val)}
+          onBlur={() => {
+            if (!input.loanAmount) {
+              updateField('loanAmount', 10_000_000);
+            }
+          }}
+        />
         <div className="flex items-center gap-1.5 mt-2 flex-wrap">
           {AMOUNT_PRESETS.map((preset) => (
             <Button
@@ -209,24 +201,20 @@ export const LoanForm: React.FC<LoanFormProps> = ({ input, onChange, onReset }) 
             연 {input.annualRate.toFixed(2)}%
           </span>
         </div>
-        <div className="relative">
-          <Input
-            id="loan-rate"
-            aria-label="연 대출 금리 입력"
-            type="number"
-            step="0.1"
-            min="0.1"
-            max="30"
-            value={rateInput.value}
-            placeholder="4.2"
-            onChange={rateInput.onChange}
-            onBlur={rateInput.onBlur}
-            className="w-full text-right font-bold text-[#112220] dark:text-slate-100 pl-3 pr-10 py-2 border border-[#e5e7eb] dark:border-slate-700 rounded-xl text-base sm:text-lg tracking-tight bg-slate-50/50 dark:bg-slate-900/60 focus-visible:ring-[#15171a] dark:focus-visible:ring-[#d1ff19] h-11"
-          />
-          <span className="absolute right-3.5 top-1/2 -translate-y-1/2 text-sm font-medium text-slate-400 dark:text-slate-500 pointer-events-none select-none">
-            %
-          </span>
-        </div>
+        <NumericInput
+          id="loan-rate"
+          aria-label="연 대출 금리 입력"
+          type="number"
+          step="0.1"
+          min="0.1"
+          max="30"
+          value={rateInput.value}
+          placeholder="4.2"
+          onChange={rateInput.onChange}
+          onBlur={rateInput.onBlur}
+          suffix="%"
+          allowDecimals
+        />
         <div className="flex items-center gap-1.5 mt-2 flex-wrap">
           {RATE_PRESETS.map((preset) => (
             <SelectableChip

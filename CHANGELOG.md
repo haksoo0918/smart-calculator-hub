@@ -3,6 +3,22 @@
 모든 주요 변경 사항은 본 문서에 기록됩니다.
 버전 체계는 [Semantic Versioning (SemVer)](https://semver.org/)을 준수합니다.
 
+## [1.9.1] - 2026-09-12
+
+### 공통 숫자 및 금액 입력 컴포넌트(NumericInput) 신설 및 계산기 폼 규격 표준화 (Refactor)
+- **공통 숫자/금액 입력 필드 컴포넌트 신설 (`src/components/ui/numeric-input.tsx`)**:
+  - `h-11`(44px 모바일 터치 타깃), `text-right`, `font-bold`, `rounded-xl` 기반 Ghost 디자인 시스템 규격 일원화.
+  - 우측 고정 단위 라벨(`suffix`: '원', '%') 지원 및 `pointer-events-none` 안전 배치.
+  - `thousandSeparator` 지원으로 3자리 콤마 포맷팅 자동화 및 `onNumberChange`를 통한 숫자 추출 핸들링 내장.
+  - `allowDecimals`, `displayZero` 등 소수점 금리 및 정밀 제어 지원.
+- **기존 3대 계산기 입력 폼 리팩토링 및 적용**:
+  - `SalaryForm.tsx`: 세전 급여(`gross-amount-input`) 및 비과세 수당(`non-taxable-input`) 필드를 `NumericInput`으로 교체하여 코드 중복 제거.
+  - `LoanForm.tsx`: 대출 원금(`loan-amount`) 및 연 대출 금리(`loan-rate`) 필드를 `NumericInput`으로 통일.
+  - `CalculatorForm.tsx`: 초기 투자 원금(`principal`) 및 정기 추가 적립금(`regularContribution`) 필드를 `NumericInput`으로 교체.
+- **품질 검증 및 테스트**:
+  - `src/components/ui/numeric-input.test.tsx` 단위 테스트 5개 신설 및 전체 테스트 84개 전원 통과.
+  - `PRD.md` 11.8 섹션 규격 신설 및 버전 1.9.1 갱신.
+
 ## [1.9.0] - 2026-09-12
 
 ### 2026년 기준 연봉 실수령액 계산기 모듈(SalaryApp) 신규 개발 및 전역 네비게이션 연결 (Feature)

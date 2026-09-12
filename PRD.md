@@ -1,6 +1,6 @@
 # [PRD] 모바일 우선 스마트 멀티 계산기 플랫폼 (Smart Calculator Hub)
 
-> **버전**: v1.9.0  
+> **버전**: v1.9.1  
 > **최종 갱신일**: 2026-09-12  
 > **제작 및 브랜딩**: © sosoFactory  
 > **기본 원칙**: Ghost 디자인 시스템 원칙 준수, 모바일 퍼스트(Mobile-First), 일관된 UI/UX, 100% 오프라인 동작(PWA), WCAG 웹 접근성 준수
@@ -821,6 +821,22 @@ export interface SalaryCalculationResult {
   - 연복리 예상 수익률 `-3%` 프리셋을 포함한 모든 칩에 차별 없는 동일한 선택 활성화 인터랙션 적용.
 - **`SegmentedControl` (`src/components/ui/segmented-control.tsx`)**:
   - 상환방식, 적립주기 등 2~3분할 인라인 세그먼트 전환 컨트롤러.
+
+### 11.8 공통 숫자 및 금액 입력 컴포넌트 표준 규격 (`NumericInput` / `src/components/ui/numeric-input.tsx`)
+- **도입 목적**:
+  - 기존 대출 계산기(`LoanForm`), 연복리 계산기(`CalculatorForm`), 연봉 계산기(`SalaryForm`)에서 중복 작성되던 큰 규격(`h-11`, 우측 정렬, 볼드 폰트, 우측 단위 심볼 뱃지)의 수치 및 금액 입력 UI 패턴을 공통 컴포넌트로 일원화.
+  - 화면별 디자인 불일치(패딩, 테두리 라운드, 폰트 크기, 높이 등)를 원천 제거하고 Ghost 디자인 시스템 표준 준수.
+- **주요 UI/UX 및 인터랙션 사양**:
+  - **터치 친화적 높이**: 모바일 터치 접근성에 최적화된 높이 44px (`h-11`).
+  - **정렬 및 타이포그래피**: 우측 정렬 (`text-right`), 볼드 폰트 (`font-bold text-base sm:text-lg tracking-tight`), 다크 모드 호환 텍스트 색상 (`text-[#112220] dark:text-slate-100`).
+  - **우측 단위 심볼(`suffix`) 렌더링**: '원', '%', '년', '개월' 등 단위를 인풋 내측 우측에 일관된 간격(`right-3.5`)으로 배치하고 포인터 이벤트 통과(`pointer-events-none`) 처리.
+  - **천 단위 콤마 포맷팅(`thousandSeparator`)**: 통화/금액 입력 시 `toLocaleString('ko-KR')` 기반 자동 3자리 콤마 표시 및 숫자 추출 핸들러 내장.
+  - **테마 및 포커스 링**: `bg-slate-50/50 dark:bg-slate-900/60`, `rounded-xl`, Ghost 시그니처 포커스 링(`focus-visible:ring-[#15171a] dark:focus-visible:ring-[#d1ff19]`).
+  - **웹 접근성(WCAG)**: `id`, `aria-label`, `inputMode="numeric"`, `placeholder` 등 기본 접근성 속성 완벽 지원.
+- **적용 대상**:
+  - `SalaryForm.tsx`: 세전 급여 금액 입력 필드 ('원')
+  - `LoanForm.tsx`: 대출 원금 ('원'), 연 대출 금리 ('%')
+  - `CalculatorForm.tsx`: 초기 투자 원금 ('원'), 정기 추가 적립금 ('원')
 
 ---
 

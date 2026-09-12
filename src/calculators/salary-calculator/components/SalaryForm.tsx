@@ -1,6 +1,6 @@
 import React from 'react';
 import { SalaryInput, SalaryPaymentType, SeveranceType } from '../../../types/salary';
-import { Input } from '../../../components/ui/input';
+import { NumericInput } from '../../../components/ui/numeric-input';
 import { Button } from '../../../components/ui/button';
 import { Badge } from '../../../components/ui/badge';
 import { SelectableChip } from '../../../components/ui/selectable-chip';
@@ -166,29 +166,20 @@ export const SalaryForm: React.FC<SalaryFormProps> = ({
           )}
         </div>
 
-        <div className="relative">
-          <Input
-            id="gross-amount-input"
-            aria-label={isAnnual ? '세전 연봉 입력' : '세전 월급 입력'}
-            type="text"
-            inputMode="numeric"
-            value={input.grossAmount ? input.grossAmount.toLocaleString('ko-KR') : ''}
-            placeholder="0"
-            onChange={(e) => {
-              const raw = e.target.value.replace(/[^0-9]/g, '');
-              updateField('grossAmount', raw ? parseInt(raw, 10) : 0);
-            }}
-            onBlur={() => {
-              if (!input.grossAmount) {
-                updateField('grossAmount', isAnnual ? 50_000_000 : 4_000_000);
-              }
-            }}
-            className="w-full text-right font-bold text-[#112220] dark:text-slate-100 pl-3 pr-10 py-2 border border-[#e5e7eb] dark:border-slate-700 rounded-xl text-base sm:text-lg tracking-tight bg-slate-50/50 dark:bg-slate-900/60 focus-visible:ring-[#15171a] dark:focus-visible:ring-[#d1ff19] h-11"
-          />
-          <span className="absolute right-3.5 top-1/2 -translate-y-1/2 text-sm font-medium text-slate-400 dark:text-slate-500 pointer-events-none select-none">
-            원
-          </span>
-        </div>
+        <NumericInput
+          id="gross-amount-input"
+          aria-label={isAnnual ? '세전 연봉 입력' : '세전 월급 입력'}
+          value={input.grossAmount}
+          placeholder="0"
+          thousandSeparator
+          suffix="원"
+          onNumberChange={(val) => updateField('grossAmount', val)}
+          onBlur={() => {
+            if (!input.grossAmount) {
+              updateField('grossAmount', isAnnual ? 50_000_000 : 4_000_000);
+            }
+          }}
+        />
 
         {/* 대표 금액 프리셋 칩 */}
         <div className="flex items-center gap-1.5 mt-2 flex-wrap">
@@ -269,28 +260,15 @@ export const SalaryForm: React.FC<SalaryFormProps> = ({
           </span>
         </div>
 
-        <div className="relative">
-          <Input
-            id="non-taxable-input"
-            aria-label="월 비과세 수당 및 식대 입력"
-            type="text"
-            inputMode="numeric"
-            value={
-              input.nonTaxableAmount !== undefined
-                ? input.nonTaxableAmount.toLocaleString('ko-KR')
-                : ''
-            }
-            placeholder="200,000"
-            onChange={(e) => {
-              const raw = e.target.value.replace(/[^0-9]/g, '');
-              updateField('nonTaxableAmount', raw ? parseInt(raw, 10) : 0);
-            }}
-            className="w-full text-right font-bold text-[#112220] dark:text-slate-100 pl-3 pr-10 py-2 border border-[#e5e7eb] dark:border-slate-700 rounded-xl text-base sm:text-lg tracking-tight bg-slate-50/50 dark:bg-slate-900/60 focus-visible:ring-[#15171a] dark:focus-visible:ring-[#d1ff19] h-11"
-          />
-          <span className="absolute right-3.5 top-1/2 -translate-y-1/2 text-sm font-medium text-slate-400 dark:text-slate-500 pointer-events-none select-none">
-            원
-          </span>
-        </div>
+        <NumericInput
+          id="non-taxable-input"
+          aria-label="월 비과세 수당 및 식대 입력"
+          value={input.nonTaxableAmount}
+          placeholder="200,000"
+          thousandSeparator
+          suffix="원"
+          onNumberChange={(val) => updateField('nonTaxableAmount', val)}
+        />
 
         <div className="flex items-center gap-1.5 mt-2 flex-wrap">
           {NON_TAXABLE_PRESETS.map((preset) => (
