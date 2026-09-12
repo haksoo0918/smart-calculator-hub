@@ -116,51 +116,51 @@ export const SalarySummaryCards: React.FC<SalarySummaryCardsProps> = ({ result }
       {/* 2. 3단 서브 요약 카드 그리드 (세전 월 환산액, 월 총 공제액, 총 공제율) */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
         {/* 세전 월 환산액 */}
-        <div className="p-4 rounded-xl bg-card border border-border shadow-2xs space-y-1">
-          <div className="flex items-center justify-between text-muted-foreground">
-            <span className="text-xs font-semibold uppercase tracking-wider">
+        <div className="p-3.5 sm:p-4 rounded-2xl bg-white dark:bg-[#1e293b] border border-[#e5e7eb] dark:border-slate-800 shadow-2xs space-y-1">
+          <div className="flex items-center justify-between text-[#64748b] dark:text-slate-400">
+            <span className="text-[11px] font-bold uppercase tracking-wider">
               세전 월 환산액
             </span>
-            <Banknote className="w-4 h-4 text-muted-foreground/70" />
+            <Banknote className="w-4 h-4 text-slate-400 dark:text-slate-500" />
           </div>
-          <div className="text-lg font-bold font-mono tracking-tight text-foreground tabular-nums">
+          <div className="text-lg font-bold font-mono tracking-tight text-[#112220] dark:text-slate-100 tabular-nums">
             {formatNumberWithWon(result.grossMonthlySalary)}
           </div>
-          <p className="text-[11px] text-muted-foreground leading-tight">
+          <p className="text-[11px] text-[#64748b] dark:text-slate-400 leading-tight">
             과세 {formatNumberWithWon(result.taxableMonthlySalary)} + 비과세{' '}
             {formatNumberWithWon(result.nonTaxableMonthly)}
           </p>
         </div>
 
         {/* 월 총 공제액 */}
-        <div className="p-4 rounded-xl bg-card border border-border shadow-2xs space-y-1">
-          <div className="flex items-center justify-between text-muted-foreground">
-            <span className="text-xs font-semibold uppercase tracking-wider">
+        <div className="p-3.5 sm:p-4 rounded-2xl bg-white dark:bg-[#1e293b] border border-[#e5e7eb] dark:border-slate-800 shadow-2xs space-y-1">
+          <div className="flex items-center justify-between text-[#64748b] dark:text-slate-400">
+            <span className="text-[11px] font-bold uppercase tracking-wider">
               월 총 공제액
             </span>
-            <ShieldAlert className="w-4 h-4 text-rose-500/80" />
+            <ShieldAlert className="w-4 h-4 text-rose-500" />
           </div>
           <div className="text-lg font-bold font-mono tracking-tight text-rose-500 tabular-nums">
             -{formatNumberWithWon(result.totalMonthlyDeduction)}
           </div>
-          <p className="text-[11px] text-muted-foreground leading-tight">
+          <p className="text-[11px] text-[#64748b] dark:text-slate-400 leading-tight">
             보험 {formatNumberWithWon(result.totalFourMajorInsurances)} + 세금{' '}
             {formatNumberWithWon(result.totalTax)}
           </p>
         </div>
 
         {/* 총 공제 비율 */}
-        <div className="p-4 rounded-xl bg-card border border-border shadow-2xs space-y-1">
-          <div className="flex items-center justify-between text-muted-foreground">
-            <span className="text-xs font-semibold uppercase tracking-wider">
+        <div className="p-3.5 sm:p-4 rounded-2xl bg-white dark:bg-[#1e293b] border border-[#e5e7eb] dark:border-slate-800 shadow-2xs space-y-1">
+          <div className="flex items-center justify-between text-[#64748b] dark:text-slate-400">
+            <span className="text-[11px] font-bold uppercase tracking-wider">
               총 공제 비율
             </span>
-            <PieChart className="w-4 h-4 text-amber-500/80" />
+            <PieChart className="w-4 h-4 text-amber-500" />
           </div>
-          <div className="text-lg font-bold font-mono tracking-tight text-foreground tabular-nums">
+          <div className="text-lg font-bold font-mono tracking-tight text-[#112220] dark:text-slate-100 tabular-nums">
             {result.totalDeductionRatio}%
           </div>
-          <p className="text-[11px] text-muted-foreground leading-tight">
+          <p className="text-[11px] text-[#64748b] dark:text-slate-400 leading-tight">
             연간 총 공제 {formatNumberWithWon(result.totalMonthlyDeduction * 12)}
           </p>
         </div>

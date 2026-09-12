@@ -89,15 +89,20 @@ export const SalaryForm: React.FC<SalaryFormProps> = ({
     : MONTHLY_INCREMENT_PRESETS;
 
   return (
-    <div className="bg-card border border-border rounded-xl p-5 md:p-6 space-y-6 shadow-sm">
-      {/* 폼 상단 헤더 및 초기화 버튼 */}
-      <div className="flex items-center justify-between pb-3 border-b border-border">
-        <div>
-          <h2 className="text-base font-semibold text-foreground tracking-tight">
-            급여 조건 입력
-          </h2>
-          <p className="text-xs text-muted-foreground mt-0.5">
-            2026년 최신 4대 보험 및 간이세액표가 자동 적용됩니다.
+    <div className="bg-white dark:bg-[#1e293b] p-5 sm:p-6 rounded-[24px] border border-[#e5e7eb] dark:border-slate-800 shadow-sm transition-colors space-y-5 sm:space-y-6">
+      {/* 1. 폼 상단 헤더 및 초기화 버튼 */}
+      <div className="flex items-center justify-between pb-3 border-b border-[#e5e7eb] dark:border-slate-800">
+        <div className="space-y-0.5">
+          <div className="flex items-center gap-2">
+            <Badge variant="meta" size="sm">
+              급여 설계
+            </Badge>
+            <h2 className="text-sm sm:text-base font-bold text-[#112220] dark:text-slate-100">
+              급여 조건 입력
+            </h2>
+          </div>
+          <p className="text-xs text-[#64748b] dark:text-slate-400">
+            2026년 최신 4대 보험 및 간이세액표가 자동 적용됩니다
           </p>
         </div>
         <Button
@@ -105,17 +110,16 @@ export const SalaryForm: React.FC<SalaryFormProps> = ({
           variant="ghost"
           size="sm"
           onClick={onReset}
-          className="h-8 px-2.5 text-xs text-muted-foreground hover:text-foreground"
-          title="기본값으로 초기화"
+          className="h-8 gap-1 text-xs text-slate-500 dark:text-slate-400 hover:text-[#112220] dark:hover:text-white"
         >
-          <RotateCcw className="w-3.5 h-3.5 mr-1" />
+          <RotateCcw className="w-3.5 h-3.5" />
           초기화
         </Button>
       </div>
 
-      {/* 1. 급여 지급 기준 토글 */}
-      <div className="space-y-2">
-        <label className="text-xs font-semibold text-muted-foreground block">
+      {/* 2. 급여 지급 기준 토글 */}
+      <div>
+        <label className="block text-xs font-bold text-[#112220] dark:text-slate-200 mb-2">
           급여 지급 형태
         </label>
         <SegmentedControl
@@ -141,64 +145,67 @@ export const SalaryForm: React.FC<SalaryFormProps> = ({
               updateField('paymentType', val);
             }
           }}
+          variant="dark-solid"
+          itemClassName="py-2 text-xs sm:text-sm"
         />
       </div>
 
-      {/* 2. 세전 급여 금액 입력 */}
-      <div className="space-y-3">
-        <div className="flex items-center justify-between">
+      {/* 3. 세전 급여 금액 입력 */}
+      <div>
+        <div className="flex flex-wrap items-baseline justify-between gap-1 mb-1">
           <label
             htmlFor="gross-amount-input"
-            className="text-xs font-semibold text-muted-foreground"
+            className="text-xs sm:text-sm font-bold text-[#112220] dark:text-slate-200 cursor-pointer"
           >
             {isAnnual ? '세전 연봉' : '세전 월급'}
           </label>
           {input.grossAmount > 0 && (
-            <Badge variant="secondary" className="font-mono text-xs">
+            <span className="text-xs font-bold text-[#112220] dark:text-[#d1ff19]">
               {formatKoreanUnit(input.grossAmount)}
-            </Badge>
+            </span>
           )}
         </div>
 
         <div className="relative">
           <Input
             id="gross-amount-input"
+            aria-label={isAnnual ? '세전 연봉 입력' : '세전 월급 입력'}
             type="text"
             inputMode="numeric"
             value={input.grossAmount ? input.grossAmount.toLocaleString('ko-KR') : ''}
+            placeholder="0"
             onChange={(e) => {
               const raw = e.target.value.replace(/[^0-9]/g, '');
               updateField('grossAmount', raw ? parseInt(raw, 10) : 0);
             }}
-            className="text-lg font-bold font-mono pr-10 tracking-tight"
-            placeholder={isAnnual ? '예: 50,000,000' : '예: 4,000,000'}
+            onBlur={() => {
+              if (!input.grossAmount) {
+                updateField('grossAmount', isAnnual ? 50_000_000 : 4_000_000);
+              }
+            }}
+            className="w-full text-right font-bold text-[#112220] dark:text-slate-100 pl-3 pr-10 py-2 border border-[#e5e7eb] dark:border-slate-700 rounded-xl text-base sm:text-lg tracking-tight bg-slate-50/50 dark:bg-slate-900/60 focus-visible:ring-[#15171a] dark:focus-visible:ring-[#d1ff19] h-11"
           />
-          <span className="absolute right-3.5 top-1/2 -translate-y-1/2 text-xs font-medium text-muted-foreground pointer-events-none">
+          <span className="absolute right-3.5 top-1/2 -translate-y-1/2 text-sm font-medium text-slate-400 dark:text-slate-500 pointer-events-none select-none">
             원
           </span>
         </div>
 
         {/* 대표 금액 프리셋 칩 */}
-        <div className="space-y-1.5">
-          <div className="text-[11px] text-muted-foreground font-medium">
-            자주 찾는 {isAnnual ? '연봉' : '월급'}
-          </div>
-          <div className="flex flex-wrap gap-1.5">
-            {amountPresets.map((preset) => (
-              <SelectableChip
-                key={preset.value}
-                isSelected={input.grossAmount === preset.value}
-                onClick={() => updateField('grossAmount', preset.value)}
-                className="text-xs px-2.5 py-1"
-              >
-                {preset.label}
-              </SelectableChip>
-            ))}
-          </div>
+        <div className="flex items-center gap-1.5 mt-2 flex-wrap">
+          {amountPresets.map((preset) => (
+            <SelectableChip
+              key={preset.value}
+              isSelected={input.grossAmount === preset.value}
+              onClick={() => updateField('grossAmount', preset.value)}
+              className="text-xs px-2.5 py-1"
+            >
+              {preset.label}
+            </SelectableChip>
+          ))}
         </div>
 
         {/* 빠른 증감 칩 */}
-        <div className="flex flex-wrap items-center gap-1.5 pt-1">
+        <div className="flex items-center gap-1.5 mt-1.5 flex-wrap">
           {incrementPresets.map((inc) => (
             <Button
               key={inc.label}
@@ -206,47 +213,58 @@ export const SalaryForm: React.FC<SalaryFormProps> = ({
               variant="outline"
               size="sm"
               onClick={() => handleAmountIncrement(inc.value)}
-              className="h-7 px-2 text-xs font-mono"
+              className="h-7 px-2.5 text-xs font-semibold bg-white dark:bg-slate-900 border-[#e5e7eb] dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800"
             >
               {inc.label}
             </Button>
           ))}
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            onClick={() => updateField('grossAmount', 0)}
+            className="h-7 px-2 text-xs font-semibold text-rose-500 border-rose-200 dark:border-rose-900/50 hover:bg-rose-50 dark:hover:bg-rose-950/30"
+          >
+            정정
+          </Button>
         </div>
       </div>
 
-      {/* 3. 퇴직금 지급 방식 토글 (연봉 기준일 때 더욱 중요) */}
-      <div className="space-y-2 pt-2 border-t border-border/60">
-        <label className="text-xs font-semibold text-muted-foreground block">
+      {/* 4. 퇴직금 지급 방식 토글 */}
+      <div className="pt-2 border-t border-[#e5e7eb] dark:border-slate-800">
+        <label className="block text-xs font-bold text-[#112220] dark:text-slate-200 mb-2">
           퇴직금 지급 방식
         </label>
         <SegmentedControl
           value={input.severanceType}
           options={SEVERANCE_OPTIONS}
           onChange={(val) => updateField('severanceType', val)}
+          variant="dark-solid"
+          itemClassName="py-1.5 text-xs"
         />
-        <p className="text-[11px] text-muted-foreground">
+        <p className="text-[11px] text-[#64748b] dark:text-slate-400 mt-1.5">
           {input.severanceType === 'included'
             ? '연봉을 13분할하여 1개월분을 퇴직충당금으로 공제합니다.'
             : '퇴직금은 별도 지급되며 연봉을 12개월로 균등 분할합니다.'}
         </p>
       </div>
 
-      {/* 4. 비과세 급여액 설정 */}
-      <div className="space-y-2.5 pt-2 border-t border-border/60">
-        <div className="flex items-center justify-between">
+      {/* 5. 비과세 급여액 설정 */}
+      <div className="pt-2 border-t border-[#e5e7eb] dark:border-slate-800">
+        <div className="flex flex-wrap items-baseline justify-between gap-1 mb-1">
           <label
             htmlFor="non-taxable-input"
-            className="text-xs font-semibold text-muted-foreground flex items-center gap-1"
+            className="text-xs sm:text-sm font-bold text-[#112220] dark:text-slate-200 cursor-pointer flex items-center gap-1"
           >
             월 비과세 수당/식대
             <span
-              className="text-muted-foreground/80 cursor-help"
+              className="text-slate-400 dark:text-slate-500 cursor-help"
               title="식대(월 20만 원 한도), 자가운전보조금 등 4대 보험 및 소득세가 과세되지 않는 급여 항목입니다."
             >
-              <HelpCircle className="w-3 h-3 inline" />
+              <HelpCircle className="w-3.5 h-3.5 inline" />
             </span>
           </label>
-          <span className="font-mono text-xs text-muted-foreground">
+          <span className="text-xs font-bold text-[#112220] dark:text-[#d1ff19]">
             {formatNumberWithWon(input.nonTaxableAmount)}
           </span>
         </div>
@@ -254,22 +272,27 @@ export const SalaryForm: React.FC<SalaryFormProps> = ({
         <div className="relative">
           <Input
             id="non-taxable-input"
+            aria-label="월 비과세 수당 및 식대 입력"
             type="text"
             inputMode="numeric"
-            value={input.nonTaxableAmount !== undefined ? input.nonTaxableAmount.toLocaleString('ko-KR') : ''}
+            value={
+              input.nonTaxableAmount !== undefined
+                ? input.nonTaxableAmount.toLocaleString('ko-KR')
+                : ''
+            }
+            placeholder="200,000"
             onChange={(e) => {
               const raw = e.target.value.replace(/[^0-9]/g, '');
               updateField('nonTaxableAmount', raw ? parseInt(raw, 10) : 0);
             }}
-            className="font-mono pr-10"
-            placeholder="200,000"
+            className="w-full text-right font-bold text-[#112220] dark:text-slate-100 pl-3 pr-10 py-2 border border-[#e5e7eb] dark:border-slate-700 rounded-xl text-base sm:text-lg tracking-tight bg-slate-50/50 dark:bg-slate-900/60 focus-visible:ring-[#15171a] dark:focus-visible:ring-[#d1ff19] h-11"
           />
-          <span className="absolute right-3.5 top-1/2 -translate-y-1/2 text-xs font-medium text-muted-foreground pointer-events-none">
+          <span className="absolute right-3.5 top-1/2 -translate-y-1/2 text-sm font-medium text-slate-400 dark:text-slate-500 pointer-events-none select-none">
             원
           </span>
         </div>
 
-        <div className="flex flex-wrap gap-1.5">
+        <div className="flex items-center gap-1.5 mt-2 flex-wrap">
           {NON_TAXABLE_PRESETS.map((preset) => (
             <SelectableChip
               key={preset.value}
@@ -283,25 +306,25 @@ export const SalaryForm: React.FC<SalaryFormProps> = ({
         </div>
       </div>
 
-      {/* 5. 부양가족 수 및 20세 이하 자녀 수 (인적공제) */}
-      <div className="space-y-3 pt-2 border-t border-border/60">
-        <div className="text-xs font-semibold text-muted-foreground">
+      {/* 6. 부양가족 수 및 20세 이하 자녀 수 (인적공제) */}
+      <div className="pt-2 border-t border-[#e5e7eb] dark:border-slate-800 space-y-2.5">
+        <label className="block text-xs font-bold text-[#112220] dark:text-slate-200">
           인적공제 (부양가족 및 자녀)
-        </div>
+        </label>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {/* 부양가족 수 */}
-          <div className="bg-muted/40 rounded-lg p-3 border border-border/60 space-y-2">
+          <div className="bg-slate-50 dark:bg-slate-900/40 rounded-xl p-3 border border-[#e5e7eb] dark:border-slate-800 space-y-2">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-medium text-foreground flex items-center gap-1">
-                <Users className="w-3.5 h-3.5 text-muted-foreground" />
+              <span className="text-xs font-semibold text-[#112220] dark:text-slate-200 flex items-center gap-1">
+                <Users className="w-3.5 h-3.5 text-slate-500" />
                 부양가족 수
               </span>
-              <span className="font-mono font-semibold text-xs text-foreground">
+              <span className="font-mono font-bold text-xs text-[#112220] dark:text-slate-100">
                 {input.familyCount}명
               </span>
             </div>
-            <p className="text-[10px] text-muted-foreground leading-tight">
+            <p className="text-[10px] text-[#64748b] dark:text-slate-400 leading-tight">
               본인 포함 (1인당 연 150만 원 공제)
             </p>
             <div className="flex items-center gap-1.5 pt-1">
@@ -309,7 +332,7 @@ export const SalaryForm: React.FC<SalaryFormProps> = ({
                 type="button"
                 variant="outline"
                 size="sm"
-                className="h-7 flex-1 text-xs"
+                className="h-7 flex-1 text-xs font-semibold bg-white dark:bg-slate-900 border-[#e5e7eb] dark:border-slate-700"
                 disabled={input.familyCount <= 1}
                 onClick={() =>
                   updateField('familyCount', Math.max(1, input.familyCount - 1))
@@ -321,7 +344,7 @@ export const SalaryForm: React.FC<SalaryFormProps> = ({
                 type="button"
                 variant="outline"
                 size="sm"
-                className="h-7 flex-1 text-xs"
+                className="h-7 flex-1 text-xs font-semibold bg-white dark:bg-slate-900 border-[#e5e7eb] dark:border-slate-700"
                 disabled={input.familyCount >= 11}
                 onClick={() =>
                   updateField('familyCount', Math.min(11, input.familyCount + 1))
@@ -333,17 +356,17 @@ export const SalaryForm: React.FC<SalaryFormProps> = ({
           </div>
 
           {/* 20세 이하 자녀 수 */}
-          <div className="bg-muted/40 rounded-lg p-3 border border-border/60 space-y-2">
+          <div className="bg-slate-50 dark:bg-slate-900/40 rounded-xl p-3 border border-[#e5e7eb] dark:border-slate-800 space-y-2">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-medium text-foreground flex items-center gap-1">
-                <Baby className="w-3.5 h-3.5 text-muted-foreground" />
+              <span className="text-xs font-semibold text-[#112220] dark:text-slate-200 flex items-center gap-1">
+                <Baby className="w-3.5 h-3.5 text-slate-500" />
                 20세 이하 자녀
               </span>
-              <span className="font-mono font-semibold text-xs text-foreground">
+              <span className="font-mono font-bold text-xs text-[#112220] dark:text-slate-100">
                 {input.childrenCount}명
               </span>
             </div>
-            <p className="text-[10px] text-muted-foreground leading-tight">
+            <p className="text-[10px] text-[#64748b] dark:text-slate-400 leading-tight">
               자녀 세액공제 추가 적용
             </p>
             <div className="flex items-center gap-1.5 pt-1">
@@ -351,7 +374,7 @@ export const SalaryForm: React.FC<SalaryFormProps> = ({
                 type="button"
                 variant="outline"
                 size="sm"
-                className="h-7 flex-1 text-xs"
+                className="h-7 flex-1 text-xs font-semibold bg-white dark:bg-slate-900 border-[#e5e7eb] dark:border-slate-700"
                 disabled={input.childrenCount <= 0}
                 onClick={() =>
                   updateField('childrenCount', Math.max(0, input.childrenCount - 1))
@@ -363,7 +386,7 @@ export const SalaryForm: React.FC<SalaryFormProps> = ({
                 type="button"
                 variant="outline"
                 size="sm"
-                className="h-7 flex-1 text-xs"
+                className="h-7 flex-1 text-xs font-semibold bg-white dark:bg-slate-900 border-[#e5e7eb] dark:border-slate-700"
                 disabled={input.childrenCount >= 10}
                 onClick={() =>
                   updateField('childrenCount', Math.min(10, input.childrenCount + 1))

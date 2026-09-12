@@ -60,14 +60,14 @@ export const SalaryChartDashboard: React.FC<SalaryChartDashboardProps> = ({ resu
   ].filter((s) => s.value > 0);
 
   return (
-    <div className="bg-card border border-border rounded-xl p-5 md:p-6 shadow-sm space-y-4">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-border">
+    <div className="bg-white dark:bg-[#1e293b] p-5 sm:p-6 rounded-[24px] border border-[#e5e7eb] dark:border-slate-800 shadow-sm transition-colors space-y-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-[#e5e7eb] dark:border-slate-800">
         <div>
-          <h3 className="text-sm font-semibold text-foreground tracking-tight">
+          <h3 className="text-sm sm:text-base font-bold text-[#112220] dark:text-slate-100 tracking-tight">
             급여 및 공제 항목 구성 비중
           </h3>
-          <p className="text-xs text-muted-foreground mt-0.5">
-            세전 월 급여 중 실수령액과 각 공제 항목이 차지하는 비율입니다.
+          <p className="text-xs text-[#64748b] dark:text-slate-400 mt-0.5">
+            세전 월 급여 중 실수령액과 각 공제 항목이 차지하는 비율입니다
           </p>
         </div>
       </div>
@@ -118,10 +118,10 @@ export const SalaryChartDashboard: React.FC<SalaryChartDashboardProps> = ({ resu
 
           {/* 도넛 차트 중앙 텍스트 */}
           <div className="absolute flex flex-col items-center justify-center pointer-events-none text-center">
-            <span className="text-[11px] font-medium text-muted-foreground">
+            <span className="text-[11px] font-bold text-[#64748b] dark:text-slate-400 uppercase tracking-wider">
               실수령 비율
             </span>
-            <span className="text-xl font-extrabold font-mono text-foreground tabular-nums">
+            <span className="text-xl sm:text-2xl font-extrabold font-mono text-[#112220] dark:text-slate-100 tabular-nums">
               {result.takeHomeRatio}%
             </span>
           </div>
@@ -132,18 +132,22 @@ export const SalaryChartDashboard: React.FC<SalaryChartDashboardProps> = ({ resu
           {segments.map((item) => (
             <div
               key={item.name}
-              className="flex items-center justify-between p-2 rounded-lg bg-muted/40 border border-border/50"
+              className="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 dark:bg-slate-900/40 border border-[#e5e7eb] dark:border-slate-800"
             >
               <div className="flex items-center gap-2">
                 <span
                   className="w-2.5 h-2.5 rounded-full shrink-0"
                   style={{ backgroundColor: item.color }}
                 />
-                <span className="font-medium text-foreground">{item.name}</span>
+                <span className="font-semibold text-[#112220] dark:text-slate-200">
+                  {item.name}
+                </span>
               </div>
               <div className="flex items-center gap-2 font-mono">
-                <span className="text-muted-foreground">{item.percentage}%</span>
-                <span className="font-semibold text-foreground">
+                <span className="text-slate-400 dark:text-slate-500 text-[11px]">
+                  {item.percentage}%
+                </span>
+                <span className="font-bold text-[#112220] dark:text-slate-100 tabular-nums">
                   {formatNumberWithWon(item.value)}
                 </span>
               </div>
