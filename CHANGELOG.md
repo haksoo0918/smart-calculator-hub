@@ -3,6 +3,14 @@
 모든 주요 변경 사항은 본 문서에 기록됩니다.
 버전 체계는 [Semantic Versioning (SemVer)](https://semver.org/)을 준수합니다.
 
+## [1.9.2] - 2026-09-12
+
+### 전역 프리텐다드(Pretendard Variable) 단일 서체 강제 원칙 및 PRD 표준화 (Docs)
+- **PRD 전역 서체 표준 및 타 서체 사용 금지 명시 (`PRD.md`)**:
+  - 기본 원칙, 핵심 가치(Section 1), Ghost 디자인 원칙(Section 2.3), 기술 스택(Section 5)에 걸쳐 플랫폼 전역의 기본 폰트로 `Pretendard Variable`을 단일 표준으로 강제.
+  - Inter, Roboto, Noto Sans, Serif 등 일체의 타 폰트 혼용 전면 금지 및 고정폭 숫자(`tabular-nums`) 결합 명시.
+  - `package.json` 및 `PRD.md` 버전 `v1.9.2` 동기화.
+
 ## [1.9.1] - 2026-09-12
 
 ### 공통 숫자 및 금액 입력 컴포넌트(NumericInput) 신설 및 계산기 폼 규격 표준화 (Refactor)
