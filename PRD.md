@@ -1,6 +1,6 @@
 # [PRD] 모바일 우선 스마트 멀티 계산기 플랫폼 (Smart Calculator Hub)
 
-> **버전**: v1.9.3  
+> **버전**: v1.9.4  
 > **최종 갱신일**: 2026-09-12  
 > **제작 및 브랜딩**: © sosoFactory  
 > **기본 원칙**: Ghost 디자인 시스템 원칙 준수, 전역 프리텐다드(Pretendard Variable) 단일 폰트 원칙, 모바일 퍼스트(Mobile-First), 일관된 UI/UX, 100% 오프라인 동작(PWA), WCAG 웹 접근성 준수
@@ -865,6 +865,16 @@ export interface SalaryCalculationResult {
    - 최종 수령액 메인 카드를 최상단에 강조 배치하고, 하단 3단 서브 카드는 단일 모드 시 3열 / 비교 모드 시 1열 세로 배치로 화면 분할 시에도 정보 가독성 보장.
 5. **대형 듀얼 카드 (`DualExchangeCard.tsx`, `DualConverterCard.tsx`)**:
    - 모바일 좁은 화면에서 드롭다운 셀렉트와 복사 버튼, 라벨이 겹치거나 넘치지 않도록 가변 폭 최적화.
+6. **연봉 실수령액 계산기 (`SalaryApp.tsx`, `SalarySummaryCards.tsx`, `SalaryChartDashboard.tsx`, `DeductionBreakdownTable.tsx`)**:
+   - **모바일 (<768px)**:
+     - 좌측 폼과 우측 대시보드가 단일 열(`grid-cols-1`) 수직 스택으로 전개되어 가로 스크롤 없이 한 손 조작 가능.
+     - 3단 서브 요약 카드가 세로 1열(`grid-cols-1`)로 유동 리플로우되며, 복사 버튼이 수치 하단으로 자연스럽게 감김.
+     - 6대 공제 명세표는 음수 마진(`-mx-5`)과 `overflow-x-auto`를 적용하여 뷰포트 넘침 없이 부드러운 스와이프 보장.
+   - **태블릿 (768px ~ 1023px, `md`)**:
+     - 네비게이션은 모바일 드로어를 유지하여 768px 가용 폭을 넓게 활용.
+     - 서브 요약 카드는 3열 가로 그리드(`sm:grid-cols-3`), 공제 비중 도넛 차트는 좌우 2열 분할(`md:grid-cols-12`: 차트 6열, 범례 6열)로 레이아웃 전환.
+   - **데스크톱 (>=1024px, `lg`)**:
+     - 좌측 고정 사이드바(`w-64`)와 우측 12컬럼 메인 그리드(`lg:col-span-5` 입력 폼 + `lg:col-span-7` 결과 대시보드)의 2열 레이아웃 완성.
 
 ---
 
