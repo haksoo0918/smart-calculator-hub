@@ -132,20 +132,6 @@ export const HomeApp: React.FC = () => {
                       {item.description}
                     </p>
                   </div>
-
-                  {/* 키워드 미니 칩 (모바일에서는 1개, 데스크톱에서는 2개) */}
-                  {item.keywords && item.keywords.length > 0 && (
-                    <div className="flex flex-wrap gap-1 pt-0.5">
-                      <span className="text-[9px] sm:text-[10px] font-medium text-slate-500 dark:text-slate-400 bg-slate-100/90 dark:bg-slate-800/80 px-1.5 py-0.5 rounded">
-                        #{item.keywords[0]}
-                      </span>
-                      {item.keywords[1] && (
-                        <span className="hidden sm:inline-block text-[10px] font-medium text-slate-500 dark:text-slate-400 bg-slate-100/90 dark:bg-slate-800/80 px-1.5 py-0.5 rounded">
-                          #{item.keywords[1]}
-                        </span>
-                      )}
-                    </div>
-                  )}
                 </div>
 
                 {/* 하단: 미니 액션 라인 */}
