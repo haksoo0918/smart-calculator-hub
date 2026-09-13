@@ -184,8 +184,10 @@ src/
 - **테마 토글 인터페이스**:
   - 글로벌 헤더 우측 상단 1곳에 일원화 배치하여 모바일/데스크톱 전 환경에서 항시 접근 가능.
   - 라이트/다크 전환 시 경쾌한 아이콘 회전 트랜지션 및 툴팁 안내 제공.
-  - **부드러운 전역 테마 전환 스무딩 (Theme Transition Smoothing)**:
-    - 테마 전환 스위치 조작 시 배경과 테두리가 뚝뚝 끊기거나 눈부심 깜빡임이 발생하지 않도록 `html`, `body` 및 주요 레이아웃, 카드 패널, 테두리 전반에 `transition: background-color 200ms ease, border-color 200ms ease, color 200ms ease` 전역 스무딩을 적용하여 0.2초 동안 매끄럽고 유기적인 페이드 전환 경험 제공.
+  - **부드러운 전역 테마 전환 스무딩 (Theme Transition Smoothing & View Transitions API)**:
+    - 테마 전환 조작 시 화면이 뚝뚝 끊기거나 눈부심 깜빡임이 발생하지 않도록 **모던 웹 표준 `View Transitions API` (`document.startViewTransition`)** 를 적용하여 화면 전체를 GPU 가속 기반으로 부드럽게 크로스페이드(300ms) 전환.
+    - View Transitions API를 미지원하는 환경(구형 브라우저 등)을 위한 견고한 폴백(Fallback)으로 `html`, `body`, 주요 레이아웃(`header`, `aside`, `nav`, `main`, `footer`), 카드 박스, 입력 폼 패널, 테두리 전반에 `transition: background-color 300ms ease, border-color 300ms ease, color 300ms ease` 전역 스무딩을 적용하여 0.3초 동안 유기적이고 일관된 페이드 전환 경험 제공.
+    - 접근성 보장: 사용자가 OS에서 모션 감소(`prefers-reduced-motion: reduce`)를 설정한 경우 트랜지션을 즉시 비활성화하여 웹 접근성 표준 준수.
   - 야간 및 저조도 환경에서 눈부심을 방지하고 최적의 명암비(WCAG AA 기준)를 확보하여 장시간 사용 편의성 제공.
   - 차트(Recharts) 시각화 또한 다크 모드 전환 시 축 라벨과 그리드선, 툴팁이 가독성 높게 자동 전환.
 

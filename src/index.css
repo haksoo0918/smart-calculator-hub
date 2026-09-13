@@ -12,7 +12,6 @@
   body {
     background-color: #ffffff;
     color: #112220;
-    transition: background-color 200ms ease, color 200ms ease;
   }
 
   .dark body {
@@ -20,14 +19,32 @@
     color: #f8fafc;
   }
 
-  /* 전역 레이아웃 및 주요 컨테이너의 부드러운 테마 페이드 전환 */
-  header,
-  aside,
-  nav,
-  main,
-  footer,
-  [role="dialog"] {
-    transition: background-color 200ms ease, border-color 200ms ease, color 200ms ease;
+  /* 전역 레이아웃 및 주요 컨테이너의 부드러운 테마 페이드 전환 (Fallback & Base) */
+  @media (prefers-reduced-motion: no-preference) {
+    html,
+    body,
+    header,
+    aside,
+    nav,
+    main,
+    footer,
+    [role="dialog"] {
+      transition: background-color 300ms ease, border-color 300ms ease, color 300ms ease;
+    }
+  }
+
+  /* 모던 브라우저 View Transitions API 전역 부드러운 크로스페이드 (300ms) */
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 300ms;
+    animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    ::view-transition-old(root),
+    ::view-transition-new(root) {
+      animation: none;
+    }
   }
 
   /* 모바일 터치 최적화: 핀치 줌에 의한 불필요한 레이아웃 왜곡 방지 및 Ghost ink accent */

@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
+import { flushSync } from 'react-dom';
 
 export type Theme = 'light' | 'dark' | 'system';
 export type ResolvedTheme = 'light' | 'dark';
@@ -15,6 +16,27 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 const THEME_STORAGE_KEY = 'theme-preference';
 
+const getResolvedTheme = (t: Theme): ResolvedTheme => {
+  if (t === 'light') return 'light';
+  if (t === 'dark') return 'dark';
+  if (typeof window !== 'undefined' && typeof window.matchMedia === 'function') {
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  }
+  return 'light';
+};
+
+const applyDomTheme = (resolved: ResolvedTheme) => {
+  if (typeof document === 'undefined') return;
+  const root = document.documentElement;
+  if (resolved === 'dark') {
+    root.classList.add('dark');
+    root.style.colorScheme = 'dark';
+  } else {
+    root.classList.remove('dark');
+    root.style.colorScheme = 'light';
+  }
+};
+
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [theme, setThemeState] = useState<Theme>(() => {
     if (typeof window === 'undefined') return 'system';
@@ -26,62 +48,59 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   });
 
   const [resolvedTheme, setResolvedTheme] = useState<ResolvedTheme>(() => {
-    if (typeof window === 'undefined') return 'light';
-    if (theme === 'light') return 'light';
-    if (theme === 'dark') return 'dark';
-    if (typeof window.matchMedia === 'function') {
-      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-    }
-    return 'light';
+    return getResolvedTheme(theme);
   });
 
   useEffect(() => {
-    const root = document.documentElement;
+    // 최초 마운트 시 동기화
+    applyDomTheme(resolvedTheme);
+
     const mediaQuery = typeof window !== 'undefined' && typeof window.matchMedia === 'function'
       ? window.matchMedia('(prefers-color-scheme: dark)')
       : null;
 
-    const updateTheme = () => {
-      let currentResolved: ResolvedTheme = 'light';
-      if (theme === 'light') {
-        currentResolved = 'light';
-      } else if (theme === 'dark') {
-        currentResolved = 'dark';
-      } else {
-        currentResolved = mediaQuery?.matches ? 'dark' : 'light';
-      }
-
-      setResolvedTheme(currentResolved);
-
-      if (currentResolved === 'dark') {
-        root.classList.add('dark');
-        root.style.colorScheme = 'dark';
-      } else {
-        root.classList.remove('dark');
-        root.style.colorScheme = 'light';
-      }
-    };
-
-    updateTheme();
-
     if (mediaQuery && typeof mediaQuery.addEventListener === 'function') {
       const handleMediaChange = () => {
         if (theme === 'system') {
-          updateTheme();
+          const nextResolved = mediaQuery.matches ? 'dark' : 'light';
+          setResolvedTheme(nextResolved);
+          applyDomTheme(nextResolved);
         }
       };
 
       mediaQuery.addEventListener('change', handleMediaChange);
       return () => mediaQuery.removeEventListener('change', handleMediaChange);
     }
-  }, [theme]);
+  }, [theme, resolvedTheme]);
 
   const setTheme = (newTheme: Theme) => {
-    setThemeState(newTheme);
-    try {
-      localStorage.setItem(THEME_STORAGE_KEY, newTheme);
-    } catch {
-      // localStorage 접근 불가 환경 예외 무시
+    const nextResolved = getResolvedTheme(newTheme);
+
+    const updateStateAndStorage = () => {
+      setThemeState(newTheme);
+      setResolvedTheme(nextResolved);
+      applyDomTheme(nextResolved);
+      try {
+        localStorage.setItem(THEME_STORAGE_KEY, newTheme);
+      } catch {
+        // localStorage 접근 불가 환경 예외 무시
+      }
+    };
+
+    // 모던 브라우저 View Transitions API 지원 (GPU 가속 크로스페이드)
+    if (
+      typeof document !== 'undefined' &&
+      'startViewTransition' in document &&
+      typeof (document as unknown as { startViewTransition: unknown }).startViewTransition === 'function' &&
+      !window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    ) {
+      (document as unknown as { startViewTransition: (cb: () => void) => void }).startViewTransition(() => {
+        flushSync(() => {
+          updateStateAndStorage();
+        });
+      });
+    } else {
+      updateStateAndStorage();
     }
   };
 
