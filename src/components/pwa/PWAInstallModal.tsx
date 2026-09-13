@@ -65,10 +65,12 @@ export const PWAInstallModal: React.FC<PWAInstallModalProps> = ({
           </div>
           <div>
             <h3 id="pwa-install-title" className="text-base sm:text-lg font-bold tracking-tight">
-              스마트 계산기 앱 설치 안내
+              {isInstallable && onInstall ? '스마트 계산기 앱 간편 설치' : '스마트 계산기 앱 설치 안내'}
             </h3>
             <p className="text-xs text-[#64748b] dark:text-slate-400">
-              홈 화면에 추가하면 브라우저 주소창 없이 풀스크린으로 더 빠르고 편리하게 사용할 수 있습니다.
+              {isInstallable && onInstall
+                ? '기기에 앱을 설치하여 브라우저 주소창 없이 풀스크린으로 더 빠르고 쾌적하게 이용하세요.'
+                : '홈 화면에 추가하면 브라우저 주소창 없이 풀스크린으로 더 빠르고 편리하게 사용할 수 있습니다.'}
             </p>
           </div>
         </div>
@@ -85,8 +87,18 @@ export const PWAInstallModal: React.FC<PWAInstallModalProps> = ({
           </div>
         </div>
 
-        {/* 플랫폼별 설치 가이드 */}
-        {isIOS ? (
+        {/* 설치 방법 / 안내 섹션 (직접 설치 지원 시 원클릭 안내, 미지원 시 플랫폼별 수동 가이드) */}
+        {isInstallable && onInstall ? (
+          <div className="rounded-xl p-3.5 bg-slate-50/80 dark:bg-slate-900/60 border border-[#e5e7eb] dark:border-slate-800 mb-5 space-y-1.5">
+            <div className="flex items-center gap-2 text-xs font-bold text-[#112220] dark:text-slate-200">
+              <Download className="w-4 h-4 text-[#112220] dark:text-[#d1ff19] shrink-0" />
+              <span>원클릭 앱 설치 지원 브라우저</span>
+            </div>
+            <p className="text-xs text-slate-600 dark:text-slate-300 pl-6 leading-relaxed">
+              아래 <strong className="text-[#112220] dark:text-white">[지금 설치하기]</strong> 버튼을 누르면 브라우저 설치 대화상자가 즉시 열려 홈 화면 또는 데스크톱에 바로 설치됩니다.
+            </p>
+          </div>
+        ) : isIOS ? (
           <div className="space-y-3 mb-5">
             <div className="flex items-center gap-2 text-xs font-bold text-[#112220] dark:text-slate-200">
               <Smartphone className="w-4 h-4 text-[#112220] dark:text-slate-200" />

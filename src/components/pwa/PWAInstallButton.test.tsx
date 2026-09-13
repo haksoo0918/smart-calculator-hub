@@ -107,7 +107,9 @@ describe('PWAInstallButton', () => {
       fireEvent.click(button);
     });
 
-    // 모달 내부 [스마트 계산기 앱 지금 설치하기] 버튼 확인 및 클릭
+    // 모달 내부 타이틀 및 [스마트 계산기 앱 지금 설치하기] 버튼 확인 및 클릭
+    expect(await screen.findByText('스마트 계산기 앱 간편 설치')).toBeInTheDocument();
+    expect(screen.getByText(/원클릭 앱 설치 지원 브라우저/i)).toBeInTheDocument();
     const directInstallBtn = await screen.findByRole('button', { name: /지금 설치하기/i });
     expect(directInstallBtn).toBeInTheDocument();
 
