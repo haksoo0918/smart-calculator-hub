@@ -8,12 +8,7 @@ import { ChartDashboard } from '../../components/ChartDashboard';
 import { ComparisonView } from '../../components/ComparisonView';
 import { DataTable } from '../../components/DataTable';
 import { CompoundInfoCard } from './components/CompoundInfoCard';
-import { GitCompare, RotateCcw } from 'lucide-react';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from '../../components/ui/tooltip';
+import { GitCompare } from 'lucide-react';
 import { Button } from '../../components/ui/button';
 import { SegmentedControl, SegmentedOption } from '../../components/ui/segmented-control';
 import { siteConfig } from '../../config/site';
@@ -81,12 +76,10 @@ export const CompoundInterestApp: React.FC<CompoundInterestAppProps> = () => {
   }, []);
 
   const handleReset = () => {
-    if (window.confirm('모든 입력값을 기본값으로 초기화하시겠습니까?')) {
-      setScenarioA(DEFAULT_SCENARIO_A);
-      setScenarioB(DEFAULT_SCENARIO_B);
-      setIsComparisonMode(false);
-      setActiveMobileTab('A');
-    }
+    setScenarioA(DEFAULT_SCENARIO_A);
+    setScenarioB(DEFAULT_SCENARIO_B);
+    setIsComparisonMode(false);
+    setActiveMobileTab('A');
   };
 
   const handleCopyAtoB = () => {
@@ -96,14 +89,18 @@ export const CompoundInterestApp: React.FC<CompoundInterestAppProps> = () => {
     });
   };
 
+  const handleCopyBtoA = () => {
+    setScenarioA({
+      ...scenarioB,
+      name: '시나리오 A',
+    });
+  };
+
   return (
-    <div className="space-y-4 sm:space-y-6">
-      {/* 상단 서브 컨트롤러 바 (비교 토글 및 리셋) */}
-      <div className="bg-white dark:bg-[#1e293b] p-3 rounded-[16px] border border-[#e5e7eb] dark:border-slate-800 flex items-center justify-between transition-colors">
+    <div className="space-y-6">
+      {/* 서브 헤더 액션 바: 비교 모드 토글 */}
+      <div className="flex items-center justify-between gap-2 pb-2">
         <div className="flex items-center gap-2">
-          <span className="text-xs font-bold text-[#112220] dark:text-slate-200 hidden sm:inline">
-            시뮬레이션 모드:
-          </span>
           <Button
             type="button"
             variant="outline"
@@ -126,23 +123,6 @@ export const CompoundInterestApp: React.FC<CompoundInterestAppProps> = () => {
             </span>
           </Button>
         </div>
-
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button
-              type="button"
-              variant="ghost"
-              size="sm"
-              onClick={handleReset}
-              className="h-auto flex items-center gap-1 text-xs text-[#64748b] dark:text-slate-400 hover:text-[#112220] dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 px-2.5 py-1.5 rounded-md transition-colors border border-transparent hover:border-[#e5e7eb] dark:hover:border-slate-700"
-              aria-label="기본값 초기화"
-            >
-              <RotateCcw className="w-3.5 h-3.5" />
-              <span className="hidden xs:inline">초기화</span>
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>기본값 초기화</TooltipContent>
-        </Tooltip>
       </div>
 
       {/* 모바일 비교 모드 시 탭 네비게이션 */}
@@ -168,6 +148,7 @@ export const CompoundInterestApp: React.FC<CompoundInterestAppProps> = () => {
               onChange={setScenarioA}
               accentColor="teal"
               badgeTitle="기본 시나리오"
+              onReset={handleReset}
             />
           )}
 
@@ -179,6 +160,9 @@ export const CompoundInterestApp: React.FC<CompoundInterestAppProps> = () => {
                   onChange={setScenarioA}
                   accentColor="teal"
                   badgeTitle="시나리오 A (기준)"
+                  onCopyFromOther={handleCopyBtoA}
+                  copyButtonLabel="시나리오 B 조건 복사"
+                  onReset={() => setScenarioA(DEFAULT_SCENARIO_A)}
                 />
               </div>
 
@@ -190,6 +174,7 @@ export const CompoundInterestApp: React.FC<CompoundInterestAppProps> = () => {
                   badgeTitle="시나리오 B (비교)"
                   onCopyFromOther={handleCopyAtoB}
                   copyButtonLabel="시나리오 A 조건 복사"
+                  onReset={() => setScenarioB(DEFAULT_SCENARIO_B)}
                 />
               </div>
             </>

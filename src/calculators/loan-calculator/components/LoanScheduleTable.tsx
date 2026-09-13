@@ -72,10 +72,10 @@ export const LoanScheduleTable: React.FC<LoanScheduleTableProps> = ({ schedule }
           variant="outline"
           size="sm"
           onClick={handleDownloadCSV}
-          className="h-8 text-xs font-semibold bg-white dark:bg-slate-900 border-[#e5e7eb] dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-[#112220] dark:text-slate-100"
+          className="h-8 px-2.5 gap-1.5 text-xs font-semibold bg-white dark:bg-slate-900 border-[#e5e7eb] dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-[#112220] dark:text-slate-100 rounded-lg shrink-0"
         >
-          <Download className="w-3.5 h-3.5 mr-1.5" />
-          엑셀(CSV) 다운로드
+          <Download className="w-3.5 h-3.5 shrink-0" />
+          <span>CSV 다운로드</span>
         </Button>
       </div>
 

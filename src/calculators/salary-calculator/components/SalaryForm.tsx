@@ -110,10 +110,10 @@ export const SalaryForm: React.FC<SalaryFormProps> = ({
           variant="ghost"
           size="sm"
           onClick={onReset}
-          className="h-8 gap-1 text-xs text-slate-500 dark:text-slate-400 hover:text-[#112220] dark:hover:text-white"
+          className="h-8 px-2.5 gap-1.5 text-xs text-slate-500 dark:text-slate-400 hover:text-[#112220] dark:hover:text-white rounded-lg shrink-0"
         >
           <RotateCcw className="w-3.5 h-3.5" />
-          초기화
+          <span>초기화</span>
         </Button>
       </div>
 

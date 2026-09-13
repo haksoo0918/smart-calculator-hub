@@ -7,7 +7,7 @@ import {
 } from '../types/calculator';
 import { formatKoreanUnit } from '../utils/formatters';
 import { QuickAmountButtons } from './QuickAmountButtons';
-import { Copy } from 'lucide-react';
+import { Copy, RotateCcw } from 'lucide-react';
 import { Badge } from './ui/badge';
 import { Button } from './ui/button';
 import { SelectableChip } from './ui/selectable-chip';
@@ -31,6 +31,7 @@ interface CalculatorFormProps {
   badgeTitle?: string;
   onCopyFromOther?: () => void;
   copyButtonLabel?: string;
+  onReset?: () => void;
 }
 
 const CONTRIBUTION_OPTIONS: SegmentedOption<ContributionFrequency>[] = [
@@ -55,12 +56,16 @@ export const CalculatorForm: React.FC<CalculatorFormProps> = ({
   badgeTitle,
   onCopyFromOther,
   copyButtonLabel,
+  onReset,
 }) => {
   const isIndigo = accentColor === 'indigo';
   const idPrefix = isIndigo ? 'scenario-b' : 'scenario-a';
   const borderFocusClass = 'focus:border-[#15171a] dark:focus:border-[#d1ff19] focus:ring-1 focus:ring-[#15171a] dark:focus:ring-[#d1ff19]';
 
-  const updateField = <K extends keyof ScenarioInput>(field: K, value: ScenarioInput[K]) => {
+  const updateField = <K extends keyof ScenarioInput>(
+    field: K,
+    value: ScenarioInput[K]
+  ) => {
     onChange({
       ...scenario,
       [field]: value,
@@ -88,32 +93,48 @@ export const CalculatorForm: React.FC<CalculatorFormProps> = ({
 
   return (
     <div
-      className={`bg-white dark:bg-[#1e293b] rounded-[24px] p-5 sm:p-6 border border-[#e5e7eb] dark:border-slate-800 transition-colors ${isIndigo ? 'ring-1 ring-slate-900/5' : ''
-        }`}
+      className={`bg-white dark:bg-[#1e293b] rounded-[24px] p-5 sm:p-6 border border-[#e5e7eb] dark:border-slate-800 transition-colors ${
+        isIndigo ? 'ring-1 ring-slate-900/5' : ''
+      }`}
     >
-      {/* 상단 뱃지 및 타이틀 */}
-      <div className="flex items-center justify-between pb-3 mb-4 border-b border-slate-100 dark:border-slate-800">
-        <div className="flex items-center gap-2">
-          <Badge variant={isIndigo ? 'indigo' : 'teal'} className="font-bold uppercase tracking-wider">
+      {/* 상단 뱃지 및 타이틀 & 액션 버튼 */}
+      <div className="flex items-center justify-between pb-3 mb-4 border-b border-slate-100 dark:border-slate-800 gap-2">
+        <div className="flex items-center gap-2 min-w-0">
+          <Badge variant={isIndigo ? 'indigo' : 'teal'} className="font-bold uppercase tracking-wider shrink-0">
             {badgeTitle || scenario.name}
           </Badge>
-          <h2 className="text-sm sm:text-base font-bold text-slate-800 dark:text-slate-100">
+          <h2 className="text-sm sm:text-base font-bold text-slate-800 dark:text-slate-100 whitespace-nowrap">
             투자 조건 설정
           </h2>
         </div>
 
-        {onCopyFromOther && (
-          <Button
-            type="button"
-            variant="outline"
-            size="sm"
-            onClick={onCopyFromOther}
-            className="h-7 text-xs gap-1 text-slate-600 dark:text-slate-300"
-          >
-            <Copy className="w-3.5 h-3.5" />
-            <span>{copyButtonLabel || '복사'}</span>
-          </Button>
-        )}
+        <div className="flex items-center gap-1.5 shrink-0">
+          {onCopyFromOther && (
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={onCopyFromOther}
+              className="h-8 px-2.5 text-xs gap-1.5 text-slate-600 dark:text-slate-300 rounded-lg shrink-0"
+            >
+              <Copy className="w-3.5 h-3.5" />
+              <span>{copyButtonLabel || '복사'}</span>
+            </Button>
+          )}
+
+          {onReset && (
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              onClick={onReset}
+              className="h-8 px-2.5 gap-1.5 text-xs text-slate-500 dark:text-slate-400 hover:text-[#112220] dark:hover:text-white rounded-lg shrink-0"
+            >
+              <RotateCcw className="w-3.5 h-3.5" />
+              <span>초기화</span>
+            </Button>
+          )}
+        </div>
       </div>
 
       <div className="space-y-4 sm:space-y-5">

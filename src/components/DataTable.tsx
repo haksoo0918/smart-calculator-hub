@@ -95,10 +95,10 @@ export const DataTable: React.FC<DataTableProps> = ({
               variant="outline"
               size="sm"
               onClick={downloadCSV}
-              className="h-8 gap-1.5 text-xs text-[#112220] dark:text-slate-100 border-[#e5e7eb] dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800"
+              className="h-8 px-2.5 gap-1.5 text-xs text-[#112220] dark:text-slate-100 border-[#e5e7eb] dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg shrink-0"
             >
-              <Download className="w-3.5 h-3.5" />
-              <span className="hidden xs:inline">CSV 내보내기</span>
+              <Download className="w-3.5 h-3.5 shrink-0" />
+              <span>CSV 다운로드</span>
             </Button>
           )}
 
