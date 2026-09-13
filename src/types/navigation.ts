@@ -50,7 +50,7 @@ export const CALCULATORS_LIST: CalculatorItem[] = [
     id: 'unit',
     name: '단위 변환기',
     shortName: '단위 변환기',
-    description: '아파트 평(坪)↔㎡, 길이, 무게, 부피, 온도 실시간 멀티 변환',
+    description: '아파트 평↔㎡, 길이, 무게, 부피, 온도 실시간 멀티 변환',
     category: 'lifestyle',
     status: 'active',
     keywords: ['단위', '변환', '평수', '평', '제곱미터', 'm2', '면적', '아파트', '길이', '무게', '부피', '온도', '섭씨', '화씨'],
