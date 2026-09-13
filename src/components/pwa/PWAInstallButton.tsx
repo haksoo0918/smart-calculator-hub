@@ -1,5 +1,5 @@
 import React from 'react';
-import { Download } from 'lucide-react';
+import { Download, Smartphone } from 'lucide-react';
 import { usePWAInstall } from '../../hooks/usePWAInstall';
 import { Button } from '../ui/button';
 import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip';
@@ -8,19 +8,21 @@ import { PWAInstallModal } from './PWAInstallModal';
 interface PWAInstallButtonProps {
   variant?: 'header' | 'sidebar';
   className?: string;
+  onActionComplete?: () => void;
 }
 
 /**
- * PWA 원클릭 설치 유도 버튼 컴포넌트
- * - 헤더(Header) 및 사이드바(Sidebar) 듀얼 스타일 지원
+ * PWA 설치 및 가이드 유도 버튼 컴포넌트
+ * - 헤더(Header): [앱 설치] - 즉시 네이티브 설치 다이얼로그(지원 시) 또는 가이드 호출
+ * - 사이드바(Sidebar): [앱 설치 가이드] - 단계별 설치 가이드 모달 호출 및 모바일 드로어 닫힘 지원
  * - standalone 구동 시 자동 숨김
- * - 네이티브 설치 미지원 브라우저 클릭 시 가이드 모달 연결
  */
 export const PWAInstallButton: React.FC<PWAInstallButtonProps> = ({
   variant = 'header',
   className = '',
+  onActionComplete,
 }) => {
-  const { isInstalled, isModalOpen, closeModal, install } = usePWAInstall();
+  const { isInstallable, isInstalled, isModalOpen, openModal, closeModal, install } = usePWAInstall();
 
   // 이미 독립 실행(standalone) 앱으로 구동 중인 경우 숨김
   if (isInstalled) {
@@ -33,19 +35,27 @@ export const PWAInstallButton: React.FC<PWAInstallButtonProps> = ({
         <Button
           type="button"
           variant="outline"
-          aria-label="스마트 계산기 앱 설치"
-          onClick={install}
+          aria-label="앱 설치 가이드"
+          onClick={() => {
+            onActionComplete?.();
+            openModal();
+          }}
           className={`w-full flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 text-xs font-semibold text-[#112220] dark:text-slate-100 border border-[#e5e7eb] dark:border-slate-700 transition-colors ${className}`}
         >
-          <Download className="w-4 h-4 text-[#112220] dark:text-slate-100 shrink-0" />
-          <span className="truncate">스마트 계산기 앱 설치</span>
+          <Smartphone className="w-4 h-4 text-[#112220] dark:text-slate-100 shrink-0" />
+          <span className="truncate">앱 설치 가이드</span>
         </Button>
-        <PWAInstallModal isOpen={isModalOpen} onClose={closeModal} />
+        <PWAInstallModal
+          isOpen={isModalOpen}
+          onClose={closeModal}
+          onInstall={install}
+          isInstallable={isInstallable}
+        />
       </>
     );
   }
 
-  // Header variant (상시 노출)
+  // Header variant (상단 헤더 상시 노출: "앱 설치")
   return (
     <>
       <div className={`flex items-center ${className}`}>
@@ -81,7 +91,13 @@ export const PWAInstallButton: React.FC<PWAInstallButtonProps> = ({
           </Tooltip>
         </div>
       </div>
-      <PWAInstallModal isOpen={isModalOpen} onClose={closeModal} />
+      <PWAInstallModal
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        onInstall={install}
+        isInstallable={isInstallable}
+      />
     </>
   );
 };
+

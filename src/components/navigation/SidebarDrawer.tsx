@@ -158,9 +158,9 @@ export const SidebarDrawer: React.FC<SidebarDrawerProps> = ({
         })}
       </nav>
 
-      {/* 메뉴 목록 하단 PWA 인앱 설치 버튼 영역 (PRD 8.2 명세 준수) */}
+      {/* 메뉴 목록 하단 PWA 설치 가이드 버튼 영역 (PRD 8.2 명세 준수) */}
       <div className="p-3 pb-0">
-        <PWAInstallButton variant="sidebar" />
+        <PWAInstallButton variant="sidebar" onActionComplete={onCloseMobile} />
       </div>
 
       {/* 하단 버전 및 카피라이트 푸터 */}

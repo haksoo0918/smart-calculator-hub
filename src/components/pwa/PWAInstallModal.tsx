@@ -1,19 +1,34 @@
-import React from 'react';
-import { X, Share2, PlusSquare, Monitor, Smartphone, CheckCircle2 } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
+import { X, Share2, PlusSquare, Monitor, Smartphone, CheckCircle2, Download } from 'lucide-react';
 import { Button } from '../ui/button';
 
 interface PWAInstallModalProps {
   isOpen: boolean;
   onClose: () => void;
+  onInstall?: () => void;
+  isInstallable?: boolean;
 }
 
 /**
- * PWA 설치 가이드 모달 컴포넌트
- * - 네이티브 설치 프롬프트 미지원(iOS Safari, 데스크톱 사파리 등) 환경에서 단계별 가이드 안내
- * - iOS Safari의 '홈 화면에 추가' 및 데스크톱 브라우저 설치 방법 시각화
- */
-export const PWAInstallModal: React.FC<PWAInstallModalProps> = ({ isOpen, onClose }) => {
-  if (!isOpen) return null;
+  * PWA 설치 가이드 및 직접 설치 모달 컴포넌트
+  * - React Portal(document.body)을 적용하여 부모 컨테이너의 z-index/stacking context를 탈출하고 전역 최상위(z-[100])로 노출
+  * - 네이티브 설치 지원 시 모달 내부에서 즉시 [지금 앱 설치하기] 버튼 제공
+  * - iOS Safari 및 데스크톱 환경별 맞춤 가이드 제공
+  */
+export const PWAInstallModal: React.FC<PWAInstallModalProps> = ({
+  isOpen,
+  onClose,
+  onInstall,
+  isInstallable = false,
+}) => {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted || !isOpen) return null;
 
   // OS / 브라우저 환경 감지
   const isIOS =
@@ -21,9 +36,9 @@ export const PWAInstallModal: React.FC<PWAInstallModalProps> = ({ isOpen, onClos
     (/iPad|iPhone|iPod/.test(navigator.userAgent) ||
       (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1));
 
-  return (
+  const modalContent = (
     <div
-      className="fixed inset-0 z-[110] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200"
+      className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200"
       onClick={onClose}
       role="dialog"
       aria-modal="true"
@@ -50,10 +65,10 @@ export const PWAInstallModal: React.FC<PWAInstallModalProps> = ({ isOpen, onClos
           </div>
           <div>
             <h3 id="pwa-install-title" className="text-base sm:text-lg font-bold tracking-tight">
-              스마트 계산기 앱 설치하기
+              스마트 계산기 앱 설치 안내
             </h3>
             <p className="text-xs text-[#64748b] dark:text-slate-400">
-              홈 화면에 추가하면 100% 오프라인에서도 작동합니다.
+              홈 화면에 추가하면 브라우저 주소창 없이 풀스크린으로 더 빠르고 편리하게 사용할 수 있습니다.
             </p>
           </div>
         </div>
@@ -62,17 +77,17 @@ export const PWAInstallModal: React.FC<PWAInstallModalProps> = ({ isOpen, onClos
         <div className="bg-slate-50 dark:bg-slate-900/60 rounded-xl p-3.5 border border-[#e5e7eb] dark:border-slate-800 mb-5 space-y-1.5 text-xs text-slate-600 dark:text-slate-300">
           <div className="flex items-center gap-2">
             <CheckCircle2 className="w-4 h-4 text-[#112220] dark:text-[#d1ff19] shrink-0" />
-            <span>브라우저 주소창 없이 앱처럼 풀스크린 실행</span>
+            <span>브라우저 주소창 없이 네이티브 앱처럼 풀스크린 실행</span>
           </div>
           <div className="flex items-center gap-2">
             <CheckCircle2 className="w-4 h-4 text-[#112220] dark:text-[#d1ff19] shrink-0" />
-            <span>비행기 모드나 인터넷 단절 상태에서도 모든 계산 즉시 가능</span>
+            <span>비행기 모드나 인터넷 연결이 없어도 모든 계산 즉시 가능</span>
           </div>
         </div>
 
         {/* 플랫폼별 설치 가이드 */}
         {isIOS ? (
-          <div className="space-y-3 mb-6">
+          <div className="space-y-3 mb-5">
             <div className="flex items-center gap-2 text-xs font-bold text-[#112220] dark:text-slate-200">
               <Smartphone className="w-4 h-4 text-[#112220] dark:text-slate-200" />
               <span>iOS 사파리(Safari) 설치 방법</span>
@@ -97,7 +112,7 @@ export const PWAInstallModal: React.FC<PWAInstallModalProps> = ({ isOpen, onClos
             </ol>
           </div>
         ) : (
-          <div className="space-y-3 mb-6">
+          <div className="space-y-3 mb-5">
             <div className="flex items-center gap-2 text-xs font-bold text-[#112220] dark:text-slate-200">
               <Monitor className="w-4 h-4 text-[#112220] dark:text-slate-200" />
               <span>데스크톱 PC / 안드로이드 설치 방법</span>
@@ -117,15 +132,42 @@ export const PWAInstallModal: React.FC<PWAInstallModalProps> = ({ isOpen, onClos
           </div>
         )}
 
-        {/* 하단 확인 버튼 */}
-        <Button
-          type="button"
-          onClick={onClose}
-          className="w-full h-10 rounded-md bg-[#15171a] dark:bg-white text-white dark:text-[#112220] hover:bg-slate-800 dark:hover:bg-slate-100 font-bold text-xs"
-        >
-          확인
-        </Button>
+        {/* 하단 액션 버튼 영역 */}
+        {isInstallable && onInstall ? (
+          <div className="space-y-2 pt-2 border-t border-[#e5e7eb] dark:border-slate-800">
+            <Button
+              type="button"
+              onClick={() => {
+                onInstall();
+                onClose();
+              }}
+              className="w-full h-11 rounded-xl bg-[#15171a] dark:bg-[#d1ff19] text-white dark:text-[#112220] hover:bg-slate-800 dark:hover:bg-[#bceb0f] font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-sm transition-all"
+            >
+              <Download className="w-4 h-4 shrink-0" />
+              <span>스마트 계산기 앱 지금 설치하기</span>
+            </Button>
+            <Button
+              type="button"
+              variant="ghost"
+              onClick={onClose}
+              className="w-full h-8 text-xs text-slate-500 hover:text-slate-800 dark:hover:text-slate-200"
+            >
+              닫기
+            </Button>
+          </div>
+        ) : (
+          <Button
+            type="button"
+            onClick={onClose}
+            className="w-full h-10 rounded-xl bg-[#15171a] dark:bg-white text-white dark:text-[#112220] hover:bg-slate-800 dark:hover:bg-slate-100 font-bold text-xs"
+          >
+            가이드 확인 완료
+          </Button>
+        )}
       </div>
     </div>
   );
+
+  return createPortal(modalContent, document.body);
 };
+

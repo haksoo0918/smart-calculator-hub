@@ -3,6 +3,25 @@
 모든 주요 변경 사항은 본 문서에 기록됩니다.
 버전 체계는 [Semantic Versioning (SemVer)](https://semver.org/)을 준수합니다.
 
+## [1.9.22] - 2026-09-13
+ 
+### PWA 설치/가이드 버튼 역할 분리 및 설치 가이드 모달 개선 (PWA Install Flow Polish)
+- **사이드바 [앱 설치 가이드] 버튼 명문화 및 모바일 드로어 연동**:
+  - `GlobalHeader.tsx`의 우측 상단 버튼은 **[앱 설치]** 로 유지(원클릭 네이티브 설치 또는 미지원 시 가이드 모달 호출).
+  - `SidebarDrawer.tsx` 하단 버튼 라벨을 **[앱 설치 가이드]** 로 명문화하여 클릭 시 단계별 가이드 모달이 뜰 것임을 직관적으로 안내.
+  - 모바일 환경에서 드로어 내 [앱 설치 가이드] 버튼 클릭 시 사이드바 드로어가 자동으로 닫히도록 `onActionComplete={onCloseMobile}` 연동하여 오버레이 충돌 방지.
+- **모달 z-index 결함 및 Stacking Context 완벽 해결 (`PWAInstallModal`)**:
+  - 사이드바 `<aside z-20>` 내부에서 마운트되던 모달을 `createPortal(modalContent, document.body)`을 통해 `document.body` 최상위로 마운트.
+  - 상단 헤더(`GlobalHeader z-30`)의 페이지 타이틀이 모달 백드롭 위로 뚫고 나오는 CSS 쌓임 맥락(Stacking Context) 결함을 원천 해결하고 전역 최상위(`z-[100]`)로 안정적 노출.
+- **모달 내부 설명 문구 개선 및 직접 설치 CTA 액션 버튼 탑재**:
+  - 타이틀: *"스마트 계산기 앱 설치 안내"*, 설명: *"홈 화면에 추가하면 브라우저 주소창 없이 풀스크린으로 더 빠르고 편리하게 사용할 수 있습니다."*
+  - 네이티브 프롬프트를 지원하는 브라우저(크롬, 안드로이드, 엣지 등)에서는 모달 하단에 Primary 버튼 **[스마트 계산기 앱 지금 설치하기]** 제공 (클릭 시 `deferredPrompt.prompt()` 즉시 호출 및 설치 유도).
+  - 미지원 환경(iOS 사파리 등)에서는 '홈 화면에 추가' 3단계 가이드와 **[가이드 확인 완료]** 버튼 제공.
+- **품질 검증 및 단위 테스트 동기화**:
+  - `PWAInstallButton.test.tsx`: "앱 설치 가이드" 라벨, `onActionComplete` 호출, 모달 내 직접 설치 버튼 인터랙션 테스트 추가.
+  - 21개 테스트 스위트, 96개 테스트 100% 통과 (Pass).
+  - `package.json`, `src/config/site.ts`, `PRD.md`, `CHANGELOG.md` 버전 `v1.9.22` 동기화.
+
 ## [1.9.21] - 2026-09-13
  
 ### PWA 신규 버전 업데이트 알림 토스트 활성화 및 TODO 완료 표기 전면 통일 (PWA Update Toast & Docs Sync)

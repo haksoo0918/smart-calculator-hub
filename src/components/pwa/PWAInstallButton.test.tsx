@@ -24,10 +24,10 @@ describe('PWAInstallButton', () => {
       fireEvent.click(installButtons[0]);
     });
 
-    expect(await screen.findByText('스마트 계산기 앱 설치하기')).toBeInTheDocument();
+    expect(await screen.findByText('스마트 계산기 앱 설치 안내')).toBeInTheDocument();
   });
 
-  it('triggers native prompt when beforeinstallprompt was dispatched and does not open modal', async () => {
+  it('triggers native prompt when beforeinstallprompt was dispatched and does not open modal in header', async () => {
     const promptMock = vi.fn().mockResolvedValue(undefined);
     const userChoiceMock = Promise.resolve({ outcome: 'accepted' as const });
 
@@ -52,23 +52,62 @@ describe('PWAInstallButton', () => {
 
     expect(promptMock).toHaveBeenCalled();
     // 네이티브 프롬프트가 떴으므로 가이드 모달은 뜨지 않아야 함
-    expect(screen.queryByText('스마트 계산기 앱 설치하기')).toBeNull();
+    expect(screen.queryByText('스마트 계산기 앱 설치 안내')).toBeNull();
   });
 
-  it('renders sidebar variant correctly and opens guide modal on click', async () => {
+  it('renders sidebar variant with "앱 설치 가이드" and triggers onActionComplete and opens modal', async () => {
+    const onActionCompleteMock = vi.fn();
+
     render(
       <TooltipProvider>
-        <PWAInstallButton variant="sidebar" />
+        <PWAInstallButton variant="sidebar" onActionComplete={onActionCompleteMock} />
       </TooltipProvider>
     );
 
-    const button = screen.getByRole('button', { name: /스마트 계산기 앱 설치/i });
+    const button = screen.getByRole('button', { name: /앱 설치 가이드/i });
     expect(button).toBeInTheDocument();
 
     await act(async () => {
       fireEvent.click(button);
     });
 
-    expect(await screen.findByText('스마트 계산기 앱 설치하기')).toBeInTheDocument();
+    expect(onActionCompleteMock).toHaveBeenCalled();
+    expect(await screen.findByText('스마트 계산기 앱 설치 안내')).toBeInTheDocument();
+  });
+
+  it('provides direct install button inside modal when installable', async () => {
+    const promptMock = vi.fn().mockResolvedValue(undefined);
+    const userChoiceMock = Promise.resolve({ outcome: 'dismissed' as const });
+
+    render(
+      <TooltipProvider>
+        <PWAInstallButton variant="sidebar" />
+      </TooltipProvider>
+    );
+
+    // Dispatch beforeinstallprompt
+    const event = new Event('beforeinstallprompt') as any;
+    event.prompt = promptMock;
+    event.userChoice = userChoiceMock;
+    act(() => {
+      window.dispatchEvent(event);
+    });
+
+    // 사이드바 버튼 클릭 -> 모달 오픈
+    const button = screen.getByRole('button', { name: /앱 설치 가이드/i });
+    await act(async () => {
+      fireEvent.click(button);
+    });
+
+    // 모달 내부 [스마트 계산기 앱 지금 설치하기] 버튼 확인 및 클릭
+    const directInstallBtn = await screen.findByRole('button', { name: /지금 설치하기/i });
+    expect(directInstallBtn).toBeInTheDocument();
+
+    await act(async () => {
+      fireEvent.click(directInstallBtn);
+    });
+
+    expect(promptMock).toHaveBeenCalled();
   });
 });
+
