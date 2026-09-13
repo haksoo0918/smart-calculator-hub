@@ -24,7 +24,6 @@ export interface BmiInput {
   height: number;      // 신장 (cm, 100 - 250)
   weight: number;      // 체중 (kg, 30 - 200)
   gender: Gender;      // 성별 ('male' | 'female')
-  age?: number;        // 나이 (기본 30)
 }
 
 export interface BmiResult {

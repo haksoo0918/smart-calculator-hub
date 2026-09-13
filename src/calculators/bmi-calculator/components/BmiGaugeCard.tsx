@@ -6,23 +6,41 @@ interface BmiGaugeCardProps {
   result: BmiResult;
 }
 
-const GAUGE_SECTIONS = [
-  { id: 'underweight', label: '저체중', range: '<18.5', bg: 'bg-blue-400 dark:bg-blue-500', widthPercent: 18 },
-  { id: 'normal', label: '정상', range: '18.5-22.9', bg: 'bg-emerald-500 dark:bg-[#d1ff19]', widthPercent: 24 },
-  { id: 'pre-obese', label: '과체중', range: '23-24.9', bg: 'bg-amber-400 dark:bg-amber-500', widthPercent: 16 },
-  { id: 'obese-1', label: '1단계', range: '25-29.9', bg: 'bg-orange-500 dark:bg-orange-500', widthPercent: 18 },
-  { id: 'obese-2', label: '2단계', range: '30-34.9', bg: 'bg-rose-500 dark:bg-rose-500', widthPercent: 14 },
-  { id: 'obese-3', label: '고도', range: '≥35', bg: 'bg-purple-600 dark:bg-purple-600', widthPercent: 10 },
+interface GaugeSegment {
+  id: string;
+  label: string;
+  range: string;
+  minBmi: number;
+  maxBmi: number;
+  startPct: number;
+  endPct: number;
+  widthPercent: number;
+  bg: string;
+}
+
+const GAUGE_SECTIONS: GaugeSegment[] = [
+  { id: 'underweight', label: '저체중', range: '<18.5', minBmi: 13, maxBmi: 18.5, startPct: 0, endPct: 18, widthPercent: 18, bg: 'bg-blue-400 dark:bg-blue-500' },
+  { id: 'normal', label: '정상', range: '18.5-22.9', minBmi: 18.5, maxBmi: 23.0, startPct: 18, endPct: 42, widthPercent: 24, bg: 'bg-emerald-500 dark:bg-[#d1ff19]' },
+  { id: 'pre-obese', label: '과체중', range: '23-24.9', minBmi: 23.0, maxBmi: 25.0, startPct: 42, endPct: 58, widthPercent: 16, bg: 'bg-amber-400 dark:bg-amber-500' },
+  { id: 'obese-1', label: '1단계', range: '25-29.9', minBmi: 25.0, maxBmi: 30.0, startPct: 58, endPct: 76, widthPercent: 18, bg: 'bg-orange-500 dark:bg-orange-500' },
+  { id: 'obese-2', label: '2단계', range: '30-34.9', minBmi: 30.0, maxBmi: 35.0, startPct: 76, endPct: 90, widthPercent: 14, bg: 'bg-rose-500 dark:bg-rose-500' },
+  { id: 'obese-3', label: '고도', range: '≥35', minBmi: 35.0, maxBmi: 42.0, startPct: 90, endPct: 100, widthPercent: 10, bg: 'bg-purple-600 dark:bg-purple-600' },
 ];
 
 export const BmiGaugeCard: React.FC<BmiGaugeCardProps> = ({ result }) => {
-  // BMI 수치를 0~100% 게이지 x좌표로 매핑
-  // 최소 BMI 14 -> 0%, 최대 BMI 38 -> 100%
+  // 게이지 바의 실제 세그먼트 너비에 정확히 일치하도록 구간별 보간(Piecewise Linear Interpolation) 적용
   const getMarkerPosition = (bmi: number): number => {
-    const minScale = 14;
-    const maxScale = 38;
-    const clamped = Math.max(minScale, Math.min(maxScale, bmi));
-    return ((clamped - minScale) / (maxScale - minScale)) * 100;
+    if (bmi <= 13) return 2;
+    if (bmi >= 42) return 98;
+
+    for (const sec of GAUGE_SECTIONS) {
+      if (bmi < sec.maxBmi) {
+        const ratio = (bmi - sec.minBmi) / (sec.maxBmi - sec.minBmi);
+        const clampedRatio = Math.max(0, Math.min(1, ratio));
+        return sec.startPct + clampedRatio * (sec.endPct - sec.startPct);
+      }
+    }
+    return 95;
   };
 
   const markerPercent = getMarkerPosition(result.bmi);

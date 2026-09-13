@@ -16,8 +16,8 @@ describe('BmiApp Component', () => {
     expect(screen.getByText('성별')).toBeInTheDocument();
 
     // 결과 대시보드
-    expect(screen.getByText(/체질량지수 \(BMI\) 판정 결과/)).toBeInTheDocument();
-    expect(screen.getByText('나의 적정 표준 체중')).toBeInTheDocument();
+    expect(screen.getByText('체질량지수 (BMI)')).toBeInTheDocument();
+    expect(screen.getByText('적정 표준 체중')).toBeInTheDocument();
     expect(screen.getByText('정상 체중 범위')).toBeInTheDocument();
     expect(screen.getByText('체중 조절 목표')).toBeInTheDocument();
 

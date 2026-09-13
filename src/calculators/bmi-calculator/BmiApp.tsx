@@ -11,7 +11,6 @@ const DEFAULT_BMI_INPUT: BmiInput = {
   height: 170,
   weight: 65,
   gender: 'male',
-  age: 30,
 };
 
 export const BmiApp: React.FC = () => {
