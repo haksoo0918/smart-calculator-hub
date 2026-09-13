@@ -60,9 +60,11 @@ export const PWAInstallModal: React.FC<PWAInstallModalProps> = ({
 
         {/* 헤더 */}
         <div className="flex items-center gap-3 mb-4">
-          <div className="w-12 h-12 rounded-xl overflow-hidden p-1 bg-slate-50 dark:bg-slate-800 border border-[#e5e7eb] dark:border-slate-700 shadow-sm shrink-0">
-            <img src="/logo.svg" alt="스마트 계산기 로고" className="w-full h-full object-contain" />
-          </div>
+          <img
+            src="/logo.svg"
+            alt="스마트 계산기 로고"
+            className="w-11 h-11 shrink-0 object-contain"
+          />
           <div>
             <h3 id="pwa-install-title" className="text-base sm:text-lg font-bold tracking-tight">
               {isInstallable && onInstall ? '스마트 계산기 앱 간편 설치' : '스마트 계산기 앱 설치 안내'}

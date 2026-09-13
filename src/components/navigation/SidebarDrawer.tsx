@@ -71,9 +71,11 @@ export const SidebarDrawer: React.FC<SidebarDrawerProps> = ({
         className="h-16 px-4 border-b border-[#e5e7eb] dark:border-slate-800 flex items-center shrink-0 cursor-pointer group hover:bg-slate-50/80 dark:hover:bg-slate-800/40 transition-colors"
       >
         <div className="flex items-center gap-2.5 min-w-0">
-          <div className="w-9 h-9 rounded-xl overflow-hidden flex items-center justify-center shrink-0 shadow-sm border border-[#e5e7eb] dark:border-slate-800 bg-slate-50 dark:bg-slate-900/60 p-1 group-hover:scale-105 transition-transform">
-            <img src="/logo.svg" alt="스마트 계산기 허브 로고" className="w-full h-full object-contain" />
-          </div>
+          <img
+            src="/logo.svg"
+            alt="스마트 계산기 허브 로고"
+            className="w-8 h-8 shrink-0 object-contain group-hover:scale-105 transition-transform"
+          />
           <div className="flex flex-col justify-center min-w-0">
             <span className="font-bold text-[15px] tracking-tight text-[#112220] dark:text-slate-100 block leading-snug truncate pt-[1px]">
               {siteConfig.name}
