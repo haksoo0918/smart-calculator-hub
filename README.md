@@ -10,7 +10,8 @@
   </p>
 
   <p>
-    <img src="https://img.shields.io/badge/version-1.9.13-d1ff19?style=flat-square&labelColor=15171a" alt="Version" />
+    <a href="https://soso-calculator.vercel.app"><img src="https://img.shields.io/badge/Web_Beta-soso--calculator.vercel.app-d1ff19?style=flat-square&logo=vercel&logoColor=black&labelColor=15171a" alt="웹 베타 서비스" /></a>
+    <img src="https://img.shields.io/badge/version-1.9.14-d1ff19?style=flat-square&labelColor=15171a" alt="Version" />
     <img src="https://img.shields.io/badge/React-18-61dafb?style=flat-square&logo=react&logoColor=black&labelColor=15171a" alt="React 18" />
     <img src="https://img.shields.io/badge/TypeScript-5.5-3178c6?style=flat-square&logo=typescript&logoColor=white&labelColor=15171a" alt="TypeScript" />
     <img src="https://img.shields.io/badge/Vite-5.4-646cff?style=flat-square&logo=vite&logoColor=white&labelColor=15171a" alt="Vite" />
@@ -28,6 +29,7 @@
 ![스마트 계산기 허브 메인 화면](./docs/images/main-preview.png)
 
 > **Ghost 디자인 시스템** 기반의 모노크롬 베이스와 **Electric Lime (`#d1ff19`)** 액센트로 시각적 잡음을 배제하고 계산 본질에 집중합니다.
+> **🌐 공식 웹 서비스 (오픈 베타)**: [https://soso-calculator.vercel.app](https://soso-calculator.vercel.app)
 
 ---
 
@@ -35,11 +37,11 @@
 
 | 모듈명 | 주요 기능 및 특징 | 지원 세부 기능 |
 | :--- | :--- | :--- |
-| 📈 **[연복리 & 자산성장](http://localhost:5173/compound)** | 거치식·적립식 복리 시뮬레이션 및 A/B 전략 비교 | 과세 옵션(일반 15.4%, ISA 9.9%), -30%~+50% 손실 시뮬레이션, 연도별 자산 흐름표(CSV 내보내기) |
-| 💰 **[대출이자 & 상환방식](http://localhost:5173/loan)** | 원리금균등 · 원금균등 · 만기일시 3대 상환방식 한눈에 비교 | 최저 이자 방식 추천, 시중은행 3년 슬라이딩 중도상환 수수료 감면 시뮬레이션, 월별 스케줄표 |
-| 💵 **[연봉 실수령액](http://localhost:5173/salary)** | 2026년 최신 4대 사회보험료 및 국세청 간이세액표 기준 | 6대 공제 항목 상세 명세표, 부양가족/비과세 반영, 근로자 본인 부담 vs 사업주 지원 듀얼 탭 |
-| 📏 **[단위 변환기](http://localhost:5173/unit)** | 아파트 평수(평 ↔ ㎡), 순금 1돈(돈 ↔ g) 등 생활 밀착 단위 | 넓이·길이·무게·부피·온도 5대 카테고리, 대형 듀얼 카드 스왑, 전체 단위 일괄 변환 그리드 |
-| 💱 **[실시간 환율](http://localhost:5173/exchange)** | 주요 6대 통화(USD, JPY, EUR 등) 실시간 환율 및 환전 우대율 | 은행별 매매기준율/스프레드(0~100%) 우대 계산, 여행·직구 면세 한도 퀵 프리셋 칩 |
+| 📈 **[연복리 & 자산성장](https://soso-calculator.vercel.app/compound)** | 거치식·적립식 복리 시뮬레이션 및 A/B 전략 비교 | 과세 옵션(일반 15.4%, ISA 9.9%), -30%~+50% 손실 시뮬레이션, 연도별 자산 흐름표(CSV 내보내기) |
+| 💰 **[대출이자 & 상환방식](https://soso-calculator.vercel.app/loan)** | 원리금균등 · 원금균등 · 만기일시 3대 상환방식 한눈에 비교 | 최저 이자 방식 추천, 시중은행 3년 슬라이딩 중도상환 수수료 감면 시뮬레이션, 월별 스케줄표 |
+| 💵 **[연봉 실수령액](https://soso-calculator.vercel.app/salary)** | 2026년 최신 4대 사회보험료 및 국세청 간이세액표 기준 | 6대 공제 항목 상세 명세표, 부양가족/비과세 반영, 근로자 본인 부담 vs 사업주 지원 듀얼 탭 |
+| 📏 **[단위 변환기](https://soso-calculator.vercel.app/unit)** | 아파트 평수(평 ↔ ㎡), 순금 1돈(돈 ↔ g) 등 생활 밀착 단위 | 넓이·길이·무게·부피·온도 5대 카테고리, 대형 듀얼 카드 스왑, 전체 단위 일괄 변환 그리드 |
+| 💱 **[실시간 환율](https://soso-calculator.vercel.app/exchange)** | 주요 6대 통화(USD, JPY, EUR 등) 실시간 환율 및 환전 우대율 | 은행별 매매기준율/스프레드(0~100%) 우대 계산, 여행·직구 면세 한도 퀵 프리셋 칩 |
 
 ---
 
@@ -72,4 +74,4 @@ Font        Pretendard Variable (전역 단일 서체)
 
 - **제작**: © [sosoFactory](https://github.com/sosoFactory)
 - **라이선스**: MIT License
-- **버전**: `v1.9.13`
+- **버전**: `v1.9.14`

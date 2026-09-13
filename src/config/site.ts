@@ -8,12 +8,15 @@ export const siteConfig = {
   // 사이트 설명
   description: '연복리, 단위 변환, 환율, 대출이자, 연봉 실수령액 등 일상과 금융 생활을 위한 스마트 멀티 계산기 플랫폼',
   
+  // 공식 운영 도메인 URL
+  url: 'https://soso-calculator.vercel.app',
+  
   // 제작자 및 카피라이트
   company: 'sosoFactory',
   copyright: '© sosoFactory',
   
   // 버전 정보
-  version: '1.9.0',
+  version: '1.9.14',
   
   // 링크
   links: {

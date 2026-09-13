@@ -1,0 +1,4 @@
+﻿User-agent: *
+Allow: /
+
+Sitemap: https://soso-calculator.vercel.app/sitemap.xml

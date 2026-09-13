@@ -1,7 +1,7 @@
 # [PRD] 모바일 우선 스마트 멀티 계산기 플랫폼 (Smart Calculator Hub)
 
-> **버전**: v1.9.13  
-> **최종 갱신일**: 2026-09-12  
+> **버전**: v1.9.14  
+> **최종 갱신일**: 2026-09-13  
 > **제작 및 브랜딩**: © sosoFactory  
 > **기본 원칙**: Ghost 디자인 시스템 원칙 준수, 전역 프리텐다드(Pretendard Variable) 단일 폰트 원칙, 모바일 퍼스트(Mobile-First), 일관된 UI/UX, 100% 오프라인 동작(PWA), WCAG 웹 접근성 준수, 미니멀 네비게이션(불필요한 라벨/뱃지 배제)
 
@@ -662,14 +662,15 @@ export interface SalaryCalculationResult {
 웹 계산기 서비스의 특성상 포털(구글, 네이버 등) 검색 유입이 핵심 트래픽 원천이므로, **적극적이고 고도화된 SEO 전략**을 기본 탑재합니다.
 
 ### 7.1 메타데이터 및 소셜 공유 (Meta Tags & OpenGraph)
+- **공식 운영 도메인**: `https://soso-calculator.vercel.app`
 - **표준 메타 태그**:
   - `title`: `[계산기 이름] | 스마트 계산기 허브 - 연복리 · 평수계산 · 환율`
   - `description`: 검색 사용자의 클릭률(CTR)을 높이는 구체적인 타깃 설명 (예: "아파트 84㎡는 몇 평일까? 평수와 ㎡ 실시간 변환, 연복리 시뮬레이션, 실시간 환율 계산까지 무료로 이용하세요.")
   - `keywords`: `연복리 계산기, 적립식 복리, 평수 계산기, 아파트 평수 ㎡, 환율 계산기, 달러 환율, 이자 계산기`
-  - `canonical`: 중복 URL 방지를 위한 표준 대표 URL 지정
+  - `canonical`: `https://soso-calculator.vercel.app/` (중복 URL 방지를 위한 표준 대표 URL 지정)
   - `robots`: `index, follow`
 - **오픈그래프(OpenGraph) & 트위터 카드**:
-  - 카카오톡, 라인, 페이스북, 슬랙 링크 공유 시 매력적인 미리보기 카드 노출 (`og:title`, `og:description`, `og:image`, `og:url`, `og:type="website"`).
+  - 카카오톡, 라인, 페이스북, 슬랙 링크 공유 시 매력적인 미리보기 카드 노출 (`og:title`, `og:description`, `og:image`, `og:url="https://soso-calculator.vercel.app"`, `og:type="website"`).
 
 ### 7.2 동적 페이지 헤드 관리 (Dynamic Meta Updater)
 - 단일 페이지 애플리케이션(SPA) 내에서 사용자가 계산기를 전환(`연복리` ↔ `단위변환` ↔ `환율`)할 때:
@@ -683,6 +684,7 @@ export interface SalaryCalculationResult {
     "@context": "https://schema.org",
     "@type": "WebApplication",
     "name": "스마트 계산기 허브",
+    "url": "https://soso-calculator.vercel.app",
     "applicationCategory": "FinanceApplication",
     "operatingSystem": "All",
     "offers": {
@@ -695,8 +697,8 @@ export interface SalaryCalculationResult {
 - **FAQ / HowTo 스키마**: 각 계산기 하단에 검색엔진 노출용 금융/수학 공식 질의응답 아코디언 제공 (예: "복리 계산 공식이란?", "1평은 몇 ㎡인가요?").
 
 ### 7.4 크롤러 수집 파일 지원
-- `public/robots.txt`: 검색 크롤러의 전체 페이지 접근 허용
-- `public/sitemap.xml`: 각 계산기 도구별 URL 맵 제공
+- `public/robots.txt`: 검색 크롤러의 전체 페이지 접근 허용 및 `Sitemap: https://soso-calculator.vercel.app/sitemap.xml` 지정
+- `public/sitemap.xml`: 각 계산기 도구별 URL 맵 제공 (`https://soso-calculator.vercel.app/`, `/compound`, `/loan`, `/salary`, `/unit`, `/exchange`)
 
 ---
 

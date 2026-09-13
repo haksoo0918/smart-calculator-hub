@@ -3,6 +3,23 @@
 모든 주요 변경 사항은 본 문서에 기록됩니다.
 버전 체계는 [Semantic Versioning (SemVer)](https://semver.org/)을 준수합니다.
 
+## [1.9.14] - 2026-09-13
+ 
+### 공식 운영 도메인 및 SEO 최적화 인프라 구축 (Production & SEO)
+- **공식 운영 도메인 연동**:
+  - Vercel 프로덕션 도메인 `https://soso-calculator.vercel.app` 공식 반영.
+  - `siteConfig`(`src/config/site.ts`) 및 `package.json`에 공식 도메인 및 `homepage` 명시.
+- **검색엔진(SEO) 및 소셜 공유 메타데이터 강화 (`index.html`)**:
+  - 표준 대표 URL(`canonical`) 태그 등록: `https://soso-calculator.vercel.app/`
+  - OpenGraph (Facebook, 카카오톡, 슬랙) 및 Twitter Card 소셜 공유 미리보기 카드 규격 등록.
+  - Schema.org 웹 애플리케이션(`WebApplication`) JSON-LD 구조화 데이터 삽입.
+- **검색 크롤러 수집 파일 생성**:
+  - `public/robots.txt`: 검색 봇 수집 전체 허용 및 사이트맵 경로 지정.
+  - `public/sitemap.xml`: 5대 계산기 모듈(연복리, 대출, 연봉, 단위, 환율) 표준 사이트맵 등록.
+- **문서 동기화**:
+  - `README.md`: 상단 웹 베타 서비스(`Web Beta`) 뱃지 추가 및 5대 계산기 테이블 링크를 로컬(`localhost`)에서 공식 운영 주소로 전면 교체.
+  - `PRD.md`: Section 7 공식 운영 도메인 명세 반영 및 버전 `v1.9.14` 갱신.
+
 ## [1.9.13] - 2026-09-12
 
 ### 네비게이션 및 헤더 타이틀 라벨(NEW, 인기 등) 전면 제거 (UI/UX Refactoring)
