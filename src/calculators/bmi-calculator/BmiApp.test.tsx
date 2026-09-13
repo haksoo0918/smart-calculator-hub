@@ -11,8 +11,8 @@ describe('BmiApp Component', () => {
     expect(screen.getByText('초기화')).toBeInTheDocument();
 
     // 입력 라벨
-    expect(screen.getByText('신장 (키)')).toBeInTheDocument();
-    expect(screen.getByText('체중 (몸무게)')).toBeInTheDocument();
+    expect(screen.getByText('신장 (cm)')).toBeInTheDocument();
+    expect(screen.getByText('체중 (kg)')).toBeInTheDocument();
     expect(screen.getByText('성별')).toBeInTheDocument();
 
     // 결과 대시보드
@@ -29,7 +29,7 @@ describe('BmiApp Component', () => {
   it('updates BMI and status when weight input changes', () => {
     render(<BmiApp />);
 
-    const weightInput = screen.getByLabelText('체중 (몸무게)');
+    const weightInput = screen.getByLabelText('체중 (kg)');
     // 체중을 85kg으로 변경 (키 170cm 기준 BMI 29.4 -> 1단계 비만)
     fireEvent.change(weightInput, { target: { value: '85' } });
     fireEvent.blur(weightInput);
@@ -41,7 +41,7 @@ describe('BmiApp Component', () => {
   it('resets inputs to default when reset button is clicked', () => {
     render(<BmiApp />);
 
-    const weightInput = screen.getByLabelText('체중 (몸무게)');
+    const weightInput = screen.getByLabelText('체중 (kg)');
     fireEvent.change(weightInput, { target: { value: '95' } });
     fireEvent.blur(weightInput);
 

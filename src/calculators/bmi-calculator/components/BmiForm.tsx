@@ -96,11 +96,11 @@ export const BmiForm: React.FC<BmiFormProps> = ({ input, onChange, onReset }) =>
       {/* 3. 신장 (키) */}
       <div>
         <label htmlFor="bmi-height" className="block text-xs sm:text-sm font-semibold text-[#112220] dark:text-slate-200 cursor-pointer mb-1.5">
-          신장 (키)
+          신장 (cm)
         </label>
         <NumericInput
           id="bmi-height"
-          aria-label="신장 (키)"
+          aria-label="신장 (cm)"
           type="number"
           min="100"
           max="250"
@@ -136,11 +136,11 @@ export const BmiForm: React.FC<BmiFormProps> = ({ input, onChange, onReset }) =>
       {/* 4. 체중 (몸무게) */}
       <div>
         <label htmlFor="bmi-weight" className="block text-xs sm:text-sm font-semibold text-[#112220] dark:text-slate-200 cursor-pointer mb-1.5">
-          체중 (몸무게)
+          체중 (kg)
         </label>
         <NumericInput
           id="bmi-weight"
-          aria-label="체중 (몸무게)"
+          aria-label="체중 (kg)"
           type="number"
           step="1"
           min="30"
