@@ -71,8 +71,8 @@ export const App: React.FC = () => {
         onCloseMobile={() => setIsOpenMobileDrawer(false)}
       />
 
-      {/* 2. 우측 메인 뷰포트 영역 */}
-      <div className="flex-1 flex flex-col min-w-0 overflow-x-hidden">
+      {/* 2. 우측 메인 뷰포트 영역 (고정 헤더 높이 h-16만큼 상단 여백 확보) */}
+      <div className="flex-1 flex flex-col min-w-0 pt-16">
         {/* 글로벌 상단 헤더 */}
         <GlobalHeader
           currentCalculator={currentCalculator}

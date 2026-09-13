@@ -3,6 +3,19 @@
 모든 주요 변경 사항은 본 문서에 기록됩니다.
 버전 체계는 [Semantic Versioning (SemVer)](https://semver.org/)을 준수합니다.
 
+## [1.9.20] - 2026-09-13
+ 
+### 전 페이지 상단 글로벌 헤더 fixed 고정 및 홈 화면 하단 PWA 배너 삭제 (Header Fixed & Clean Home)
+- **전 페이지 상단 글로벌 헤더 영구 고정 (`Fixed Header`)**:
+  - `GlobalHeader.tsx`를 `fixed top-0 left-0 right-0 lg:left-64 z-30`으로 변경하여 모바일 및 데스크톱 모든 페이지에서 스크롤 시 타이틀과 테마 토글이 화면 상단에 일관되게 고정되도록 개선.
+  - `App.tsx`의 메인 뷰포트에 `pt-16`을 적용하여 고정 헤더로 인한 콘텐츠 가림을 방지하고 부모 요소의 `overflow-x-hidden` 문제를 원천 해소.
+- **홈 화면 하단 오프라인 PWA 가치 제안 배너 삭제**:
+  - `HomeApp.tsx` 최하단에 위치하던 "100% 오프라인 PWA · 광고 없는 쾌적한 계산 환경 · 빠른 실시간 연산" 배너 영역 및 `Zap` 아이콘 완전 제거로 미니멀하고 단정한 화면 구성 완성.
+- **단위 테스트 및 문서 동기화**:
+  - `App.routing.test.tsx`의 홈 비동기 대기 셀렉터를 '전체' 카테고리 버튼으로 안전하게 마이그레이션.
+  - 20개 테스트 파일, 93개 단위 테스트 100% 통과 (Pass).
+  - `PRD.md`, `README.md`, `TODO.md`, `package.json`, `src/config/site.ts` 버전 `v1.9.20` 동기화.
+
 ## [1.9.19] - 2026-09-13
  
 ### 메인 홈 대시보드 본문 중복 타이틀 제거 및 상단 고정 헤더 일원화 (Header & Layout Polish)

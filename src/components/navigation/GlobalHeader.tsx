@@ -23,7 +23,7 @@ export const GlobalHeader: React.FC<GlobalHeaderProps> = ({
   headerActions,
 }) => {
   return (
-    <header className="bg-white dark:bg-[#0b1120] border-b border-[#e5e7eb] dark:border-slate-800 sticky top-0 z-30 h-16 flex items-center shrink-0 transition-colors duration-200">
+    <header className="bg-white dark:bg-[#0b1120] border-b border-[#e5e7eb] dark:border-slate-800 fixed top-0 left-0 right-0 lg:left-64 z-30 h-16 flex items-center shrink-0 transition-colors duration-200">
       <div className="w-full px-4 sm:px-6 flex items-center justify-between gap-2">
         {/* 좌측: 모바일 햄버거 메뉴 버튼 + 계산기 타이틀 */}
         <div className="flex items-center gap-2 sm:gap-2.5 min-w-0 flex-1 mr-2">

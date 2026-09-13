@@ -15,7 +15,6 @@ import {
   Calculator,
   Wallet,
   ArrowRight,
-  Zap,
 } from 'lucide-react';
 import { Button } from '../components/ui/button';
 import { Badge } from '../components/ui/badge';
@@ -169,14 +168,6 @@ export const HomeApp: React.FC = () => {
               </div>
             );
           })}
-        </div>
-      </section>
-
-      {/* 3. 슬림한 1줄 가치 제안 인라인 바 (스크롤 유발 완전 배제) */}
-      <section className="pt-2">
-        <div className="flex items-center justify-center gap-2 py-2 px-3 rounded-lg bg-slate-50 dark:bg-[#12161f] border border-slate-200/60 dark:border-slate-800/60 text-[11px] text-slate-500 dark:text-slate-400 text-center">
-          <Zap className="w-3.5 h-3.5 text-emerald-500 dark:text-[#d1ff19] shrink-0" />
-          <span>100% 오프라인 PWA · 광고 없는 쾌적한 계산 환경 · 빠른 실시간 연산</span>
         </div>
       </section>
     </div>
