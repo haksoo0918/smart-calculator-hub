@@ -25,7 +25,7 @@ export const siteConfig = {
 
   // 동적 브라우저 타이틀 헬퍼
   getTitle: (pageTitle?: string): string => {
-    if (!pageTitle) return `${siteConfig.name} | ${siteConfig.shortNameEn}`;
+    if (!pageTitle) return `${siteConfig.name} | ${siteConfig.nameEn}`;
     return `${pageTitle} | ${siteConfig.name}`;
   },
 };

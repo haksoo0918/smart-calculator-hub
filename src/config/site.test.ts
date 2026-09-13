@@ -15,6 +15,6 @@ describe('siteConfig Tests', () => {
 
   it('getTitle 헬퍼가 페이지 제목을 일관된 포맷으로 반환해야 한다', () => {
     expect(siteConfig.getTitle('연복리 계산기')).toBe('연복리 계산기 | 스마트 계산기 허브');
-    expect(siteConfig.getTitle()).toBe('스마트 계산기 허브 | Smart Calculator');
+    expect(siteConfig.getTitle()).toBe('스마트 계산기 허브 | Smart Calculator Hub');
   });
 });

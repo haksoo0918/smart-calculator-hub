@@ -431,7 +431,7 @@ export interface SiteConfig {
   name: string;           // '스마트 계산기 허브' (공식 국문 명칭)
   nameEn: string;         // 'Smart Calculator Hub' (공식 영문 명칭)
   shortName: string;      // '스마트 계산기' (모바일/PWA 쇼트 명칭)
-  shortNameEn: string;    // 'Smart Calculator' (사이드바 영문 서브타이틀)
+  shortNameEn: string;    // 'Smart Calculator' (모바일/PWA 영문 쇼트 명칭)
   description: string;    // 사이트 대표 설명
   company: string;        // 'sosoFactory'
   copyright: string;      // '© sosoFactory'

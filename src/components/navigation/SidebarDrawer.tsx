@@ -84,7 +84,7 @@ export const SidebarDrawer: React.FC<SidebarDrawerProps> = ({
               {siteConfig.name}
             </span>
             <span className="text-[11px] text-[#64748b] dark:text-slate-400 font-medium block leading-normal tracking-tight truncate">
-              {siteConfig.shortNameEn}
+              {siteConfig.nameEn}
             </span>
           </div>
         </div>
