@@ -9,7 +9,8 @@
 - **사이드바 [앱 설치 가이드] 버튼 명문화 및 모바일 드로어 연동**:
   - `GlobalHeader.tsx`의 우측 상단 버튼은 **[앱 설치]** 로 유지(원클릭 네이티브 설치 또는 미지원 시 가이드 모달 호출).
   - `SidebarDrawer.tsx` 하단 버튼 라벨을 **[앱 설치 가이드]** 로 명문화하여 클릭 시 단계별 가이드 모달이 뜰 것임을 직관적으로 안내.
-  - 모바일 환경에서 드로어 내 [앱 설치 가이드] 버튼 클릭 시 사이드바 드로어가 자동으로 닫히도록 `onActionComplete={onCloseMobile}` 연동하여 오버레이 충돌 방지.
+  - 모바일 환경에서 드로어 내 [앱 설치 가이드] 버튼 클릭 시 사이드바 드로어가 자동으로 닫히도록 `onActionComplete={onCloseMobile}` 연동.
+  - **모바일 드로어 닫힘 시 모달 조기 소멸 버그 수정**: 기존에는 모달이 `PWAInstallButton` 자식 컴포넌트로 마운트되어 있어 모바일 드로어가 닫힐 때 버튼과 함께 모달이 즉시 언마운트되는 문제가 발생함. `PWAInstallModal`을 최상위 `App.tsx` 레벨로 단일화하고 `usePWAInstall`에 전역 모달 상태(`globalIsModalOpen`)를 동기화하여, 모바일 드로어가 닫히더라도 모달이 화면에 안정적으로 유지되도록 아키텍처 개편.
 - **모달 z-index 결함 및 Stacking Context 완벽 해결 (`PWAInstallModal`)**:
   - 사이드바 `<aside z-20>` 내부에서 마운트되던 모달을 `createPortal(modalContent, document.body)`을 통해 `document.body` 최상위로 마운트.
   - 상단 헤더(`GlobalHeader z-30`)의 페이지 타이틀이 모달 백드롭 위로 뚫고 나오는 CSS 쌓임 맥락(Stacking Context) 결함을 원천 해결하고 전역 최상위(`z-[100]`)로 안정적 노출.

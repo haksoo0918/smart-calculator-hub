@@ -8,6 +8,8 @@ import { TooltipProvider } from './components/ui/tooltip';
 import { ThemeProvider } from './context/ThemeContext';
 import { Toaster } from './components/ui/toaster';
 import { PWAUpdateToast } from './components/pwa/PWAUpdateToast';
+import { PWAInstallModal } from './components/pwa/PWAInstallModal';
+import { usePWAInstall } from './hooks/usePWAInstall';
 import { Analytics } from '@vercel/analytics/react';
 
 const HomeApp = lazy(() =>
@@ -49,6 +51,9 @@ export const App: React.FC = () => {
 
   // 모바일 드로어 상태
   const [isOpenMobileDrawer, setIsOpenMobileDrawer] = useState(false);
+
+  // 전역 PWA 설치 가이드 모달 상태
+  const { isModalOpen, closeModal, install, isInstallable } = usePWAInstall();
 
   // 메뉴 선택 시 해당 URL 경로로 이동
   const handleSelectCalculator = (id: CalculatorId) => {
@@ -117,6 +122,12 @@ export const App: React.FC = () => {
         </main>
       </div>
       <PWAUpdateToast />
+      <PWAInstallModal
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        onInstall={install}
+        isInstallable={isInstallable}
+      />
       <Toaster />
       <Analytics />
     </div>
