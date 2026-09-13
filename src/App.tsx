@@ -1,6 +1,6 @@
 import React, { useState, Suspense, lazy } from 'react';
 import { Routes, Route, Navigate, useLocation, useNavigate } from 'react-router-dom';
-import { CalculatorId, CALCULATORS_LIST } from './types/navigation';
+import { CalculatorId, CALCULATORS_LIST, HOME_NAVIGATION_ITEM } from './types/navigation';
 import { SidebarDrawer } from './components/navigation/SidebarDrawer';
 import { GlobalHeader } from './components/navigation/GlobalHeader';
 import { PlaceholderView } from './components/common/PlaceholderView';
@@ -10,6 +10,9 @@ import { Toaster } from './components/ui/toaster';
 import { PWAUpdateToast } from './components/pwa/PWAUpdateToast';
 import { Analytics } from '@vercel/analytics/react';
 
+const HomeApp = lazy(() =>
+  import('./home/HomeApp').then((m) => ({ default: m.HomeApp }))
+);
 const CompoundInterestApp = lazy(() =>
   import('./calculators/compound-interest/CompoundInterestApp').then((m) => ({ default: m.CompoundInterestApp }))
 );
@@ -29,7 +32,7 @@ const SalaryApp = lazy(() =>
 const CalculatorLoadingFallback = () => (
   <div className="w-full py-20 flex flex-col items-center justify-center space-y-3">
     <div className="w-7 h-7 rounded-full border-2 border-[#15171a] dark:border-slate-300 border-t-transparent animate-spin" />
-    <span className="text-xs text-[#64748b] dark:text-slate-400 font-medium">계산기를 불러오는 중...</span>
+    <span className="text-xs text-[#64748b] dark:text-slate-400 font-medium">화면을 불러오는 중...</span>
   </div>
 );
 
@@ -37,17 +40,23 @@ export const App: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // URL 경로로부터 현재 활성화된 계산기 ID 도출 (예: /unit -> 'unit')
+  // URL 경로로부터 현재 활성화된 계산기 ID 도출
   const pathId = location.pathname.replace(/^\//, '') as CalculatorId;
-  const currentCalculator =
-    CALCULATORS_LIST.find((c) => c.id === pathId) ?? CALCULATORS_LIST[0];
+  const isHome = location.pathname === '/' || location.pathname === '/home';
+  const currentCalculator = isHome
+    ? HOME_NAVIGATION_ITEM
+    : (CALCULATORS_LIST.find((c) => c.id === pathId) ?? CALCULATORS_LIST[0]);
 
   // 모바일 드로어 상태
   const [isOpenMobileDrawer, setIsOpenMobileDrawer] = useState(false);
 
   // 메뉴 선택 시 해당 URL 경로로 이동
   const handleSelectCalculator = (id: CalculatorId) => {
-    navigate(`/${id}`);
+    if (id === 'home') {
+      navigate('/');
+    } else {
+      navigate(`/${id}`);
+    }
   };
 
   return (
@@ -75,7 +84,8 @@ export const App: React.FC = () => {
           <div key={location.pathname} className="animate-page-fade">
             <Suspense fallback={<CalculatorLoadingFallback />}>
               <Routes location={location}>
-                <Route path="/" element={<Navigate to="/compound" replace />} />
+                <Route path="/" element={<HomeApp />} />
+                <Route path="/home" element={<Navigate to="/" replace />} />
                 <Route path="/compound" element={<CompoundInterestApp />} />
                 <Route path="/unit" element={<UnitConverterApp />} />
                 <Route path="/exchange" element={<ExchangeApp />} />
@@ -86,7 +96,7 @@ export const App: React.FC = () => {
                   element={
                     <PlaceholderView
                       calculator={CALCULATORS_LIST.find((c) => c.id === 'dividend') ?? CALCULATORS_LIST[0]}
-                      onGoToCompound={() => navigate('/compound')}
+                      onGoToCompound={() => navigate('/')}
                     />
                   }
                 />
@@ -95,12 +105,12 @@ export const App: React.FC = () => {
                   element={
                     <PlaceholderView
                       calculator={CALCULATORS_LIST.find((c) => c.id === 'goal') ?? CALCULATORS_LIST[0]}
-                      onGoToCompound={() => navigate('/compound')}
+                      onGoToCompound={() => navigate('/')}
                     />
                   }
                 />
-                {/* 정의되지 않은 경로는 기본 연복리로 리다이렉트 */}
-                <Route path="*" element={<Navigate to="/compound" replace />} />
+                {/* 정의되지 않은 경로는 메인 홈 대시보드로 리다이렉트 */}
+                <Route path="*" element={<Navigate to="/" replace />} />
               </Routes>
             </Suspense>
           </div>
