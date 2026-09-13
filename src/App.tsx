@@ -8,6 +8,7 @@ import { TooltipProvider } from './components/ui/tooltip';
 import { ThemeProvider } from './context/ThemeContext';
 import { Toaster } from './components/ui/toaster';
 import { PWAUpdateToast } from './components/pwa/PWAUpdateToast';
+import { Analytics } from '@vercel/analytics/react';
 
 const CompoundInterestApp = lazy(() =>
   import('./calculators/compound-interest/CompoundInterestApp').then((m) => ({ default: m.CompoundInterestApp }))
@@ -107,6 +108,7 @@ export const App: React.FC = () => {
       </div>
       <PWAUpdateToast />
       <Toaster />
+      <Analytics />
     </div>
       </TooltipProvider>
     </ThemeProvider>

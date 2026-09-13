@@ -3,6 +3,16 @@
 모든 주요 변경 사항은 본 문서에 기록됩니다.
 버전 체계는 [Semantic Versioning (SemVer)](https://semver.org/)을 준수합니다.
 
+## [1.9.15] - 2026-09-13
+ 
+### Vercel Web Analytics 실시간 방문자 분석 인프라 구축 (Analytics & Ops)
+- **Vercel Web Analytics 연동 (`@vercel/analytics`)**:
+  - `@vercel/analytics` 패키지 설치 및 최상위 컴포넌트(`src/App.tsx`)에 `<Analytics />` 마운트.
+  - Vercel 프로덕션 대시보드와 실시간 연동되어 페이지뷰, 방문자 수, 유입 경로, 기기별 트래픽을 프라이버시 친화적 방식으로 자동 집계.
+- **문서 및 버전 동기화**:
+  - `TODO.md` Section 4.1 완료 처리.
+  - `PRD.md`, `README.md`, `package.json`, `src/config/site.ts` 버전 `v1.9.15` 동기화.
+
 ## [1.9.14] - 2026-09-13
  
 ### 공식 운영 도메인 및 SEO 최적화 인프라 구축 (Production & SEO)
