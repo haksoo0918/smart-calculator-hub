@@ -35,10 +35,10 @@ Object.defineProperty(window, 'matchMedia', {
 
 // Virtual PWA Register Mock
 vi.mock('virtual:pwa-register/react', () => ({
-  useRegisterSW: () => ({
+  useRegisterSW: vi.fn(() => ({
     needRefresh: [false, vi.fn()],
     offlineReady: [false, vi.fn()],
     updateServiceWorker: vi.fn(),
-  }),
+  })),
 }));
 

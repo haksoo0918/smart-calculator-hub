@@ -1,6 +1,6 @@
 # [PRD] 모바일 우선 스마트 멀티 계산기 플랫폼 (Smart Calculator Hub)
 
-> **버전**: v1.9.20  
+> **버전**: v1.9.21  
 > **최종 갱신일**: 2026-09-13  
 > **제작 및 브랜딩**: © sosoFactory  
 > **기본 원칙**: Ghost 디자인 시스템 원칙 준수, 전역 프리텐다드(Pretendard Variable) 단일 폰트 원칙, 모바일 퍼스트(Mobile-First), 일관된 UI/UX, 100% 오프라인 동작(PWA), WCAG 웹 접근성 준수, 미니멀 네비게이션(불필요한 라벨/뱃지 배제)
@@ -792,14 +792,16 @@ export interface SalaryCalculationResult {
   2. **사이드바 및 모바일 드로어 (`SidebarDrawer`)**:
      - 메뉴 목록 하단, 카피라이트 푸터 상단에 와이드 버튼(`w-full py-2.5 text-xs rounded-xl`) 형태로 배치하여 모바일 메뉴 탐색 시에도 즉시 설치 유도.
 
-### 8.3 PWA 신규 버전 업데이트 알림 및 자동 갱신 규격 (TODO 4.2)
+### 8.3 PWA 신규 버전 업데이트 알림 및 자동 갱신 규격 (TODO 4.2 - v1.9.21 완료)
 - **도입 목적**:
   - 서비스 워커가 백그라운드에서 신규 배포 코드를 내려받은 후 대기(`waiting`) 상태에 머물 때 발생하는 브라우저 캐시 불일치 문제를 방지하고, 최신 계산 로직과 UI를 즉시 제공.
 - **기술 스펙 및 인터랙션**:
+  - `vite.config.ts`: `registerType: 'prompt'` 연동으로 새 배포 감지 시 대기 상태 유지 및 `needRefresh` 트리거 보장.
   - `vite-plugin-pwa/react`의 `useRegisterSW` 훅을 연동하여 `needRefresh` 상태 실시간 감지.
+  - 1시간 주기 점검(`setInterval`) 및 브라우저 탭 복귀(`visibilitychange`) 시 `r.update()` 자동 호출.
   - 새 버전 감지 시 **shadcn/ui Toast**를 통해 화면 하단에 플로팅 알림 배너 자동 노출:
     - 타이틀: *"새로운 버전이 준비되었습니다"*
-    - 설명: *"최신 계산 기능과 최적화가 적용되었습니다."*
+    - 설명: *"최신 계산 기능과 성능 최적화가 적용되었습니다."*
     - 액션 버튼: **[지금 업데이트]** (`updateServiceWorker(true)` 호출하여 새 서비스 워커 활성화 및 즉시 리로드)
     - 닫기 버튼: 사용자가 작업 중단 없이 현재 계산을 이어갈 수 있도록 배너 닫기 지원.
 

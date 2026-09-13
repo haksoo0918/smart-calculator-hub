@@ -3,6 +3,21 @@
 모든 주요 변경 사항은 본 문서에 기록됩니다.
 버전 체계는 [Semantic Versioning (SemVer)](https://semver.org/)을 준수합니다.
 
+## [1.9.21] - 2026-09-13
+ 
+### PWA 신규 버전 업데이트 알림 토스트 활성화 및 TODO 완료 표기 전면 통일 (PWA Update Toast & Docs Sync)
+- **PWA 신규 버전 업데이트 토스트 실동작 활성화 (`registerType: 'prompt'`)**:
+  - `vite.config.ts`의 PWA 등록 모드를 `autoUpdate`에서 `prompt`로 전환하여, 신규 배포 시 새 서비스 워커가 대기(`waiting`) 상태에 진입하고 `useRegisterSW`의 `needRefresh` 상태가 정상 트리거되도록 수정.
+  - `PWAUpdateToast.tsx`: 서비스 워커 주기적 업데이트 점검(1시간 간격) 및 브라우저 탭 복귀(`visibilitychange`) 시 최신 배포 여부를 점검하는 `r.update()` 자동 트리거 로직 보강.
+  - 새 버전 감지 시 화면 하단에 *"새로운 버전이 준비되었습니다"* Ghost Lime 토스트가 팝업되며, **[지금 업데이트]** 버튼 클릭 시 즉시 최신 서비스 워커를 활성화하고 페이지를 새로고침하는 원클릭 업데이트 흐름 완성.
+- **TODO 백로그 완료 표기 체계 전면 통일 (`TODO.md`)**:
+  - 기존의 혼재되어 있던 표기(신규 기획, 진행 중, 완료 등)를 마크다운 표준 체크박스 `[x]`(완료)와 `[ ]`(예정)으로 전면 통일하여 백로그 가독성 극대화.
+- **품질 검증 및 단위 테스트**:
+  - `PWAUpdateToast.test.tsx` 단위 테스트 신설 (토스트 미노출 / 노출 / 업데이트 액션 클릭 및 새로고침 검증).
+  - 21개 테스트 파일, 95개 단위 테스트 100% 통과 (Pass).
+- **문서 및 버전 동기화**:
+  - `package.json`, `src/config/site.ts`, `PRD.md`, `README.md`, `TODO.md` 버전 `v1.9.21` 동기화.
+
 ## [1.9.20] - 2026-09-13
  
 ### 전 페이지 상단 글로벌 헤더 fixed 고정 및 홈 화면 하단 PWA 배너 삭제 (Header Fixed & Clean Home)

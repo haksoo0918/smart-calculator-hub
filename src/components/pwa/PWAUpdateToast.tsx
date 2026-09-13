@@ -11,7 +11,19 @@ export const PWAUpdateToast: React.FC = () => {
     updateServiceWorker,
   } = useRegisterSW({
     onRegistered(r) {
-      console.log('SW Registered:', r);
+      if (r) {
+        // 1시간마다 서비스 워커 업데이트 주기적 점검
+        setInterval(() => {
+          r.update();
+        }, 60 * 60 * 1000);
+
+        // 사용자가 백그라운드 탭에서 복귀 시 최신 배포 여부 점검
+        document.addEventListener('visibilitychange', () => {
+          if (document.visibilityState === 'visible') {
+            r.update();
+          }
+        });
+      }
     },
     onRegisterError(error) {
       console.error('SW registration error:', error);
