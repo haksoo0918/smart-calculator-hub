@@ -52,37 +52,7 @@
 - **🔒 데이터 프라이버시**: 모든 계산과 금융 수치는 외부 서버로 전송되지 않고 브라우저 로컬(`LocalStorage`)에만 안전하게 저장.
 - **🧪 신뢰성 검증**: Vitest 및 Testing Library 기반 89개 단위 테스트 100% 통과로 검증된 금융 계산 정확도.
 
----
 
-## 🚀 빠른 시작 (Quick Start)
-
-### 요구 사양
-- **Node.js**: `v18.0.0` 이상
-- **패키지 매니저**: `npm` (또는 `pnpm`, `yarn`)
-
-### 설치 및 로컬 실행
-```bash
-# 저장소 복제
-git clone https://github.com/sosoFactory/smart-calculator-hub.git
-
-# 프로젝트 디렉터리 이동
-cd smart-calculator-hub
-
-# 의존성 설치
-npm install
-
-# 로컬 개발 서버 실행
-npm run dev
-```
-
-### 테스트 및 빌드
-```bash
-# 전체 단위 테스트 실행 (Vitest)
-npm test
-
-# 프로덕션 번들 빌드
-npm run build
-```
 
 ---
 
