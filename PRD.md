@@ -1,6 +1,6 @@
 # [PRD] 모바일 우선 스마트 멀티 계산기 플랫폼 (Smart Calculator Hub)
 
-> **버전**: v1.9.15  
+> **버전**: v1.9.16  
 > **최종 갱신일**: 2026-09-13  
 > **제작 및 브랜딩**: © sosoFactory  
 > **기본 원칙**: Ghost 디자인 시스템 원칙 준수, 전역 프리텐다드(Pretendard Variable) 단일 폰트 원칙, 모바일 퍼스트(Mobile-First), 일관된 UI/UX, 100% 오프라인 동작(PWA), WCAG 웹 접근성 준수, 미니멀 네비게이션(불필요한 라벨/뱃지 배제)
@@ -747,20 +747,22 @@ export interface SalaryCalculationResult {
   - `short_name`: `스마트 계산기`
   - `description`: `연복리 시뮬레이터, 대출이자 상환비교, 연봉 실수령액, 아파트 평수 단위변환, 실시간 환율 계산기`
   - `theme_color`: `#15171a` (Ghost 디자인 시스템 흑연 다크 테마 컬러 통일)
-  - `background_color`: `#f8fafc` (Slate-50)
+  - `background_color`: `#15171a` (스플래시 화면 및 아이콘 배경 흑연색 일치)
   - `display`: `standalone` (브라우저 주소창 제거, 네이티브 앱 느낌)
   - `orientation`: `portrait`
   - `lang`: `ko`
   - `categories`: `['finance', 'utilities']`
-  - `icons`:
-    - 192x192, 512x512 고품질 PNG 래스터 아이콘 및 SVG 벡터 아이콘 듀얼 제공.
+  - **풀 블리드(Full Bleed) 프리미엄 앱 아이콘 시스템 (v1.9.16 개편)**:
+    - **배경 원칙 (Full Bleed)**: 512×512 및 192×192 캔버스 전체에 Ghost 시그니처 흑연 다크(`#15171a`) 배경을 100% 꽉 채워, iOS의 Squircle 마스킹 및 안드로이드의 Circle Adaptive 마스킹 시 "흰색 테두리 이중 모서리 현상"을 원천 제거.
+    - **Safe Zone (중앙 80% 안전 구역)**: 안드로이드 및 iOS의 시스템 마스크(원형, 둥근 사각형 등)에 의해 아이콘 심볼이 잘려 나가지 않도록, 캔버스 지름 80% 안전 영역(Safe Zone) 내에 계산기 심볼(미니멀 상단 디스플레이 + 사칙연산 `+ - × =` + Electric Lime `#d1ff19` 하이라이트) 집중 배치.
+    - **에셋 구성**: 192x192, 512x512 고품질 PNG 래스터 에셋 및 SVG 벡터 에셋 동기화.
     - `purpose: 'any maskable'` 규격을 명시하여 안드로이드 적응형 아이콘(Adaptive Icon) 및 데스크톱 PWA 설치 완벽 대응.
 - **파비콘 및 iOS 최적화**:
   - `favicon`: `index.html` 파비콘으로 벡터 `/logo.svg`를 지정하여 브라우저 탭 아이콘 404 원천 차단 및 선명한 렌더링 보장.
   - `apple-mobile-web-app-capable`: `yes`
   - `apple-mobile-web-app-status-bar-style`: `default`
   - `apple-mobile-web-app-title`: `스마트 계산기`
-  - `apple-touch-icon`: 192x192 PNG 포맷(`/pwa-192x192.png`) 지정하여 iOS 사파리 홈 화면 추가 시 선명한 앱 아이콘 제공.
+  - `apple-touch-icon`: 192x192 및 512x512 풀 블리드 PNG 포맷(`/pwa-192x192.png`) 지정하여 iOS 사파리 홈 화면 추가 시 네이티브 금융 앱 수준의 일체감 있는 스퀘어클 아이콘 제공.
 
 ### 8.2 PWA 인앱 설치 버튼 및 설치 가이드 규격 (`PWAInstallButton`, `PWAInstallModal`)
 - **도입 목적**:

@@ -3,6 +3,21 @@
 모든 주요 변경 사항은 본 문서에 기록됩니다.
 버전 체계는 [Semantic Versioning (SemVer)](https://semver.org/)을 준수합니다.
 
+## [1.9.16] - 2026-09-13
+ 
+### PWA 모바일 홈 화면 앱 아이콘 풀 블리드 리디자인 (Mobile UX & PWA)
+- **풀 블리드(Full Bleed) 다크 흑연 테마 아이콘 개편**:
+  - 기존 흰색 여백/사각 캔버스로 인해 Android/iOS 홈 화면 설치 시 발생하던 하얀색 테두리 및 축소/이중 모서리 왜곡 문제 해결.
+  - W3C PWA Maskable Icon 규격(안전 영역 Safe Zone 80%)을 완벽 준수하는 풀 블리드 다크 흑연(`#181b20`~`#111316`) 배경 캔버스 적용.
+  - 서비스 고유의 Electric Lime(`#d1ff19`) 액센트가 가미된 시그니처 계산기 심볼 배치.
+- **PWA 에셋 및 Manifest 동기화**:
+  - `public/pwa-512x512.svg`, `public/pwa-192x192.svg` 벡터 에셋 신규 제작.
+  - MS Edge Headless 렌더링을 통해 초고해상도 `public/pwa-512x512.png`, `public/pwa-192x192.png` 래스터 이미지 동기화 생성.
+  - `vite.config.ts`: Manifest `background_color`를 아이콘 배경과 동일한 `'#15171a'`로 통일하여 앱 실행 스플래시 화면 일체화.
+- **문서 및 버전 동기화**:
+  - `TODO.md` Section 4.4 완료 처리.
+  - `PRD.md`, `README.md`, `package.json`, `src/config/site.ts` 버전 `v1.9.16` 동기화.
+
 ## [1.9.15] - 2026-09-13
  
 ### Vercel Web Analytics 실시간 방문자 분석 인프라 구축 (Analytics & Ops)

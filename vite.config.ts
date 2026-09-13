@@ -14,7 +14,7 @@ export default defineConfig({
         short_name: '스마트 계산기',
         description: '연복리 시뮬레이터, 대출이자 상환비교, 연봉 실수령액, 아파트 평수 단위변환, 실시간 환율 계산기',
         theme_color: '#15171a',
-        background_color: '#f8fafc',
+        background_color: '#15171a',
         display: 'standalone',
         orientation: 'portrait',
         scope: '/',
