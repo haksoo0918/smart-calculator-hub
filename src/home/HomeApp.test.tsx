@@ -27,7 +27,7 @@ describe('HomeApp Compact Dashboard Tests', () => {
   it('헤더와 5대 계산기 카드가 렌더링되어야 한다', () => {
     renderHomeApp();
 
-    expect(screen.getByText('계산기 모아보기')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: '전체' })).toBeInTheDocument();
 
     // 5대 활성 계산기 shortName 노출 확인
     expect(screen.getByText('연복리 계산기')).toBeInTheDocument();

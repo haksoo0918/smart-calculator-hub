@@ -23,9 +23,9 @@ export interface CalculatorItem {
 
 export const HOME_NAVIGATION_ITEM: CalculatorItem = {
   id: 'home',
-  name: '메인 대시보드',
+  name: '계산기 모아보기',
   shortName: '홈 (대시보드)',
-  description: '일상과 금융을 위한 스마트 멀티 계산기 전체 모아보기 및 빠른 검색',
+  description: '일상과 금융을 위한 스마트 멀티 계산기 전체 모아보기',
   category: 'finance',
   status: 'active',
 };

@@ -43,7 +43,8 @@ describe('Seam 2-1: React Router Navigation and Routing', () => {
       </MemoryRouter>
     );
 
-    expect(await screen.findByText('계산기 모아보기', {}, { timeout: 10000 })).toBeInTheDocument();
+    expect(screen.getByText('계산기 모아보기')).toBeInTheDocument();
+    expect(await screen.findByText('100% 오프라인 PWA', { exact: false }, { timeout: 10000 })).toBeInTheDocument();
     expect(screen.getAllByText('연복리 계산기').length).toBeGreaterThanOrEqual(2);
     expect(screen.getAllByText('대출이자 계산기').length).toBeGreaterThanOrEqual(2);
   }, 15000);

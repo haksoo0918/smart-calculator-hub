@@ -19,7 +19,6 @@ import {
 } from 'lucide-react';
 import { Button } from '../components/ui/button';
 import { Badge } from '../components/ui/badge';
-import { siteConfig } from '../config/site';
 
 export const HomeApp: React.FC = () => {
   const navigate = useNavigate();
@@ -63,25 +62,11 @@ export const HomeApp: React.FC = () => {
 
   return (
     <div className="w-full pb-8 sm:pb-12 space-y-4 sm:space-y-6">
-      {/* 1. 초슬림 콤팩트 헤더 섹션 (모바일 수직 공간 극대화) */}
-      <section className="pt-1 sm:pt-3 space-y-2.5">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-          <div>
-            <div className="flex items-center gap-1.5 text-[11px] font-bold text-slate-500 dark:text-slate-400 tracking-tight mb-0.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#d1ff19]" />
-              <span>{siteConfig.name}</span>
-              <span className="text-slate-300 dark:text-slate-600">·</span>
-              <span className="font-mono text-[10px]">v{siteConfig.version}</span>
-            </div>
-            <h1 className="text-lg sm:text-2xl font-extrabold tracking-tight text-[#112220] dark:text-slate-100">
-              계산기 모아보기
-            </h1>
-          </div>
-
-          {/* 카테고리 퀵 탭 칩 */}
-          <div className="flex items-center flex-wrap gap-1">
-            {categories.map((cat) => {
-              const isSelected = selectedCategory === cat.key;
+      {/* 1. 카테고리 퀵 탭 칩 섹션 (본문 타이틀 완전 배제 및 상단 고정 헤더 일원화) */}
+      <section className="pt-0.5 sm:pt-1">
+        <div className="flex items-center justify-start flex-wrap gap-1.5">
+          {categories.map((cat) => {
+            const isSelected = selectedCategory === cat.key;
               return (
                 <Button
                   key={cat.key}
@@ -99,7 +84,6 @@ export const HomeApp: React.FC = () => {
                 </Button>
               );
             })}
-          </div>
         </div>
       </section>
 
