@@ -2,6 +2,7 @@ export type CalculatorId =
   | 'home'
   | 'compound'
   | 'unit'
+  | 'bmi'
   | 'exchange'
   | 'loan'
   | 'salary'
@@ -54,6 +55,15 @@ export const CALCULATORS_LIST: CalculatorItem[] = [
     category: 'lifestyle',
     status: 'active',
     keywords: ['단위', '변환', '평수', '평', '제곱미터', 'm2', '면적', '아파트', '길이', '무게', '부피', '온도', '섭씨', '화씨'],
+  },
+  {
+    id: 'bmi',
+    name: 'BMI & 비만도 계산기',
+    shortName: 'BMI 계산기',
+    description: '신장·체중 기반 체질량지수(BMI), 비만도 6단계 및 적정 체중 분석',
+    category: 'lifestyle',
+    status: 'active',
+    keywords: ['bmi', '비만도', '체질량지수', '과체중', '저체중', '고도비만', '적정체중', '표준체중', '다이어트', '체중', '키', '몸무게'],
   },
   {
     id: 'exchange',

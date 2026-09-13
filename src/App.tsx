@@ -30,6 +30,9 @@ const LoanApp = lazy(() =>
 const SalaryApp = lazy(() =>
   import('./calculators/salary-calculator/SalaryApp').then((m) => ({ default: m.SalaryApp }))
 );
+const BmiApp = lazy(() =>
+  import('./calculators/bmi-calculator/BmiApp').then((m) => ({ default: m.BmiApp }))
+);
 
 const CalculatorLoadingFallback = () => (
   <div className="w-full py-20 flex flex-col items-center justify-center space-y-3">
@@ -93,6 +96,7 @@ export const App: React.FC = () => {
                 <Route path="/home" element={<Navigate to="/" replace />} />
                 <Route path="/compound" element={<CompoundInterestApp />} />
                 <Route path="/unit" element={<UnitConverterApp />} />
+                <Route path="/bmi" element={<BmiApp />} />
                 <Route path="/exchange" element={<ExchangeApp />} />
                 <Route path="/loan" element={<LoanApp />} />
                 <Route path="/salary" element={<SalaryApp />} />

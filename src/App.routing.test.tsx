@@ -71,4 +71,16 @@ describe('Seam 2-1: React Router Navigation and Routing', () => {
     expect(await screen.findByText('급여 조건 입력', {}, { timeout: 10000 })).toBeInTheDocument();
     expect(await screen.findByText('공제 항목별 세부 명세표', {}, { timeout: 10000 })).toBeInTheDocument();
   }, 15000);
+
+  it('/bmi 경로에서는 BMI & 비만도 계산기 화면이 렌더링되어야 한다', async () => {
+    render(
+      <MemoryRouter initialEntries={['/bmi']}>
+        <App />
+      </MemoryRouter>
+    );
+
+    expect(screen.getAllByText('BMI & 비만도 계산기').length).toBeGreaterThanOrEqual(1);
+    expect(await screen.findByText('신체 정보 입력', {}, { timeout: 10000 })).toBeInTheDocument();
+    expect(await screen.findByText('비만도 스펙트럼 게이지', {}, { timeout: 10000 })).toBeInTheDocument();
+  }, 15000);
 });

@@ -15,6 +15,7 @@ import {
   Calculator,
   Wallet,
   LayoutDashboard,
+  Activity,
 } from 'lucide-react';
 import { Sheet, SheetContent, SheetTitle } from '../ui/sheet';
 import { Button } from '../ui/button';
@@ -43,6 +44,8 @@ export const SidebarDrawer: React.FC<SidebarDrawerProps> = ({
         return <TrendingUp className={cls} />;
       case 'unit':
         return <Ruler className={cls} />;
+      case 'bmi':
+        return <Activity className={cls} />;
       case 'exchange':
         return <ArrowLeftRight className={cls} />;
       case 'loan':

@@ -15,6 +15,7 @@ import {
   Calculator,
   Wallet,
   ArrowRight,
+  Activity,
 } from 'lucide-react';
 import { Button } from '../components/ui/button';
 import { Badge } from '../components/ui/badge';
@@ -35,6 +36,8 @@ export const HomeApp: React.FC = () => {
         return <Wallet className={`${iconCls} text-indigo-500 dark:text-indigo-400`} />;
       case 'unit':
         return <Ruler className={`${iconCls} text-amber-500 dark:text-amber-400`} />;
+      case 'bmi':
+        return <Activity className={`${iconCls} text-rose-500 dark:text-rose-400`} />;
       case 'exchange':
         return <ArrowLeftRight className={`${iconCls} text-teal-500 dark:text-teal-400`} />;
       case 'dividend':
