@@ -43,9 +43,9 @@ describe('Seam 2-1: React Router Navigation and Routing', () => {
       </MemoryRouter>
     );
 
-    expect(await screen.findByText('일상과 금융을 위한', {}, { timeout: 10000 })).toBeInTheDocument();
-    expect(screen.getByPlaceholderText(/계산기 이름이나 키워드 검색/i)).toBeInTheDocument();
-    expect(screen.getByText('전체 계산기')).toBeInTheDocument();
+    expect(await screen.findByText('계산기 모아보기', {}, { timeout: 10000 })).toBeInTheDocument();
+    expect(screen.getAllByText('연복리 계산기').length).toBeGreaterThanOrEqual(2);
+    expect(screen.getAllByText('대출이자 계산기').length).toBeGreaterThanOrEqual(2);
   }, 15000);
 
   it('/loan 경로에서는 대출이자 계산기 화면이 렌더링되어야 한다', async () => {
